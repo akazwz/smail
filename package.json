@@ -1,0 +1,18 @@
+{
+  "name": "smail",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "worker:dev": "pnpm -F email-worker run dev",
+    "next:dev": "pnpm -F next run dev",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.1.1",
+    "prettier-plugin-tailwindcss": "^0.5.11"
+  }
+}
