@@ -1,4 +1,4 @@
-import {GithubIcon} from "icons";
+import { GithubIcon } from "icons";
 import Link from "next/link";
 
 export default function Header() {

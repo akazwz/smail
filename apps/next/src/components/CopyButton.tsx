@@ -1,6 +1,6 @@
 "use client";
 
-import {CopyIcon,ExclamationCircle,CheckIcon} from "icons";
+import { CopyIcon, ExclamationCircle, CheckIcon } from "icons";
 import { ButtonHTMLAttributes, DetailedHTMLProps, useState } from "react";
 
 interface CopyButtonProps

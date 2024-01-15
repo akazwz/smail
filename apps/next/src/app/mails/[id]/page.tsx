@@ -2,7 +2,7 @@ import { getWebTursoDB } from "database/db";
 import { getEmail } from "database/dao";
 import { getMailbox } from "@/app/api/mails/route";
 import { format } from "date-fns/format";
-import {UserCircleIcon,ArrowUturnLeft} from "icons";
+import { UserCircleIcon, ArrowUturnLeft } from "icons";
 import Link from "next/link";
 
 async function fetchMail(id: string) {

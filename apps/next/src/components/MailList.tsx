@@ -2,7 +2,7 @@
 
 import { formatDistanceToNow } from "date-fns";
 import { Email } from "database/schema";
-import {MailIcon,InboxIcon,RefreshIcon} from "icons";
+import { MailIcon, InboxIcon, RefreshIcon } from "icons";
 import {
   QueryClient,
   QueryClientProvider,

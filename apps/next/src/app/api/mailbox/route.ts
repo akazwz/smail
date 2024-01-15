@@ -9,8 +9,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const verifyEndpoint =
   "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-const turnstileSecret =
-  process.env.TURNSTILE_SECRET || "1x0000000000000000000000000000000AA";
+const turnstileSecret = process.env.TURNSTILE_SECRET || "";
 
 export async function fetchMailbox(data: FormData) {
   try {

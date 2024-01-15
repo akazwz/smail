@@ -23,9 +23,7 @@ export async function getEmail(db: LibSQLDatabase, id: string) {
     const result = await db
       .select()
       .from(emails)
-      .where(and(
-          eq(emails.id, id),
-      ))
+      .where(and(eq(emails.id, id)))
       .execute();
     if (result.length != 1) {
       return null;
