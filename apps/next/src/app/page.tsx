@@ -1,9 +1,9 @@
-import CopyButton from "@/components/CopyButton";
-import MailListWithQuery from "@/components/MailList";
 import { fetchEmails, getMailbox } from "@/app/api/mails/route";
+import CopyButton from "@/components/CopyButton";
 import FetchMailboxFormWithCaptcha from "@/components/FetchMailboxForm";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import MailListWithQuery from "@/components/MailList";
 
 const turnstileKey = process.env.TURNSTILE_KEY || "1x00000000000000000000AA";
 

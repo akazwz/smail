@@ -1,9 +1,9 @@
-import { getWebTursoDB } from 'database/db';
-import PostalMime from 'postal-mime';
-import { InsertEmail, insertEmailSchema } from 'database/schema';
-import { insertEmail } from 'database/dao';
-import { nanoid } from 'nanoid/non-secure';
 import { ForwardableEmailMessage } from '@cloudflare/workers-types';
+import { insertEmail } from 'database/dao';
+import { getWebTursoDB } from 'database/db';
+import { InsertEmail, insertEmailSchema } from 'database/schema';
+import { nanoid } from 'nanoid/non-secure';
+import PostalMime from 'postal-mime';
 export interface Env {
 	DB: D1Database;
 	TURSO_DB_URL: string;

@@ -1,8 +1,7 @@
-import { cookies } from "next/headers";
 import { unsign } from "@/crypto";
+import { emails, getWebTursoDB, orm } from "database";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { getWebTursoDB } from "database/db";
-import { getEmailsByMessageTo } from "database/dao";
 
 export async function getMailbox() {
   const cookie = cookies().get("mailbox");
@@ -25,7 +24,13 @@ export async function fetchEmails(mailbox: string | undefined) {
     const url = process.env.TURSO_DB_URL as string;
     const roAuthToken = process.env.TURSO_DB_RO_AUTH_TOKEN as string;
     const db = getWebTursoDB(url, roAuthToken);
-    return await getEmailsByMessageTo(db, mailbox);
+    const mails = await db
+      .select()
+      .from(emails)
+      .where(orm.and(orm.eq(emails.messageTo, mailbox)))
+      .orderBy(orm.desc(emails.createdAt))
+      .execute();
+    return mails;
   } catch (e) {
     console.log(e);
     return [];

@@ -1,62 +1,32 @@
-import { getMailbox } from "@/app/api/mails/route";
-import { emails, getWebTursoDB, orm } from "database";
+import { type LoaderFunction } from "@remix-run/node";
+import { Link, useLoaderData, useRouteError } from "@remix-run/react";
+import { getEmail } from "database/dao";
+import { getWebTursoDB } from "database/db";
 import { format } from "date-fns/format";
 import { ArrowUturnLeft, UserCircleIcon } from "icons";
-import Link from "next/link";
 
-async function fetchMail(id: string) {
-  const mailbox = await getMailbox();
-  if (!mailbox) {
-    return null;
+export const loader: LoaderFunction = async ({ params }) => {
+  const id = params.id;
+  const db = getWebTursoDB(
+    process.env.TURSO_DB_URL as string,
+    process.env.TURSO_DB_RO_AUTH_TOKEN as string,
+  );
+  if (!id) {
+    throw new Error("No mail id provided");
   }
-  const url = process.env.TURSO_DB_URL as string;
-  const roAuthToken = process.env.TURSO_DB_RO_AUTH_TOKEN as string;
-  const db = getWebTursoDB(url, roAuthToken);
-  const mails = await db
-    .select()
-    .from(emails)
-    .where(orm.and(orm.eq(emails.id, id)))
-    .limit(1)
-    .execute();
-  if (mails.length === 0) {
-    return null;
-  }
-  const email = mails[0];
-  if (email.messageTo !== mailbox) {
-    return null;
-  }
-  return email;
-}
-
-export default async function MailViewer({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const mail = await fetchMail(params.id);
-
+  const mail = await getEmail(db, id);
   if (!mail) {
-    return (
-      <div className="flex flex-1 flex-col gap-10">
-        <Link
-          href="/"
-          className="flex w-fit font-semibold items-center border p-2 rounded-md gap-2"
-        >
-          <ArrowUturnLeft />
-          Back Home
-        </Link>
-
-        <div className="flex items-center justify-center font-semibold text-xl">
-          No mail found
-        </div>
-      </div>
-    );
+    throw new Error("No mail found");
   }
+  return mail;
+};
 
+export default function MailViewer() {
+  const mail = useLoaderData<typeof loader>();
   return (
     <div className="flex flex-1 flex-col p-2 gap-10">
       <Link
-        href="/"
+        to="/"
         className="flex w-fit font-semibold items-center border p-2 rounded-md gap-2"
       >
         <ArrowUturnLeft />
@@ -86,6 +56,25 @@ export default async function MailViewer({
           className="prose"
           dangerouslySetInnerHTML={{ __html: mail.html || "" }}
         />
+      </div>
+    </div>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError() as Error;
+  return (
+    <div className="flex flex-1 flex-col gap-10">
+      <Link
+        to="/"
+        className="flex w-fit font-semibold items-center border p-2 rounded-md gap-2"
+      >
+        <ArrowUturnLeft />
+        Back Home
+      </Link>
+
+      <div className="flex items-center justify-center font-semibold text-xl text-red-500">
+        {error.message}
       </div>
     </div>
   );

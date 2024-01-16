@@ -1,5 +1,5 @@
-import { drizzle, LibSQLDatabase } from "drizzle-orm/libsql";
 import { createClient as createWebClient } from "@libsql/client/web";
+import { drizzle, LibSQLDatabase } from "drizzle-orm/libsql";
 
 export function getWebTursoDBFromEnv(): LibSQLDatabase {
   const client = createWebClient({

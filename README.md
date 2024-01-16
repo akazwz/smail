@@ -1,5 +1,7 @@
 ## Temporary email service build with email worker
 
+## https://smail.pw
+
 ## how it works
 
 - receive email using cloudflare email worker

@@ -2,3 +2,4 @@ node_modules
 .next
 .wrangler
 pnpm-lock.yaml
+build
