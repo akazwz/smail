@@ -8,6 +8,8 @@
 - store email in database
 - display email in web interface
 
+## Inspired by [Email.ML](https://email.ml)
+
 ## if you like it, please star it
 
 ### Screenshots
