@@ -2,6 +2,8 @@
 
 ## https://smail.pw
 
+## [tutorial 教程](docs/smail.md)
+
 ## how it works
 
 - receive email using cloudflare email worker
