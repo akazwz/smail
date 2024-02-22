@@ -26,6 +26,33 @@
    TURSO_DB_RO_AUTH_TOKEN (turso 中获取, 连接数据库凭证)
    TURSO_DB_URL
    ````
+4. 数据库表, 文件在 packages/database/drizzle/0000_sturdy_arclight.sql
+   ````sql
+   CREATE TABLE `emails` (
+	`id` text PRIMARY KEY NOT NULL,
+	`message_from` text NOT NULL,
+	`message_to` text NOT NULL,
+	`headers` text NOT NULL,
+	`from` text NOT NULL,
+	`sender` text,
+	`reply_to` text,
+	`delivered_to` text,
+	`return_path` text,
+	`to` text,
+	`cc` text,
+	`bcc` text,
+	`subject` text,
+	`message_id` text NOT NULL,
+	`in_reply_to` text,
+	`references` text,
+	`date` text,
+	`html` text,
+	`text` text,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL
+   );
+   ````
+
 
 ## 一. 部署email worker
 
