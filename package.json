@@ -10,14 +10,18 @@
     "worker:dev": "pnpm -F email-worker run dev",
     "remix:build": "pnpm -F remix run build",
     "remix:start": "pnpm -F remix run start",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "prettier": "^3.2.2",
-    "prettier-plugin-tailwindcss": "^0.5.11"
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "vitepress": "^1.0.0"
   },
   "dependencies": {
     "@libsql/client": "0.4.0-pre.7",
