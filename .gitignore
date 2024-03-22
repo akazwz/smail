@@ -3,3 +3,7 @@ node_modules
 .idea
 .vercel
 fly.toml
+
+# docs
+docs/.vitepress/cache
+docs/.vitepress/dist

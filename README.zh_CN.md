@@ -1,6 +1,6 @@
 <p align="center">
   <span>
-    <a>English</a> | 
+    <a href="https://github.com/akazwz/smail">English</a> | 
     <a href="https://github.com/akazwz/smail/blob/main/README.zh_CN.md">简体中文</a>
   </span>
 <p>
@@ -9,32 +9,31 @@
   <a href="https://smail.pw" target="_blank" rel="noopener noreferrer">
     <img width="180" src="https://cdn.jsdelivr.net/gh/innocces/DrawingBed/2024-03-22/1711084652029-logo.png" alt="SMail logo">
   </a>
-  
 </p>
 
 <br/>
 
 <div align="center">
-  <p>Temporary email service build with email worker<p>
+  <p>自定义 Worker 构建临时邮件服务<p>
 </div>
 
 # SMail 📨
 
-- 📁 receive email using cloudflare email worker
-- 🖼 provide web application
-- 💡 store email in database
+- 📁 底层使用 cloudflare email worker
+- 🖼 提供线上快捷使用页面
+- 💡 存储数据
 
-## Quick Start
+## 快速开始
 
-- quick use with our [web application](https://smail.pw)
+- 使用[线上提供应用](https://smail.pw)快速开始
 
-- self-built private services. see below documentation
+- 可根据以下文档自行搭建服务
 
-## Documentation
+## 文档
 
-Visit [QuickStart](/docs/quick-start.md) to view the full documentation.
+点击 [快速开始](/docs/quick-start.md) 查看完整文档
 
-## Usage Deps
+## 使用依赖
 
 | Dependences                       | Version(Link)                                                                                                                                                  |
 | --------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -45,7 +44,7 @@ Visit [QuickStart](/docs/quick-start.md) to view the full documentation.
 | [web@remix.ver](apps/remix)       | [![remix](https://img.shields.io/badge/MADE%20BY%20Remix-000000.svg?labelColor=000)](https://smail.pw)                                                         |
 | [database](packages/database)     | [![turso](https://img.shields.io/badge/MADE%20BY%20Turso-000000.svg?labelColor=000)](https://turso.tech)                                                       |
 
-## Inspired by
+## 鸣谢
 
 - [Email.ML](https://email.ml)
 
