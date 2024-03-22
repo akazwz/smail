@@ -1,13 +1,13 @@
-<h3>
+<p align="center">
   <span>
     <a href="https://github.com/akazwz/smail">English</a> | 
     <a href="https://github.com/akazwz/smail/blob/main/README.zh_CN.md">简体中文</a>
   </span>
-<h3>
+<p>
 <br />
 <p align="center">
   <a href="https://smail.pw" target="_blank" rel="noopener noreferrer">
-    <img width="180" src="docs/public/logo.png" alt="SMail logo">
+    <img width="180" src="https://cdn.jsdelivr.net/gh/innocces/DrawingBed/2024-03-22/1711084652029-logo.png" alt="SMail logo">
   </a>
 </p>
 
@@ -35,15 +35,14 @@
 
 ## 使用依赖
 
-| Dependences                                                        | Version(Link)                                                                                                      |
-| ------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------- |
-| [cloudflare](packages/vite)                                        | [![cloudflare](https://img.shields.io/badge/cloudflare                                                             |
-| )](https://developers.cloudflare.com/email-routing/email-workers/) |
-| [email-api](apps/email-api)                                        | [![email-api](https://img.shields.io/badge/email--api)](apps/email-api)                                            |
-| [email-worker](apps/email-worker)                                  | [![email-worker](https://img.shields.io/badge/email--worker)](apps/email-worker/)                                  |
-| [web@next.ver](apps/next)                                          | [![next](https://img.shields.io/badge/MADE%20BY%20Vercel-000000.svg?logo=Vercel&labelColor=000)](https://smail.pw) |
-| [web@remix.ver](apps/remix)                                        | [![remix](https://img.shields.io/badge/MADE%20BY%20Remix-000000.svg?labelColor=000)](https://smail.pw)             |
-| [database](packages/database)                                      | [![turso](https://img.shields.io/badge/MADE%20BY%20Turso-000000.svg?labelColor=000)](https://turso.tech)           |
+| Dependences                       | Version(Link)                                                                                                                                                  |
+| --------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [cloudflare](packages/vite)       | [![cloudflare](https://img.shields.io/badge/MADE%20BY%20Cloudflare-000000.svg?labelColor=000)](https://developers.cloudflare.com/email-routing/email-workers/) |
+| [email-api](apps/email-api)       | [![email-api](https://img.shields.io/badge/Email%20API-000000.svg?labelColor=000)](apps/email-api)                                                             |
+| [email-worker](apps/email-worker) | [![email-worker](https://img.shields.io/badge/Email%20Worker-000000.svg?labelColor=000)](apps/email-worker/)                                                   |
+| [web@next.ver](apps/next)         | [![next](https://img.shields.io/badge/MADE%20BY%20Vercel-000000.svg?logo=Vercel&labelColor=000)](https://smail.pw)                                             |
+| [web@remix.ver](apps/remix)       | [![remix](https://img.shields.io/badge/MADE%20BY%20Remix-000000.svg?labelColor=000)](https://smail.pw)                                                         |
+| [database](packages/database)     | [![turso](https://img.shields.io/badge/MADE%20BY%20Turso-000000.svg?labelColor=000)](https://turso.tech)                                                       |
 
 ## 鸣谢
 
