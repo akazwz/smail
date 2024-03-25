@@ -1,144 +1,149 @@
-import { Turnstile } from "@marsidev/react-turnstile";
 import {
   LoaderFunction,
   redirect,
   type ActionFunction,
   type MetaFunction,
 } from "@remix-run/node";
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useNavigation,
-} from "@remix-run/react";
-import randomName from "@scaleway/random-name";
+import { useActionData, useLoaderData } from "@remix-run/react";
+
 import { getEmailsByMessageTo } from "database/dao";
 import { getWebTursoDB } from "database/db";
 
-import CopyButton from "../components/CopyButton";
-import MailListWithQuery from "../components/MailList";
-import { userMailboxCookie } from "../cookies.server";
-
+import { fetchMails } from "~/components/MailList";
+import { userMailboxCookie } from "~/cookies.server";
+import { Mail } from "~/components/mail/components/mail";
+import { useQuery } from "@tanstack/react-query";
+import { nanoid } from "nanoid";
 export const meta: MetaFunction = () => {
   return [
     { title: "Smail" },
     { name: "description", content: "Welcome to Smail!" },
   ];
 };
-
+export interface UserMailbox {
+  userName: string;
+  email: string;
+  id: string;
+}
 export const loader: LoaderFunction = async ({ request }) => {
-  const siteKey = process.env.TURNSTILE_KEY || "1x00000000000000000000AA";
-  const userMailbox =
+  const siteKey = process.env.TURNSTILE_KEY;
+  const accounts =
     ((await userMailboxCookie.parse(
-      request.headers.get("Cookie"),
-    )) as string) || undefined;
-  if (!userMailbox) {
+      request.headers.get("Cookie")
+    )) as UserMailbox[]) || [];
+
+  if (accounts.length === 0) {
     return {
-      userMailbox: undefined,
+      accounts,
       mails: [],
       siteKey,
     };
   }
   const db = getWebTursoDB(
     process.env.TURSO_DB_URL as string,
-    process.env.TURSO_DB_RO_AUTH_TOKEN as string,
+    process.env.TURSO_DB_RO_AUTH_TOKEN as string
   );
-  const mails = await getEmailsByMessageTo(db, userMailbox);
+  const mailsList = accounts.map((mail) => mail.email);
+
+  const mails = await getEmailsByMessageTo(db, mailsList);
+
   return {
-    userMailbox,
+    accounts: accounts,
     mails,
     siteKey,
   };
 };
 
-export const action: ActionFunction = async ({ request }) => {
-  const response = (await request.formData()).get("cf-turnstile-response");
-  if (!response) {
-    return {
-      error: "No captcha response",
-    };
-  }
-  const verifyEndpoint =
-    "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-  const secret =
-    process.env.TURNSTILE_SECRET || "1x0000000000000000000000000000000AA";
-  const resp = await fetch(verifyEndpoint, {
-    method: "POST",
-    body: JSON.stringify({
-      secret,
-      response,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await resp.json();
-  if (!data.success) {
-    return {
-      error: "Failed to verify captcha",
-    };
-  }
+const verifyEndpoint =
+  "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
-  const domain = "smail.pw";
-  const mailbox = `${randomName("", ".")}@${domain}`;
-  const userMailbox = await userMailboxCookie.serialize(mailbox);
-  return redirect("/", {
-    headers: {
-      "Set-Cookie": userMailbox,
-    },
-  });
+export const action: ActionFunction = async ({ request }) => {
+  try {
+    const formData = await request.formData();
+    const userName = formData.get("userName");
+
+    const response = formData.get("cf-turnstile-response");
+
+    if (!response) {
+      return {
+        error: "No captcha response",
+      };
+    }
+
+    const secret = process.env.TURNSTILE_SECRET;
+    const resp = await fetch(verifyEndpoint, {
+      method: "POST",
+      body: JSON.stringify({
+        secret,
+        response,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await resp.json();
+    if (!data.success) {
+      return {
+        error: "Failed to verify captcha",
+      };
+    }
+    const oldMailbox =
+      ((await userMailboxCookie.parse(
+        request.headers.get("Cookie")
+      )) as UserMailbox[]) || [];
+
+    const isExisting = oldMailbox.find((m) => m.userName === userName);
+    if (isExisting) {
+      return redirect("/");
+    } else {
+      const domain = process.env.DOMAIN;
+      const emailAddress = `${userName}@${domain}`;
+      oldMailbox.push({
+        userName: userName as string,
+        email: emailAddress,
+        id: nanoid(),
+      });
+
+      const userMailbox = await userMailboxCookie.serialize(oldMailbox);
+      return redirect("/", {
+        headers: {
+          "Set-Cookie": userMailbox,
+        },
+      });
+    }
+  } catch (error) {
+    console.error("error: ", error);
+    return redirect("/");
+  }
 };
 
 export default function Index() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-
-  const navigation = useNavigation();
+  const { accounts, mails, siteKey } = loaderData;
+  // const { data, isFetching } = useQuery({
+  //   queryKey: ["mails"],
+  //   queryFn: fetchMails,
+  //   refetchInterval: 10000,
+  // });
 
   return (
     <>
-      <div className="flex flex-col md:p-4 font-semibold items-center max-w-md w-full mx-auto gap-2 p-2 rounded-md border-2 border-dashed">
-        <h1 className="font-semibold">
-          Your<span className="text-blue-500 mx-1">Temporary</span>
-          Email Address
-        </h1>
-        {loaderData?.userMailbox ? (
-          <div className="flex items-center text-zinc-800 bg-zinc-100 px-4 p-2 rounded-md w-full">
-            <span>{loaderData.userMailbox}</span>
-            <CopyButton
-              content={loaderData.userMailbox}
-              className="p-1 rounded-md border ml-auto"
-            />
-          </div>
-        ) : (
-          <Form method="POST" className="flex flex-col gap-2">
-            <Turnstile
-              siteKey={loaderData.siteKey}
-              options={{
-                theme: "light",
-              }}
-            />
-            <button
-              type="submit"
-              disabled={navigation.state != "idle"}
-              className="p-4 rounded-md w-full bg-blue-500 hover:opacity-90 disabled:cursor-not-allowed disabled:bg-zinc-500"
-            >
-              Submit
-            </button>
-          </Form>
-        )}
+      <div className="flex-col md:flex">
+        <Mail
+          accounts={accounts}
+          mails={mails}
+          defaultLayout={undefined}
+          defaultCollapsed={undefined}
+          navCollapsedSize={4}
+          siteKey={siteKey}
+        />
       </div>
-      <h2 className="text-zinc-600 text-xs md:p-2 md:text-sm">
-        Forget about spam, advertising mailings, hacking and attacking robots.
-        Keep your real mailbox clean and secure. Temp Mail provides temporary,
-        secure, anonymous, free, disposable email address.
-      </h2>
-      <MailListWithQuery mails={loaderData.mails} />
-      <div>
+      <>
         {actionData?.error && (
           <div className="text-red-500">{actionData.error}</div>
         )}
-      </div>
+      </>
     </>
   );
 }

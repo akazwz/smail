@@ -30,7 +30,7 @@ export default {
 			const email = insertEmailSchema.parse(newEmail);
 			await insertEmail(db, email);
 		} catch (e) {
-			console.log(e);
+			console.log('insertEmail', e);
 		}
 	},
 };
