@@ -4,6 +4,7 @@ import { getEmail } from "database/dao";
 import { getWebTursoDB } from "database/db";
 import { format } from "date-fns/format";
 import { ArrowUturnLeft, UserCircleIcon } from "icons";
+import {load} from "cheerio";
 
 export const loader: LoaderFunction = async ({ params }) => {
   const id = params.id;
@@ -18,6 +19,20 @@ export const loader: LoaderFunction = async ({ params }) => {
   if (!mail) {
     throw new Error("No mail found");
   }
+  const $ = load(mail.html || "")
+  $("img").each((idx, item) => {
+    const src = $(item).attr("src");
+    if (src?.startsWith("cid:")) {
+      const cid = src.slice(4);
+      mail.attachments?.forEach(attachment => {
+        if (attachment.contentId === `<${cid}>`) {
+          const base64Src = `data:${attachment.mimeType};base64,${attachment.content}`;
+          $(item).attr("src", base64Src);
+        }
+      });
+    }
+  });
+  mail.html = $.html()
   return mail;
 };
 

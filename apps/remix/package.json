@@ -18,6 +18,7 @@
     "@remix-run/react": "^2.5.0",
     "@remix-run/serve": "^2.5.0",
     "@scaleway/random-name": "^4.0.2",
+    "cheerio": "1.0.0-rc.12",
     "database": "workspace:^",
     "icons": "workspace:^",
     "isbot": "^4.1.0",

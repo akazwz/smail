@@ -13,6 +13,7 @@ export type Email = typeof emails.$inferSelect;
 
 export const emails = sqliteTable("emails", {
   id: text("id").primaryKey(),
+  domain: text("domain"),
   messageFrom: text("message_from").notNull(),
   messageTo: text("message_to").notNull(),
   headers: text("headers", { mode: "json" }).$type<Header[]>().notNull(),
@@ -31,6 +32,9 @@ export const emails = sqliteTable("emails", {
   date: text("date"),
   html: text("html"),
   text: text("text"),
+  attachments: text("attachments", { mode: "json" }).$type<
+    AttachmentSchemaType[]
+  >(),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
   updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
 });
@@ -40,6 +44,21 @@ const AddressSchema = z.object({
   name: z.string(),
 });
 
+const AttachmentSchema = z.object({
+  filename: z.string(),
+  mimeType: z.string(),
+  disposition: z.union([
+    z.literal("attachment"),
+    z.literal("inline"),
+    z.literal(null),
+  ]),
+  related: z.boolean().optional(),
+  contentId: z.string().optional(),
+  content: z.string(),
+});
+
+export type AttachmentSchemaType = z.infer<typeof AttachmentSchema>;
+
 export const insertEmailSchema = createInsertSchema(emails, {
   headers: z.array(z.record(z.string())),
   from: AddressSchema,
@@ -48,6 +67,7 @@ export const insertEmailSchema = createInsertSchema(emails, {
   to: z.array(AddressSchema).optional(),
   cc: z.array(AddressSchema).optional(),
   bcc: z.array(AddressSchema).optional(),
+  attachments: z.array(AttachmentSchema).optional(),
 });
 
 export type InsertEmail = z.infer<typeof insertEmailSchema>;
