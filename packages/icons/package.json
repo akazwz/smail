@@ -8,7 +8,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/react": "^18.2.69",
+    "@types/react": "^18.2.70",
     "typescript": "^5.4.3"
   },
   "dependencies": {
