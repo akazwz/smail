@@ -1,4 +1,4 @@
-import { desc, eq, and } from "drizzle-orm";
+import { desc, eq, and, inArray } from "drizzle-orm";
 import { LibSQLDatabase } from "drizzle-orm/libsql";
 import { emails, InsertEmail } from "./schema";
 
@@ -36,15 +36,15 @@ export async function getEmail(db: LibSQLDatabase, id: string) {
 
 export async function getEmailsByMessageTo(
   db: LibSQLDatabase,
-  messageTo: string,
+  messageTo: string[]
 ) {
   try {
     return await db
       .select()
       .from(emails)
-      .where(eq(emails.messageTo, messageTo))
+      .where(inArray(emails.messageTo, messageTo))
       .orderBy(desc(emails.createdAt))
-      .execute();
+      .all();
   } catch (e) {
     return [];
   }

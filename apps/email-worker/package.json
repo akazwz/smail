@@ -9,14 +9,14 @@
 		"log": "wrangler tail"
 	},
 	"devDependencies": {
-		"@cloudflare/workers-types": "^4.20231218.0",
-		"drizzle-kit": "^0.20.12",
-		"typescript": "^5.3.3",
-		"wrangler": "^3.22.4"
+		"@cloudflare/workers-types": "^4.20240320.1",
+		"drizzle-kit": "^0.20.14",
+		"typescript": "^5.4.3",
+		"wrangler": "^3.37.0"
 	},
 	"dependencies": {
 		"database": "workspace:^",
-		"nanoid": "^5.0.4",
-		"postal-mime": "^2.0.2"
+		"nanoid": "^5.0.6",
+		"postal-mime": "^2.1.2"
 	}
 }

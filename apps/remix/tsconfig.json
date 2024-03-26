@@ -13,6 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
+      "~/": ["./app/"],
       "~/*": ["./app/*"]
     },
 

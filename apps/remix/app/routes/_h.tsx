@@ -4,7 +4,7 @@ import Header from "../components/Header";
 
 export default function HomeLayout() {
   return (
-    <div className="mx-auto max-w-2xl gap-2 h-dvh p-2 flex flex-col">
+    <div className="relative flex min-h-screen flex-col bg-background">
       <Header />
       <Outlet />
       <Footer />
