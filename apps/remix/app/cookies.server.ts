@@ -4,10 +4,9 @@ const secrets = (process.env.COOKIES_SECRET as string)
   .split(",")
   .map((s) => s.trim())
   .filter(Boolean);
-console.log("secrets", secrets);
 
 export const userMailboxCookie = createCookie("userMailbox", {
-  maxAge: 60 * 60 * 24 * 1,
+  maxAge: process.env.COOKIES_MAX_AGE ? Number(process.env.COOKIES_MAX_AGE) : 60 * 60 * 24 * 1,
   secrets: secrets,
   httpOnly: true,
 });

@@ -15,9 +15,9 @@ import randomName from "@scaleway/random-name";
 import { getEmailsByMessageTo } from "database/dao";
 import { getWebTursoDB } from "database/db";
 
-import CopyButton from "../components/CopyButton";
-import MailListWithQuery from "../components/MailList";
-import { userMailboxCookie } from "../cookies.server";
+import CopyButton from "~/components/CopyButton";
+import MailListWithQuery from "~/components/MailList";
+import { userMailboxCookie } from "~/cookies.server";
 
 export const meta: MetaFunction = () => {
   return [
@@ -27,6 +27,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const turnstileEnabled = process.env.TURNSTILE_ENABLED === "true";
   const siteKey = process.env.TURNSTILE_KEY || "1x00000000000000000000AA";
   const userMailbox =
     ((await userMailboxCookie.parse(
@@ -36,6 +37,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     return {
       userMailbox: undefined,
       mails: [],
+      turnstileEnabled,
       siteKey,
     };
   }
@@ -51,12 +53,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   };
 };
 
-export const action: ActionFunction = async ({ request }) => {
+
+export async function turnstileCheck(request:Request):Promise<boolean> {
   const response = (await request.formData()).get("cf-turnstile-response");
   if (!response) {
-    return {
-      error: "No captcha response",
-    };
+    return false;
   }
   const verifyEndpoint =
     "https://challenges.cloudflare.com/turnstile/v0/siteverify";
@@ -74,12 +75,21 @@ export const action: ActionFunction = async ({ request }) => {
   });
   const data = await resp.json();
   if (!data.success) {
-    return {
-      error: "Failed to verify captcha",
-    };
+    return false;
   }
+  return true;
+}
 
-  const domain = "smail.pw";
+export const action: ActionFunction = async ({ request }) => {
+  if (process.env.TURNSTILE_ENABLED === "true") {
+    const passed = await turnstileCheck(request);
+    if (!passed) {
+      return {
+        error: "Failed to pass the turnstile",
+      };
+    }
+  }
+  const domain = process.env.MAIL_DOMAIN || "smail.com";
   const mailbox = `${randomName("", ".")}@${domain}`;
   const userMailbox = await userMailboxCookie.serialize(mailbox);
   return redirect("/", {
@@ -92,7 +102,6 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Index() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-
   const navigation = useNavigation();
 
   return (
@@ -111,19 +120,29 @@ export default function Index() {
             />
           </div>
         ) : (
-          <Form method="POST" className="flex flex-col gap-2">
-            <Turnstile
-              siteKey={loaderData.siteKey}
-              options={{
-                theme: "light",
-              }}
-            />
+          <Form method="POST" className="flex items-center w-full flex-col gap-4">
+            {
+              loaderData.turnstileEnabled && (
+                <Turnstile
+                siteKey={loaderData.siteKey}
+                options={{
+                  theme: "light",
+                }}
+              />
+              )
+            }
             <button
               type="submit"
               disabled={navigation.state != "idle"}
-              className="p-4 rounded-md w-full bg-blue-500 hover:opacity-90 disabled:cursor-not-allowed disabled:bg-zinc-500"
+              className="p-2 rounded-md w-full bg-blue-500 hover:opacity-90 disabled:cursor-not-allowed disabled:bg-zinc-500"
             >
-              Submit
+              {
+                navigation.state === "idle" ? (
+                  "Get Temporary Email"
+                ) : (
+                  "Loading..."
+                )
+              }
             </button>
           </Form>
         )}
