@@ -9,23 +9,25 @@ import { useActionData, useLoaderData } from "@remix-run/react";
 import { getEmailsByMessageTo } from "database/dao";
 import { getWebTursoDB } from "database/db";
 
-import { fetchMails } from "~/components/MailList";
 import { userMailboxCookie } from "~/cookies.server";
 import { Mail } from "~/components/mail/components/mail";
-import { useQuery } from "@tanstack/react-query";
+
 import { nanoid } from "nanoid";
+
 export const meta: MetaFunction = () => {
   return [
     { title: "Smail" },
     { name: "description", content: "Welcome to Smail!" },
   ];
 };
+
 export interface UserMailbox {
   userName: string;
   email: string;
   id: string;
 }
 export const loader: LoaderFunction = async ({ request }) => {
+  const turnstileEnabled = process.env.TURNSTILE_ENABLED === "true";
   const siteKey = process.env.TURNSTILE_KEY;
   const accounts =
     ((await userMailboxCookie.parse(
@@ -36,6 +38,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     return {
       accounts,
       mails: [],
+      turnstileEnabled,
       siteKey,
     };
   }
@@ -54,38 +57,18 @@ export const loader: LoaderFunction = async ({ request }) => {
   };
 };
 
-const verifyEndpoint =
-  "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-
 export const action: ActionFunction = async ({ request }) => {
   try {
     const formData = await request.formData();
     const userName = formData.get("userName");
 
-    const response = formData.get("cf-turnstile-response");
-
-    if (!response) {
-      return {
-        error: "No captcha response",
-      };
-    }
-
-    const secret = process.env.TURNSTILE_SECRET;
-    const resp = await fetch(verifyEndpoint, {
-      method: "POST",
-      body: JSON.stringify({
-        secret,
-        response,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await resp.json();
-    if (!data.success) {
-      return {
-        error: "Failed to verify captcha",
-      };
+    if (process.env.TURNSTILE_ENABLED === "true") {
+      const passed = await turnstileCheck(request);
+      if (!passed) {
+        return {
+          error: "Failed to pass the turnstile",
+        };
+      }
     }
     const oldMailbox =
       ((await userMailboxCookie.parse(
@@ -117,6 +100,32 @@ export const action: ActionFunction = async ({ request }) => {
   }
 };
 
+export async function turnstileCheck(request: Request): Promise<boolean> {
+  const response = (await request.formData()).get("cf-turnstile-response");
+  if (!response) {
+    return false;
+  }
+  const verifyEndpoint =
+    "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+  const secret =
+    process.env.TURNSTILE_SECRET || "1x0000000000000000000000000000000AA";
+  const resp = await fetch(verifyEndpoint, {
+    method: "POST",
+    body: JSON.stringify({
+      secret,
+      response,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await resp.json();
+  if (!data.success) {
+    return false;
+  }
+  return true;
+}
+
 export default function Index() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -139,11 +148,9 @@ export default function Index() {
           siteKey={siteKey}
         />
       </div>
-      <>
-        {actionData?.error && (
-          <div className="text-red-500">{actionData.error}</div>
-        )}
-      </>
+      {actionData?.error && (
+        <div className="text-red-500">{actionData.error}</div>
+      )}
     </>
   );
 }
