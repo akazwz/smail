@@ -113,10 +113,10 @@ export async function turnstileCheck(request: Request): Promise<boolean> {
   if (!response) {
     return false;
   }
-  const verifyEndpoint =
-    "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-  const secret =
-    process.env.TURNSTILE_SECRET || "1x0000000000000000000000000000000AA";
+  const verifyEndpoint = process.env
+    .CLOUDFLARE_TURNSTILE_VERIFY_Endpoint as string;
+
+  const secret = process.env.TURNSTILE_SECRET;
   const resp = await fetch(verifyEndpoint, {
     method: "POST",
     body: JSON.stringify({
