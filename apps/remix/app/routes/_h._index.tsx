@@ -8,7 +8,6 @@ import { useActionData, useLoaderData } from "@remix-run/react";
 
 import { getEmailsByMessageTo } from "database/dao";
 import { getWebTursoDB } from "database/db";
-
 import { userMailboxCookie } from "~/cookies.server";
 import { Mail } from "~/components/mail/components/mail";
 
@@ -26,6 +25,7 @@ export interface UserMailbox {
   email: string;
   id: string;
 }
+
 export const loader: LoaderFunction = async ({ request }) => {
   const turnstileEnabled = process.env.TURNSTILE_ENABLED === "true";
   const siteKey = process.env.TURNSTILE_KEY;
@@ -59,6 +59,14 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export const action: ActionFunction = async ({ request }) => {
   try {
+    if (process.env.TURNSTILE_ENABLED === "true") {
+      const passed = await turnstileCheck(request);
+      if (!passed) {
+        return {
+          error: "Failed to pass the turnstile",
+        };
+      }
+    }
     const formData = await request.formData();
     const userName = formData.get("userName");
 
