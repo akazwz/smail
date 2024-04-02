@@ -2,6 +2,7 @@ import { Link } from "@remix-run/react";
 import { cn } from "~/lib/utils";
 import { buttonVariants } from "./ui/button";
 import { Icons } from "~/components/icons";
+import { ModeToggle } from "./ModeToggle";
 
 export default function Header() {
   return (
@@ -42,6 +43,7 @@ export default function Header() {
                 <span className="sr-only">GitHub</span>
               </div>
             </Link>
+            <ModeToggle></ModeToggle>
             {/* <Link to={""} target="_blank" rel="noreferrer">
               <div
                 className={cn(
