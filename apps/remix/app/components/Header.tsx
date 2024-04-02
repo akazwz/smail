@@ -9,7 +9,6 @@ export default function Header() {
       <div className="container flex h-14 max-w-screen-2xl items-center">
         <div className="mr-4 hidden md:flex">
           <Link to="/" className="mr-6 flex items-center space-x-2">
-            <span className="hidden font-bold sm:inline-block">Smail</span>
             <img src="/logo.png" alt="Smail" className="h-8 w-8" />
           </Link>
           <nav className="flex items-center gap-4 text-sm lg:gap-6">
