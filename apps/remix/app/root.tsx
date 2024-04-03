@@ -15,6 +15,7 @@ import {
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { themeSessionResolver } from "./theme.server";
 import clsx from "clsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Return the theme from the session storage using the loader
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -32,6 +33,7 @@ export default function AppWithProviders() {
     </ThemeProvider>
   );
 }
+const queryClient = new QueryClient();
 
 export function App() {
   const data = useLoaderData<typeof loader>();
@@ -49,7 +51,10 @@ export function App() {
         suppressHydrationWarning
         className="min-h-screen bg-background font-sans antialiased"
       >
-        <Outlet />
+        <QueryClientProvider client={queryClient}>
+          <Outlet />
+        </QueryClientProvider>
+
         <ScrollRestoration />
         <Scripts />
       </body>

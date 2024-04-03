@@ -6,11 +6,7 @@ export function getWebTursoDBFromEnv(): LibSQLDatabase {
     url: process.env.TURSO_DB_URL || "",
     authToken: process.env.TURSO_DB_AUTH_TOKEN || "",
   });
-  return drizzle(client);
-}
-
-export function getWebTursoDB(url: string, authToken: string): LibSQLDatabase {
-  return drizzle(createWebClient({ url, authToken }), {
+  return drizzle(client, {
     logger: process.env.NODE_ENV === "development" ? true : undefined,
   });
 }

@@ -12,7 +12,6 @@ import { useNavigation, Form } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Account } from "../data";
-import { CirclePlus } from "lucide-react";
 
 import { useState } from "react";
 import {
@@ -82,23 +81,22 @@ export function AccountSwitcher({
 
 interface CreateAccountProps {
   siteKey?: string;
+  className?: string;
 }
 
-function CreateAccount(props: CreateAccountProps) {
+export function CreateAccount(props: CreateAccountProps) {
   const navigation = useNavigation();
   const { siteKey = "" } = props;
   const [open, setOpen] = useState(false);
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          variant="outline"
-          className="w-full"
+          className={cn("w-full", props.className)}
           onClick={() => {
             setOpen(true);
           }}
         >
-          <CirclePlus className="mr-2 h-4 w-4" />
           Create an email account
         </Button>
       </DialogTrigger>
@@ -122,13 +120,11 @@ function CreateAccount(props: CreateAccountProps) {
           <Button
             type="submit"
             disabled={navigation.state != "idle"}
-            variant="outline"
             onClick={() => {
               setOpen(false);
             }}
           >
-            <CirclePlus className="mr-2 h-4 w-4" />
-            Create
+            Create an email account
           </Button>
         </Form>
       </DialogContent>

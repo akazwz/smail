@@ -4,14 +4,26 @@ import {
   type ActionFunction,
   type MetaFunction,
 } from "@remix-run/node";
-import { useActionData, useLoaderData } from "@remix-run/react";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 
 import { getEmailsByMessageTo } from "database/dao";
-import { getWebTursoDB } from "database/db";
+import { getWebTursoDBFromEnv } from "database/db";
 import { userMailboxCookie } from "~/cookies.server";
 import { Mail } from "~/components/mail/components/mail";
 
 import { nanoid } from "nanoid";
+
+import { useQuery } from "@tanstack/react-query";
+import { fetchMails } from "~/components/MailList";
+import { Turnstile } from "@marsidev/react-turnstile";
+
+import { Input } from "~/components/ui/input";
+import { Button } from "~/components/ui/button";
 
 export const meta: MetaFunction = () => {
   return [
@@ -42,10 +54,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       siteKey,
     };
   }
-  const db = getWebTursoDB(
-    process.env.TURSO_DB_URL as string,
-    process.env.TURSO_DB_RO_AUTH_TOKEN as string
-  );
+  const db = getWebTursoDBFromEnv();
   const mailsList = accounts.map((mail) => mail.email);
 
   const mails = await getEmailsByMessageTo(db, mailsList);
@@ -70,14 +79,6 @@ export const action: ActionFunction = async ({ request }) => {
     const formData = await request.formData();
     const userName = formData.get("userName");
 
-    if (process.env.TURNSTILE_ENABLED === "true") {
-      const passed = await turnstileCheck(request);
-      if (!passed) {
-        return {
-          error: "Failed to pass the turnstile",
-        };
-      }
-    }
     const oldMailbox =
       ((await userMailboxCookie.parse(
         request.headers.get("Cookie")
@@ -138,12 +139,47 @@ export default function Index() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { accounts, mails, siteKey } = loaderData;
-  // const { data, isFetching } = useQuery({
-  //   queryKey: ["mails"],
-  //   queryFn: fetchMails,
-  //   refetchInterval: 10000,
-  // });
+  const { data, isFetching } = useQuery({
+    queryKey: ["mails"],
+    queryFn: fetchMails,
+    // refetchInterval: 10 * 1000,
+  });
+  console.log("data: ", data);
+  const navigation = useNavigation();
 
+  if (accounts.length === 0) {
+    return (
+      <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+          <div className="flex flex-col items-center gap-1 text-center">
+            <h3 className="text-2xl font-bold tracking-tight">
+              You have no accounts
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              You can start receiving emails as soon as you add an account.
+            </p>
+            <Form
+              method="POST"
+              className="flex flex-col gap-2 text-center w-full"
+            >
+              <Turnstile
+                className="w-full flex justify-center"
+                siteKey={siteKey}
+                options={{
+                  theme: "auto",
+                }}
+                style={{ width: "100%" }}
+              />
+              <Input placeholder="Enter username" name="userName" />
+              <Button type="submit" disabled={navigation.state != "idle"}>
+                Create an email account
+              </Button>
+            </Form>
+          </div>
+        </div>
+      </main>
+    );
+  }
   return (
     <>
       <div className="flex-col md:flex">

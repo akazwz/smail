@@ -1,17 +1,14 @@
 import { type LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData, useRouteError } from "@remix-run/react";
 import { getEmail } from "database/dao";
-import { getWebTursoDB } from "database/db";
+import { getWebTursoDBFromEnv } from "database/db";
 import { format } from "date-fns/format";
 import { ArrowUturnLeft, UserCircleIcon } from "icons";
-import {load} from "cheerio";
+import { load } from "cheerio";
 
 export const loader: LoaderFunction = async ({ params }) => {
   const id = params.id;
-  const db = getWebTursoDB(
-    process.env.TURSO_DB_URL as string,
-    process.env.TURSO_DB_RO_AUTH_TOKEN as string,
-  );
+  const db = getWebTursoDBFromEnv();
   if (!id) {
     throw new Error("No mail id provided");
   }
@@ -19,12 +16,12 @@ export const loader: LoaderFunction = async ({ params }) => {
   if (!mail) {
     throw new Error("No mail found");
   }
-  const $ = load(mail.html || "")
+  const $ = load(mail.html || "");
   $("img").each((idx, item) => {
     const src = $(item).attr("src");
     if (src?.startsWith("cid:")) {
       const cid = src.slice(4);
-      mail.attachments?.forEach(attachment => {
+      mail.attachments?.forEach((attachment) => {
         if (attachment.contentId === `<${cid}>`) {
           const base64Src = `data:${attachment.mimeType};base64,${attachment.content}`;
           $(item).attr("src", base64Src);
@@ -32,7 +29,7 @@ export const loader: LoaderFunction = async ({ params }) => {
       });
     }
   });
-  mail.html = $.html()
+  mail.html = $.html();
   return mail;
 };
 
