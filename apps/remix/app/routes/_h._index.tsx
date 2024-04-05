@@ -5,7 +5,6 @@ import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 import * as React from "react";
 import { Outlet, redirect, useLoaderData } from "@remix-run/react";
 
-import { turnstileCheck } from "../service/turnstile-check";
 import { LoaderFunction, ActionFunction } from "@remix-run/node";
 import { getEmailsByMessageTo } from "database/dao";
 import { nanoid } from "nanoid";
@@ -63,10 +62,35 @@ export const loader: LoaderFunction = async ({ request }) => {
     domains,
   };
 };
+export async function turnstileCheck(request: Request): Promise<boolean> {
+  const response = (await request.formData()).get("cf-turnstile-response");
+  if (!response) {
+    return false;
+  }
+  const verifyEndpoint = process.env
+    .CLOUDFLARE_TURNSTILE_VERIFY_Endpoint as string;
+
+  const secret = process.env.TURNSTILE_SECRET;
+  const resp = await fetch(verifyEndpoint, {
+    method: "POST",
+    body: JSON.stringify({
+      secret,
+      response,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await resp.json();
+  if (!data.success) {
+    return false;
+  }
+  return true;
+}
 
 export const action: ActionFunction = async ({ request }) => {
   try {
-    if (process.env.TURNSTILE_ENABLED) {
+    if (process.env.TURNSTILE_ENABLED === "true") {
       const passed = await turnstileCheck(request);
       if (!passed) {
         return {
@@ -75,13 +99,15 @@ export const action: ActionFunction = async ({ request }) => {
       }
     }
     const formData = await request.formData();
+    const headers = request.headers.get("Cookie");
+    console.log("headers: ", headers);
     const userName = formData.get("userName");
+    console.log("userName: ", userName);
     const domain = formData.get("domain");
+    console.log("domain: ", domain);
 
-    const oldMailbox =
-      ((await userMailboxCookie.parse(
-        request.headers.get("Cookie")
-      )) as UserMailbox[]) || [];
+    const oldMailbox: UserMailbox[] =
+      (await userMailboxCookie.parse(headers)) || [];
 
     const isExisting = oldMailbox.find((m) => m.userName === userName);
     if (isExisting) {
