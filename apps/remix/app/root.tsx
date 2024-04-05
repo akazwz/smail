@@ -22,6 +22,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { getTheme } = await themeSessionResolver(request);
   return {
     theme: getTheme(),
+    ENV: {
+      TURNSTILE_KEY: process.env.TURNSTILE_KEY,
+    },
   };
 }
 
@@ -51,10 +54,14 @@ export function App() {
         suppressHydrationWarning
         className="min-h-screen bg-background font-sans antialiased"
       >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+          }}
+        />
         <QueryClientProvider client={queryClient}>
           <Outlet />
         </QueryClientProvider>
-
         <ScrollRestoration />
         <Scripts />
       </body>

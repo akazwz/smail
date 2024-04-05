@@ -1,29 +1,26 @@
-import {
-  LoaderFunction,
-  redirect,
-  type ActionFunction,
-  type MetaFunction,
-} from "@remix-run/node";
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useNavigation,
-} from "@remix-run/react";
+import { type MetaFunction } from "@remix-run/node";
+import { Search } from "lucide-react";
+import { Separator } from "@radix-ui/react-separator";
+import { Tabs, TabsContent } from "@radix-ui/react-tabs";
+import * as React from "react";
+import { Outlet, redirect, useLoaderData } from "@remix-run/react";
 
+import { turnstileCheck } from "../service/turnstile-check";
+import { LoaderFunction, ActionFunction } from "@remix-run/node";
 import { getEmailsByMessageTo } from "database/dao";
-import { getWebTursoDBFromEnv } from "database/db";
-import { userMailboxCookie } from "~/cookies.server";
-import { Mail } from "~/components/mail/components/mail";
-
 import { nanoid } from "nanoid";
-
-import { useQuery } from "@tanstack/react-query";
-import { fetchMails } from "~/components/MailList";
-import { Turnstile } from "@marsidev/react-turnstile";
-
+import { userMailboxCookie } from "~/cookies.server";
+import { Empty } from "~/components/mail/components/empty";
+import { AccountSwitcher } from "~/components/mail/components/account-switcher";
 import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "~/components/ui/resizable";
+import { MailList } from "~/components/mail/components/mail-list";
+import { TURNSTILE_ENABLED } from "~/config/env";
+import { MailDisplay } from "~/components/mail/components/mail-display";
 
 export const meta: MetaFunction = () => {
   return [
@@ -39,8 +36,9 @@ export interface UserMailbox {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const turnstileEnabled = process.env.TURNSTILE_ENABLED === "true";
-  const siteKey = process.env.TURNSTILE_KEY;
+  const turnstileEnabled = TURNSTILE_ENABLED === "true";
+  const domains = process.env.DOMAINS?.split?.(",");
+
   const accounts =
     ((await userMailboxCookie.parse(
       request.headers.get("Cookie")
@@ -51,24 +49,24 @@ export const loader: LoaderFunction = async ({ request }) => {
       accounts,
       mails: [],
       turnstileEnabled,
-      siteKey,
+      domains,
     };
   }
-  const db = getWebTursoDBFromEnv();
-  const mailsList = accounts.map((mail) => mail.email);
 
-  const mails = await getEmailsByMessageTo(db, mailsList);
+  const accountList = accounts.map((mail) => mail.email);
+
+  const mails = await getEmailsByMessageTo(accountList);
 
   return {
-    accounts: accounts,
+    accounts,
     mails,
-    siteKey,
+    domains,
   };
 };
 
 export const action: ActionFunction = async ({ request }) => {
   try {
-    if (process.env.TURNSTILE_ENABLED === "true") {
+    if (process.env.TURNSTILE_ENABLED) {
       const passed = await turnstileCheck(request);
       if (!passed) {
         return {
@@ -78,6 +76,7 @@ export const action: ActionFunction = async ({ request }) => {
     }
     const formData = await request.formData();
     const userName = formData.get("userName");
+    const domain = formData.get("domain");
 
     const oldMailbox =
       ((await userMailboxCookie.parse(
@@ -88,7 +87,6 @@ export const action: ActionFunction = async ({ request }) => {
     if (isExisting) {
       return redirect("/");
     } else {
-      const domain = process.env.DOMAIN;
       const emailAddress = `${userName}@${domain}`;
       oldMailbox.push({
         userName: userName as string,
@@ -108,93 +106,52 @@ export const action: ActionFunction = async ({ request }) => {
     return redirect("/");
   }
 };
-
-export async function turnstileCheck(request: Request): Promise<boolean> {
-  const response = (await request.formData()).get("cf-turnstile-response");
-  if (!response) {
-    return false;
-  }
-  const verifyEndpoint = process.env
-    .CLOUDFLARE_TURNSTILE_VERIFY_Endpoint as string;
-
-  const secret = process.env.TURNSTILE_SECRET;
-  const resp = await fetch(verifyEndpoint, {
-    method: "POST",
-    body: JSON.stringify({
-      secret,
-      response,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await resp.json();
-  if (!data.success) {
-    return false;
-  }
-  return true;
-}
-
 export default function Index() {
+  const [isCollapsed] = React.useState(false);
   const loaderData = useLoaderData<typeof loader>();
-  const actionData = useActionData<typeof action>();
-  const { accounts, mails, siteKey } = loaderData;
-  const { data, isFetching } = useQuery({
-    queryKey: ["mails"],
-    queryFn: fetchMails,
-    // refetchInterval: 10 * 1000,
-  });
-  console.log("data: ", data);
-  const navigation = useNavigation();
+
+  const { accounts, mails, domains } = loaderData;
 
   if (accounts.length === 0) {
-    return (
-      <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-        <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
-          <div className="flex flex-col items-center gap-1 text-center">
-            <h3 className="text-2xl font-bold tracking-tight">
-              You have no accounts
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              You can start receiving emails as soon as you add an account.
-            </p>
-            <Form
-              method="POST"
-              className="flex flex-col gap-2 text-center w-full"
-            >
-              <Turnstile
-                className="w-full flex justify-center"
-                siteKey={siteKey}
-                options={{
-                  theme: "auto",
-                }}
-                style={{ width: "100%" }}
-              />
-              <Input placeholder="Enter username" name="userName" />
-              <Button type="submit" disabled={navigation.state != "idle"}>
-                Create an email account
-              </Button>
-            </Form>
-          </div>
-        </div>
-      </main>
-    );
+    return <Empty domains={domains} />;
   }
   return (
-    <>
-      <div className="flex-col md:flex">
-        <Mail
-          accounts={accounts}
-          mails={mails}
-          defaultLayout={undefined}
-          defaultCollapsed={undefined}
-          navCollapsedSize={4}
-          siteKey={siteKey}
-        />
-      </div>
-      {actionData?.error && (
-        <div className="text-red-500">{actionData.error}</div>
-      )}
-    </>
+    <div className="relative flex min-h-screen flex-col bg-background">
+      <ResizablePanelGroup
+        direction="horizontal"
+        onLayout={(sizes: number[]) => {
+          document.cookie = `react-resizable-panels:layout=${JSON.stringify(
+            sizes
+          )}`;
+        }}
+        className="h-full max-h-[860px] items-stretch"
+      >
+        <ResizablePanel minSize={30}>
+          <Tabs defaultValue="all">
+            <div className="flex items-center px-4 py-2">
+              <AccountSwitcher isCollapsed={isCollapsed} accounts={accounts} />
+            </div>
+            <Separator />
+            <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              <form>
+                <div className="relative">
+                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input placeholder="Search" className="pl-8" />
+                </div>
+              </form>
+            </div>
+            <TabsContent value="all" className="m-0">
+              <MailList items={mails} />
+            </TabsContent>
+          </Tabs>
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel>
+          <Outlet />
+          {/* <MailDisplay /> */}
+        </ResizablePanel>
+      </ResizablePanelGroup>
+      <Outlet />
+    </div>
   );
 }

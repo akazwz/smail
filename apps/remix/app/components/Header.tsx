@@ -8,7 +8,7 @@ export default function Header() {
   return (
     <div className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen-2xl items-center">
-        <div className="mr-4 hidden md:flex">
+        <div className="mr-4 flex">
           <Link to="/" className="mr-6 flex items-center space-x-2">
             <img src="/logo.png" alt="Smail" className="h-8 w-8" />
           </Link>
@@ -43,21 +43,7 @@ export default function Header() {
                 <span className="sr-only">GitHub</span>
               </div>
             </Link>
-            <ModeToggle></ModeToggle>
-            {/* <Link to={""} target="_blank" rel="noreferrer">
-              <div
-                className={cn(
-                  buttonVariants({
-                    variant: "ghost",
-                  }),
-                  "w-9 px-0"
-                )}
-              >
-                <Icons.twitter className="h-3 w-3 fill-current" />
-                <span className="sr-only">Twitter</span>
-              </div>
-            </Link> */}
-            {/* <ModeToggle /> */}
+            <ModeToggle />
           </nav>
         </div>
       </div>

@@ -7,25 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@libsql/client':
-        specifier: 0.4.0-pre.7
-        version: 0.4.0-pre.7
-      '@tanstack/react-query':
-        specifier: ^5.28.8
-        version: 5.28.8(react@18.2.0)
-      date-fns:
-        specifier: ^3.6.0
-        version: 3.6.0
-      drizzle-orm:
-        specifier: ^0.29.5
-        version: 0.29.5(@libsql/client@0.4.0-pre.7)(react@18.2.0)
-      drizzle-zod:
-        specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.29.5)(zod@3.22.4)
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
     devDependencies:
       prettier:
         specifier: ^3.2.5
@@ -35,7 +16,7 @@ importers:
         version: 0.5.12(prettier@3.2.5)
       vitepress:
         specifier: ^1.0.1
-        version: 1.0.1(@algolia/client-search@4.22.1)(react@18.2.0)(search-insights@2.13.0)
+        version: 1.0.1(@algolia/client-search@4.22.1)(search-insights@2.13.0)
 
   apps/email-worker:
     dependencies:
@@ -172,6 +153,9 @@ importers:
       '@scaleway/random-name':
         specifier: ^5.0.0
         version: 5.0.0
+      '@tanstack/react-query':
+        specifier: ^5.28.8
+        version: 5.28.8(react@18.2.0)
       cheerio:
         specifier: 1.0.0-rc.12
         version: 1.0.0-rc.12
@@ -313,7 +297,7 @@ importers:
         version: 0.4.0-pre.7
       drizzle-orm:
         specifier: ^0.29.5
-        version: 0.29.5(@libsql/client@0.4.0-pre.7)(react@18.2.0)
+        version: 0.29.5(@libsql/client@0.4.0-pre.7)
       drizzle-zod:
         specifier: ^0.5.1
         version: 0.5.1(drizzle-orm@0.29.5)(zod@3.22.4)
@@ -894,10 +878,10 @@ packages:
     resolution: {integrity: sha512-+sbxb71sWre+PwDK7X2T8+bhS6clcVMLwBPznX45Qu6opJcgRjAp7gYSDzVFp187J+feSj5dNBN1mJoi6ckkUQ==}
     dev: true
 
-  /@docsearch/js@3.6.0(@algolia/client-search@4.22.1)(react@18.2.0)(search-insights@2.13.0):
+  /@docsearch/js@3.6.0(@algolia/client-search@4.22.1)(search-insights@2.13.0):
     resolution: {integrity: sha512-QujhqINEElrkIfKwyyyTfbsfMAYCkylInLYMRqHy7PHc8xTBQCow73tlo/Kc7oIwBrCLf0P3YhjlOeV4v8hevQ==}
     dependencies:
-      '@docsearch/react': 3.6.0(@algolia/client-search@4.22.1)(react@18.2.0)(search-insights@2.13.0)
+      '@docsearch/react': 3.6.0(@algolia/client-search@4.22.1)(search-insights@2.13.0)
       preact: 10.20.0
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -907,7 +891,7 @@ packages:
       - search-insights
     dev: true
 
-  /@docsearch/react@3.6.0(@algolia/client-search@4.22.1)(react@18.2.0)(search-insights@2.13.0):
+  /@docsearch/react@3.6.0(@algolia/client-search@4.22.1)(search-insights@2.13.0):
     resolution: {integrity: sha512-HUFut4ztcVNmqy9gp/wxNbC7pTOHhgVVkHVGCACTuLhUKUhKAF9KYHJtMiLUJxEqiFLQiuri1fWF8zqwM/cu1w==}
     peerDependencies:
       '@types/react': '>= 16.8.0 < 19.0.0'
@@ -928,7 +912,6 @@ packages:
       '@algolia/autocomplete-preset-algolia': 1.9.3(@algolia/client-search@4.22.1)(algoliasearch@4.22.1)
       '@docsearch/css': 3.6.0
       algoliasearch: 4.22.1
-      react: 18.2.0
       search-insights: 2.13.0
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -5533,7 +5516,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.29.5(@libsql/client@0.4.0-pre.7)(react@18.2.0):
+  /drizzle-orm@0.29.5(@libsql/client@0.4.0-pre.7):
     resolution: {integrity: sha512-jS3+uyzTz4P0Y2CICx8FmRQ1eplURPaIMWDn/yq6k4ShRFj9V7vlJk67lSf2kyYPzQ60GkkNGXcJcwrxZ6QCRw==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -5605,7 +5588,6 @@ packages:
         optional: true
     dependencies:
       '@libsql/client': 0.4.0-pre.7
-      react: 18.2.0
     dev: false
 
   /drizzle-zod@0.5.1(drizzle-orm@0.29.5)(zod@3.22.4):
@@ -5614,7 +5596,7 @@ packages:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.29.5(@libsql/client@0.4.0-pre.7)(react@18.2.0)
+      drizzle-orm: 0.29.5(@libsql/client@0.4.0-pre.7)
       zod: 3.22.4
     dev: false
 
@@ -9253,6 +9235,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
+    dev: false
 
   /read-cache@1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
@@ -10613,7 +10596,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitepress@1.0.1(@algolia/client-search@4.22.1)(react@18.2.0)(search-insights@2.13.0):
+  /vitepress@1.0.1(@algolia/client-search@4.22.1)(search-insights@2.13.0):
     resolution: {integrity: sha512-eNr5pOBppYUUjEhv8S0S2t9Tv95LQ6mMeHj6ivaGwfHxpov70Vduuwl/QQMDRznKDSaP0WKV7a82Pb4JVOaqEw==}
     hasBin: true
     peerDependencies:
@@ -10626,7 +10609,7 @@ packages:
         optional: true
     dependencies:
       '@docsearch/css': 3.6.0
-      '@docsearch/js': 3.6.0(@algolia/client-search@4.22.1)(react@18.2.0)(search-insights@2.13.0)
+      '@docsearch/js': 3.6.0(@algolia/client-search@4.22.1)(search-insights@2.13.0)
       '@shikijs/core': 1.2.0
       '@shikijs/transformers': 1.2.0
       '@types/markdown-it': 13.0.7

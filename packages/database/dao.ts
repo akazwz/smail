@@ -1,6 +1,7 @@
 import { desc, eq, and, inArray } from "drizzle-orm";
 import { LibSQLDatabase } from "drizzle-orm/libsql";
 import { emails, InsertEmail } from "./schema";
+import { getWebTursoDBFromEnv } from "./db";
 
 export async function insertEmail(db: LibSQLDatabase, email: InsertEmail) {
   try {
@@ -24,8 +25,8 @@ export async function getEmail(db: LibSQLDatabase, id: string) {
       .select()
       .from(emails)
       .where(and(eq(emails.id, id)))
-      .execute();
-    if (result.length != 1) {
+      .all();
+    if (result.length <= 0) {
       return null;
     }
     return result[0];
@@ -34,11 +35,9 @@ export async function getEmail(db: LibSQLDatabase, id: string) {
   }
 }
 
-export async function getEmailsByMessageTo(
-  db: LibSQLDatabase,
-  messageTo: string[]
-) {
+export async function getEmailsByMessageTo(messageTo: string[]) {
   try {
+    const db = getWebTursoDBFromEnv();
     return await db
       .select()
       .from(emails)
@@ -47,5 +46,15 @@ export async function getEmailsByMessageTo(
       .all();
   } catch (e) {
     return [];
+  }
+}
+
+export async function getEmailDetail(id: string) {
+  try {
+    const db = getWebTursoDBFromEnv();
+    const res = await db.select().from(emails).where(eq(emails.id, id)).all();
+    return res[0];
+  } catch (e) {
+    return null;
   }
 }

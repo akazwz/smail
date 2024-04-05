@@ -1,6 +1,5 @@
 import { LoaderFunction } from "@remix-run/node";
 import { getEmailsByMessageTo } from "database/dao";
-import { getWebTursoDBFromEnv } from "database/db";
 import { userMailboxCookie } from "../cookies.server";
 import { UserMailbox } from "./_h._index";
 
@@ -9,11 +8,11 @@ export const loader: LoaderFunction = async ({ request }) => {
     ((await userMailboxCookie.parse(
       request.headers.get("Cookie")
     )) as UserMailbox[]) || [];
-  if (!userMailbox) {
+  if (userMailbox.length <= 0) {
     return [];
   }
   const mailsList = userMailbox.map((mail) => mail.email);
-  const db = getWebTursoDBFromEnv();
-  const mails = await getEmailsByMessageTo(db, mailsList);
+
+  const mails = await getEmailsByMessageTo(mailsList);
   return mails;
 };
