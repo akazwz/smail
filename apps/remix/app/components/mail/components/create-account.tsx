@@ -1,6 +1,11 @@
 import { Turnstile } from "@marsidev/react-turnstile";
-import { LoaderFunction } from "@remix-run/node";
-import { Form, useLoaderData, useNavigation } from "@remix-run/react";
+
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 
 import { Input } from "~/components/ui/input";
@@ -12,28 +17,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-
-export const loader: LoaderFunction = () => {
-  return {
-    domain: process.env.DOMAINS,
-  };
-};
+import { loader } from "~/routes/_h";
 
 export function CreateAccountForm() {
   const navigation = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
-  const { domains } = loaderData;
+  const { domains, TURNSTILE_KEY, TURNSTILE_ENABLED } = loaderData;
+  const data = useActionData();
+  console.log("data: ", data);
 
   return (
-    <Form method="POST" className="flex flex-col gap-2 text-center w-full">
-      <Turnstile
-        className="w-full flex justify-center"
-        siteKey={"1x00000000000000000000AA"}
-        options={{
-          theme: "auto",
-        }}
-        style={{ width: "100%" }}
-      />
+    <Form
+      method="POST"
+      className="flex flex-col gap-2 text-center w-full"
+      action="/?index"
+    >
+      {TURNSTILE_ENABLED && (
+        <Turnstile
+          className="w-full flex justify-center"
+          siteKey={TURNSTILE_KEY}
+          options={{
+            theme: "auto",
+          }}
+          style={{ width: "100%" }}
+        />
+      )}
+
       <div className="flex">
         <Input
           placeholder="Enter username"
@@ -56,7 +65,7 @@ export function CreateAccountForm() {
         </Select>
       </div>
 
-      <Button type="submit" disabled={navigation.state != "idle"}>
+      <Button type="submit" disabled={navigation.state === "submitting"}>
         Create an email account
       </Button>
     </Form>

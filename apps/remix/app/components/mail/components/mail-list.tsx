@@ -2,16 +2,17 @@ import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 
 import { cn } from "~/lib/utils";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { Mail } from "../data";
-import { useMail } from "../use-mail";
-import { Link } from "@remix-run/react";
+
+import { Link, useParams } from "@remix-run/react";
+import { Email } from "database/schema";
 
 interface MailListProps {
-  items: Mail[];
+  items: Email[];
 }
 
 export function MailList({ items }: MailListProps) {
-  const [mail, setMail] = useMail();
+  console.log("items: ", items);
+  const params = useParams<{ id: string }>();
 
   return (
     <ScrollArea className="h-screen">
@@ -22,7 +23,7 @@ export function MailList({ items }: MailListProps) {
             to={`/${item.id}`}
             className={cn(
               "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-              mail.selected === item.id && "bg-muted"
+              params.id === item.id && "bg-muted"
             )}
           >
             <div className="flex w-full flex-col gap-1">
@@ -33,12 +34,12 @@ export function MailList({ items }: MailListProps) {
                 <div
                   className={cn(
                     "ml-auto text-xs",
-                    mail.selected === item.id
+                    params.id === item.id
                       ? "text-foreground"
                       : "text-muted-foreground"
                   )}
                 >
-                  {formatDistanceToNow(new Date(item.date), {
+                  {formatDistanceToNow(new Date(item.date as string), {
                     addSuffix: true,
                   })}
                 </div>
@@ -46,7 +47,7 @@ export function MailList({ items }: MailListProps) {
               <div className="text-xs font-medium">{item.subject}</div>
             </div>
             <div className="line-clamp-2 text-xs text-muted-foreground">
-              {item.text.substring(0, 300)}
+              {(item.text as string).substring(0, 300)}
             </div>
           </Link>
         ))}

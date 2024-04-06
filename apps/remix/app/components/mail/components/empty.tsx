@@ -11,7 +11,7 @@ export function Empty() {
           <p className="text-sm text-muted-foreground">
             You can start receiving emails as soon as you add an account.
           </p>
-          <CreateAccountForm></CreateAccountForm>
+          <CreateAccountForm />
         </div>
       </div>
     </main>

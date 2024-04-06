@@ -35,13 +35,13 @@ export async function getEmail(db: LibSQLDatabase, id: string) {
   }
 }
 
-export async function getEmailsByMessageTo(messageTo: string[]) {
+export async function getEmailsByMessageTo(messageTo: string) {
   try {
     const db = getWebTursoDBFromEnv();
     return await db
       .select()
       .from(emails)
-      .where(inArray(emails.messageTo, messageTo))
+      .where(eq(emails.messageTo, messageTo))
       .orderBy(desc(emails.createdAt))
       .all();
   } catch (e) {

@@ -1,10 +1,6 @@
-import * as React from "react";
-import { Turnstile } from "@marsidev/react-turnstile";
 import { cn } from "~/lib/utils";
 
-import { useNavigation, Form, Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
 import { Account } from "../data";
 
 import { useState } from "react";
@@ -19,14 +15,19 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { CreateAccountForm } from "./create-account";
+import { useActionData, useFetcher } from "@remix-run/react";
+import { PlusCircle } from "lucide-react";
 
 interface AccountSwitcherProps {
   accounts: Account[];
+  currentAccount: string;
 }
 
-export function AccountSwitcher({ accounts }: AccountSwitcherProps) {
-  console.log("accounts: ", accounts);
-  const [selectedAccount] = React.useState<string>(accounts[0]?.email || "");
+export function AccountSwitcher({
+  accounts,
+  currentAccount,
+}: AccountSwitcherProps) {
+  const fetch = useFetcher();
 
   return (
     <Dialog>
@@ -34,12 +35,12 @@ export function AccountSwitcher({ accounts }: AccountSwitcherProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="absolute right-2  top-1/2 -translate-y-1/2"
+          className="absolute right-2  top-1/2 -translate-y-1/2 "
         >
           <Avatar className=" h-6 w-6">
             <AvatarImage alt={"mail.name"} />
             <AvatarFallback>
-              {selectedAccount
+              {currentAccount
                 .split(" ")
                 .map((chunk) => chunk[0])
                 .join("")}
@@ -51,42 +52,44 @@ export function AccountSwitcher({ accounts }: AccountSwitcherProps) {
         <DialogHeader>
           <DialogTitle className="text-center">Smail</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <div className="grid gap-6">
-            {accounts.map((account) => (
-              <div
-                className="flex items-center justify-between space-x-4"
-                key={account.id}
-              >
-                <div className="flex items-center space-x-4">
-                  <Avatar>
-                    <AvatarImage alt="Image" />
-                    <AvatarFallback>{account.userName}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="text-sm font-medium leading-none">
-                      {account.userName}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {account.email}
-                    </p>
+        <fetch.Form action="/?index" method="patch">
+          <div className="space-y-4">
+            <div className="grid gap-6">
+              {accounts.map((account) => (
+                <button
+                  className="flex items-center justify-between space-x-4 "
+                  key={account.id}
+                >
+                  <input type="text" hidden name="currentAccount" />
+                  <div className="flex items-center space-x-4">
+                    <Avatar>
+                      <AvatarImage alt="Image" />
+                      <AvatarFallback>
+                        {account.userName
+                          .split(" ")
+                          .map((chunk) => chunk[0])
+                          .join("")}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="text-sm font-medium leading-none">
+                        {account.userName}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {account.email}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <p className="text-sm text-muted-foreground">123</p>
-              </div>
-            ))}
+                  <p className="text-sm text-muted-foreground">123</p>
+                </button>
+              ))}
 
-            <div className="flex items-center justify-between space-x-4">
-              <div className="flex items-center space-x-4">
-                <Avatar>
-                  <AvatarImage alt="Image" />
-                  <AvatarFallback>IN</AvatarFallback>
-                </Avatar>
-                <CreateAccount></CreateAccount>
+              <div className="flex items-center justify-between space-x-4">
+                <CreateAccount />
               </div>
             </div>
           </div>
-        </div>
+        </fetch.Form>
       </DialogContent>
     </Dialog>
   );
@@ -98,6 +101,7 @@ interface CreateAccountProps {
 
 export function CreateAccount(props: CreateAccountProps) {
   const [open, setOpen] = useState(false);
+  useActionData();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -121,7 +125,7 @@ export function CreateAccount(props: CreateAccountProps) {
             Enter username to create an email
           </DialogDescription>
         </DialogHeader>
-        <CreateAccountForm></CreateAccountForm>
+        <CreateAccountForm />
       </DialogContent>
     </Dialog>
   );
