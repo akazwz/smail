@@ -1,14 +1,8 @@
 import * as React from "react";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { cn } from "~/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
-import { useNavigation, Form } from "@remix-run/react";
+
+import { useNavigation, Form, Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Account } from "../data";
@@ -22,55 +16,79 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { Separator } from "~/components/ui/separator";
+
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { CreateAccountForm } from "./create-account";
 
 interface AccountSwitcherProps {
-  isCollapsed: boolean;
   accounts: Account[];
 }
 
-export function AccountSwitcher({
-  isCollapsed,
-  accounts,
-}: AccountSwitcherProps) {
-  const [selectedAccount, setSelectedAccount] = React.useState<string>(
-    accounts[0]?.email || ""
-  );
+export function AccountSwitcher({ accounts }: AccountSwitcherProps) {
+  console.log("accounts: ", accounts);
+  const [selectedAccount] = React.useState<string>(accounts[0]?.email || "");
 
   return (
-    <Select value={selectedAccount} onValueChange={setSelectedAccount}>
-      <SelectTrigger
-        className={cn(
-          "flex items-center gap-2 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0",
-          isCollapsed &&
-            "flex h-9 w-9 shrink-0 items-center justify-center p-0 [&>span]:w-auto [&>svg]:hidden"
-        )}
-        aria-label="Select account"
-      >
-        <SelectValue placeholder="Select an email account">
-          <span className={cn("ml-2", isCollapsed && "hidden")}>
-            {
-              accounts.find((account) => account.email === selectedAccount)
-                ?.email
-            }
-          </span>
-        </SelectValue>
-      </SelectTrigger>
-      <SelectContent>
-        {accounts.map((account) => (
-          <SelectItem key={account.id} value={account.email}>
-            <div
-              className="flex items-center gap-3 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0 [&_svg]:text-foreground"
-              key={account.id}
-            >
-              {account.email}
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-2  top-1/2 -translate-y-1/2"
+        >
+          <Avatar className=" h-6 w-6">
+            <AvatarImage alt={"mail.name"} />
+            <AvatarFallback>
+              {selectedAccount
+                .split(" ")
+                .map((chunk) => chunk[0])
+                .join("")}
+            </AvatarFallback>
+          </Avatar>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[355px]">
+        <DialogHeader>
+          <DialogTitle className="text-center">Smail</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="grid gap-6">
+            {accounts.map((account) => (
+              <div
+                className="flex items-center justify-between space-x-4"
+                key={account.id}
+              >
+                <div className="flex items-center space-x-4">
+                  <Avatar>
+                    <AvatarImage alt="Image" />
+                    <AvatarFallback>{account.userName}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-sm font-medium leading-none">
+                      {account.userName}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {account.email}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">123</p>
+              </div>
+            ))}
+
+            <div className="flex items-center justify-between space-x-4">
+              <div className="flex items-center space-x-4">
+                <Avatar>
+                  <AvatarImage alt="Image" />
+                  <AvatarFallback>IN</AvatarFallback>
+                </Avatar>
+                <CreateAccount></CreateAccount>
+              </div>
             </div>
-          </SelectItem>
-        ))}
-        <Separator className="my-2" />
-        <CreateAccount />
-      </SelectContent>
-    </Select>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -79,19 +97,21 @@ interface CreateAccountProps {
 }
 
 export function CreateAccount(props: CreateAccountProps) {
-  const navigation = useNavigation();
-
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          className={cn("w-full", props.className)}
+          variant={"ghost"}
+          className={cn(
+            "w-full text-sm font-medium leading-none",
+            props.className
+          )}
           onClick={() => {
             setOpen(true);
           }}
         >
-          Create an email account
+          Create another account
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -101,26 +121,7 @@ export function CreateAccount(props: CreateAccountProps) {
             Enter username to create an email
           </DialogDescription>
         </DialogHeader>
-        <Form method="POST" className="flex flex-col gap-2 text-center">
-          <Turnstile
-            className="w-full flex justify-center"
-            siteKey={"1x00000000000000000000AA"}
-            options={{
-              theme: "auto",
-            }}
-            style={{ width: "100%" }}
-          />
-          <Input placeholder="Enter email's username" name="userName" />
-          <Button
-            type="submit"
-            disabled={navigation.state != "idle"}
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            Create an email account
-          </Button>
-        </Form>
+        <CreateAccountForm></CreateAccountForm>
       </DialogContent>
     </Dialog>
   );

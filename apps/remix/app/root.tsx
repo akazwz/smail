@@ -16,6 +16,7 @@ import { LoaderFunctionArgs } from "@remix-run/node";
 import { themeSessionResolver } from "./theme.server";
 import clsx from "clsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TailwindIndicator } from "./components/tailwind-indicator";
 
 // Return the theme from the session storage using the loader
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -60,6 +61,7 @@ export function App() {
           }}
         />
         <QueryClientProvider client={queryClient}>
+          <TailwindIndicator />
           <Outlet />
         </QueryClientProvider>
         <ScrollRestoration />

@@ -1,13 +1,13 @@
 import { LoaderFunction } from "@remix-run/node";
 import { getEmailsByMessageTo } from "database/dao";
-import { userMailboxCookie } from "../cookies.server";
-import { UserMailbox } from "./_h._index";
+import { accountListCookie } from "../cookies.server";
+import { Account } from "./_h";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userMailbox =
-    ((await userMailboxCookie.parse(
+    ((await accountListCookie.parse(
       request.headers.get("Cookie")
-    )) as UserMailbox[]) || [];
+    )) as Account[]) || [];
   if (userMailbox.length <= 0) {
     return [];
   }
