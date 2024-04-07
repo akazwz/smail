@@ -12,11 +12,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-
+import { Label } from "~/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { CreateAccountForm } from "./create-account";
-import { useActionData, useFetcher } from "@remix-run/react";
-import { PlusCircle } from "lucide-react";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useSubmit,
+} from "@remix-run/react";
 
 interface AccountSwitcherProps {
   accounts: Account[];
@@ -27,8 +32,8 @@ export function AccountSwitcher({
   accounts,
   currentAccount,
 }: AccountSwitcherProps) {
-  const fetch = useFetcher();
-
+  const loaderData = useLoaderData();
+  const submit = useSubmit();
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -52,44 +57,61 @@ export function AccountSwitcher({
         <DialogHeader>
           <DialogTitle className="text-center">Smail</DialogTitle>
         </DialogHeader>
-        <fetch.Form action="/?index" method="patch">
+        <Form
+          action="current-account"
+          method="POST"
+          onChange={(event) => {
+            console.log("event: ", event.currentTarget);
+            submit(event.currentTarget);
+          }}
+        >
           <div className="space-y-4">
             <div className="grid gap-6">
-              {accounts.map((account) => (
-                <button
-                  className="flex items-center justify-between space-x-4 "
-                  key={account.id}
-                >
-                  <input type="text" hidden name="currentAccount" />
-                  <div className="flex items-center space-x-4">
-                    <Avatar>
-                      <AvatarImage alt="Image" />
-                      <AvatarFallback>
-                        {account.userName
-                          .split(" ")
-                          .map((chunk) => chunk[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm font-medium leading-none">
-                        {account.userName}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {account.email}
-                      </p>
-                    </div>
+              <RadioGroup
+                defaultValue={loaderData.currentAccount!}
+                name="email"
+              >
+                {accounts.map((account) => (
+                  <div className="" key={account.id}>
+                    <RadioGroupItem
+                      value={account.email}
+                      id={account.id}
+                      className="peer sr-only"
+                    />
+                    <Label
+                      htmlFor={account.id}
+                      className="flex items-center justify-between space-x-4 p-4 rounded-md border-2 border-muted bg-popover hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                    >
+                      <div className="flex items-center space-x-4">
+                        <Avatar>
+                          <AvatarImage alt="Image" />
+                          <AvatarFallback>
+                            {account.userName
+                              .split(" ")
+                              .map((chunk) => chunk[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-medium leading-none">
+                            {account.userName}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {account.email}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-sm text-muted-foreground">123</p>
+                    </Label>
                   </div>
-                  <p className="text-sm text-muted-foreground">123</p>
-                </button>
-              ))}
-
+                ))}
+              </RadioGroup>
               <div className="flex items-center justify-between space-x-4">
                 <CreateAccount />
               </div>
             </div>
           </div>
-        </fetch.Form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
