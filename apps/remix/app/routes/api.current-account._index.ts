@@ -11,8 +11,6 @@ export const action: ActionFunction = async ({ request }) => {
   }
   const currentAccount = await currentAccountCookie.serialize(account);
   return redirect("/", {
-    headers: {
-      "Set-cookie": currentAccount,
-    },
+    headers: [["Set-Cookie", currentAccount]],
   });
 };

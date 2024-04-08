@@ -17,8 +17,9 @@ import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { CreateAccountForm } from "./create-account";
 import {
-  Form,
+  Link,
   useActionData,
+  useFetcher,
   useLoaderData,
   useSubmit,
 } from "@remix-run/react";
@@ -34,6 +35,7 @@ export function AccountSwitcher({
 }: AccountSwitcherProps) {
   const loaderData = useLoaderData();
   const submit = useSubmit();
+  const fetcher = useFetcher();
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -57,11 +59,10 @@ export function AccountSwitcher({
         <DialogHeader>
           <DialogTitle className="text-center">Smail</DialogTitle>
         </DialogHeader>
-        <Form
-          action="current-account"
+        <fetcher.Form
+          action="/api/current-account"
           method="POST"
           onChange={(event) => {
-            console.log("event: ", event.currentTarget);
             submit(event.currentTarget);
           }}
         >
@@ -106,12 +107,12 @@ export function AccountSwitcher({
                   </div>
                 ))}
               </RadioGroup>
-              <div className="flex items-center justify-between space-x-4">
-                <CreateAccount />
+              <div className="flex items-center justify-center space-x-4 ">
+                <Link to="create-account">Create another account</Link>
               </div>
             </div>
           </div>
-        </Form>
+        </fetcher.Form>
       </DialogContent>
     </Dialog>
   );
@@ -123,7 +124,8 @@ interface CreateAccountProps {
 
 export function CreateAccount(props: CreateAccountProps) {
   const [open, setOpen] = useState(false);
-  useActionData();
+  const data = useActionData();
+  console.log("data: ", data);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

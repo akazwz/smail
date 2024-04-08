@@ -23,14 +23,12 @@ export function CreateAccountForm() {
   const navigation = useNavigation();
   const loaderData = useLoaderData<typeof loader>();
   const { domains, TURNSTILE_KEY, TURNSTILE_ENABLED } = loaderData;
-  const data = useActionData();
-  console.log("data: ", data);
 
   return (
     <Form
       method="POST"
       className="flex flex-col gap-2 text-center w-full"
-      action="/?index"
+      // action="/?index"
     >
       {TURNSTILE_ENABLED && (
         <Turnstile
@@ -49,13 +47,13 @@ export function CreateAccountForm() {
           name="userName"
           className="border-r-0 rounded-r-none"
         />
-        <Select defaultValue={domains[0]} name="domain">
+        <Select defaultValue={domains?.[0]} name="domain">
           <SelectTrigger className="w-[180px] border-l-0 rounded-l-none">
             <SelectValue placeholder="Select a domain" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {domains.map((domain: string) => (
+              {domains?.map((domain: string) => (
                 <SelectItem value={domain} key={domain}>
                   {domain}
                 </SelectItem>

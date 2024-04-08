@@ -5,15 +5,17 @@ import { ScrollArea } from "~/components/ui/scroll-area";
 
 import { Link, useParams } from "@remix-run/react";
 import { Email } from "database/schema";
+import { NoEmail } from "./NoEmail";
 
 interface MailListProps {
   items: Email[];
 }
 
 export function MailList({ items }: MailListProps) {
-  console.log("items: ", items);
   const params = useParams<{ id: string }>();
-
+  if (!items.length) {
+    return <NoEmail />;
+  }
   return (
     <ScrollArea className="h-screen">
       <div className="flex flex-col gap-2 p-4 pt-0">

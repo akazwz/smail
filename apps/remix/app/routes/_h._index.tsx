@@ -59,8 +59,11 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Index() {
   return (
     <>
-      <ResizableHandle />
-      <ResizablePanel defaultSize={defaultLayout[2]}>
+      <ResizableHandle className="hidden md:flex" />
+      <ResizablePanel
+        defaultSize={defaultLayout[2]}
+        className={"hidden md:flex"}
+      >
         <NotSelected />
       </ResizablePanel>
     </>
