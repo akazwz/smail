@@ -1,4 +1,4 @@
-name = "email-worker"
+name = "smail111"
 main = "src/index.ts"
 compatibility_date = "2023-12-18"
 
@@ -7,13 +7,8 @@ compatibility_date = "2023-12-18"
 # Note: Use secrets to store sensitive data.
 # Docs: https://developers.cloudflare.com/workers/platform/environment-variables
 [vars]
-# cookie的加密 secret, 随机字符串即可
-COOKIES_SECRET = ""
-# cloudflare 中获取, 用于网站验证码
-TURNSTILE_KEY = ""
-# turso 中获取, 连接数据库使用
-TURNSTILE_SECRET = ""
-# turso 中获取, 连接数据库凭证
-TURSO_DB_AUTH_TOKEN = ""
 # turso 中获取, 连接数据库地址
 TURSO_DB_URL = "libsql://email-worker-tinsfox.turso.io"
+
+# turso 中获取, 连接数据库凭证
+TURSO_DB_AUTH_TOKEN = ""
