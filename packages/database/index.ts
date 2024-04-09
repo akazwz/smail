@@ -1,21 +1,7 @@
-import { createClient as createWebClient } from "@libsql/client/web";
 import * as orm from "drizzle-orm";
-import { LibSQLDatabase, drizzle } from "drizzle-orm/libsql";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import * as z from "zod";
-
-function getWebTursoDBFromEnv(): LibSQLDatabase {
-  const client = createWebClient({
-    url: process.env.TURSO_DB_URL || "",
-    authToken: process.env.TURSO_DB_AUTH_TOKEN || "",
-  });
-  return drizzle(client);
-}
-
-function getWebTursoDB(url: string, authToken: string): LibSQLDatabase {
-  return drizzle(createWebClient({ url, authToken }));
-}
 
 type Header = Record<string, string>;
 
@@ -74,8 +60,6 @@ export {
   Header,
   InsertEmail,
   emails,
-  getWebTursoDB,
-  getWebTursoDBFromEnv,
   insertEmailSchema,
   orm,
   z,
