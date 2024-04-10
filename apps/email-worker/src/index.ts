@@ -1,6 +1,6 @@
 import { ForwardableEmailMessage } from '@cloudflare/workers-types';
 import { insertEmail } from 'database/dao';
-import { getWebTursoDBFromEnv } from 'database/db';
+import { getWebTursoDB } from 'database/db';
 import { InsertEmail, insertEmailSchema, AttachmentSchemaType } from 'database/schema';
 import { nanoid } from 'nanoid/non-secure';
 import PostalMime from 'postal-mime';
@@ -27,7 +27,7 @@ export default {
 					content: content,
 				});
 			}
-			const db = getWebTursoDBFromEnv();
+			const db = getWebTursoDB(env.TURSO_DB_URL, env.TURSO_DB_AUTH_TOKEN);
 			const newEmail: InsertEmail = {
 				id: nanoid(),
 				domain,
