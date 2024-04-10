@@ -81,10 +81,10 @@ outline: deep
 2. 使用 `openssl rand -base64 32` 生成一个密钥，并将其添加到 `apps/remix/.env` 文件中的 `COOKIES_SECRET` 下。
 3. 从 turso 复制 `smail` 数据库 url，并将其添加到 `apps/remix/.env` 文件中的 `TURSO_DB_URL` 下
 4. 从 turso 生成一个 `Read Only` 密钥，并将其添加到 `apps/remix/.env` 文件中的 `TURSO_DB_RO_AUTH_TOKEN` 下
-5. 在 `apps/remix/.env` 文件中的 `DOMAIN` 下添加你的域名，例如，`DOMAIN=smail.pw`。
+5. 在 `apps/remix/.env` 文件中的 `DOMAINS` 下添加你的域名，例如，`DOMAINS=smail.pw`。
 
   ::: tip
-  如果你需要使用多个域名，请使用 , 分隔，如 DOMAIN=smail.pw,smail.com。
+  如果你需要使用多个域名，请使用 , 分隔，如 DOMAINS=smail.pw,smail.com。
   :::
 
 6. （可选）如果你想启用 [cloudflare turnstile](https://developers.cloudflare.com/turnstile/) `apps/remix/.env` 文件中添加 TURNSTILE_ENABLED=true。

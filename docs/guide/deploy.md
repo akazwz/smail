@@ -79,10 +79,10 @@ Here is what you need to be able to run `Smail`.
 2. Use `openssl rand -base64 32` to generate a key and add it under `COOKIES_SECRET` in the `.env` file.
 3. Copy `smail` database url from turso and add it under `TURSO_DB_URL` in the `apps/remix/.env` file
 4. Generate a `Read Only` key from turso and add it under `TURSO_DB_RO_AUTH_TOKEN` in the `apps/remix/.env` file
-5. Add your domain name under `DOMAIN` in the `apps/remix/.env` file, for example, `DOMAIN=smail.pw`.
+5. Add your domain name under `DOMAINS` in the `apps/remix/.env` file, for example, `DOMAINS=smail.pw`.
 
     ::: tip
-    If you need to use multiple domain names, please use `,` interval like `DOMAIN=smail.pw,smail.com`.
+    If you need to use multiple domain names, please use `,` interval like `DOMAINS=smail.pw,smail.com`.
     :::
 
 6. (Option) if you want to enable cloudfare turnsite, you can add `TURNSTILE_ENABLED=true` in the `apps/remix/.env` file.
