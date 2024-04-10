@@ -10,3 +10,9 @@ export function getWebTursoDBFromEnv(): LibSQLDatabase {
     logger: process.env.NODE_ENV === "development" ? true : undefined,
   });
 }
+
+export function getWebTursoDB(url: string, authToken: string): LibSQLDatabase {
+  return drizzle(createWebClient({ url, authToken }), {
+    logger: process.env.NODE_ENV === "development" ? true : undefined,
+  });
+}
