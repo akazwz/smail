@@ -28,7 +28,7 @@ export function CreateAccountForm() {
     <Form
       method="POST"
       className="flex flex-col gap-2 text-center w-full"
-      // action="/?index"
+      action="/?index"
     >
       {TURNSTILE_ENABLED && (
         <Turnstile
