@@ -10,6 +10,7 @@
     "worker:dev": "pnpm -F email-worker run dev",
     "remix:build": "pnpm -F remix run build",
     "remix:start": "pnpm -F remix run start",
+    "remix:dev": "pnpm -F remix run dev",
     "format": "prettier --write .",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
@@ -19,16 +20,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "prettier": "^3.2.2",
-    "prettier-plugin-tailwindcss": "^0.5.11",
-    "vitepress": "^1.0.0"
-  },
-  "dependencies": {
-    "@libsql/client": "0.4.0-pre.7",
-    "@tanstack/react-query": "^5.17.10",
-    "date-fns": "^3.2.0",
-    "drizzle-orm": "^0.29.3",
-    "drizzle-zod": "^0.5.1",
-    "zod": "^3.22.4"
+    "markdown-it-mathjax3": "^4.3.2",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.12",
+    "vitepress": "^1.0.1"
   }
 }

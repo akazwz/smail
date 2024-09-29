@@ -10,11 +10,14 @@ hero:
     alt: SMail
   actions:
     - theme: brand
+      text: What is SMail?
+      link: /guide/what-is-smail
+    - theme: alt
+      text: Quickstart
+      link: /guide/deploy
+    - theme: alt
       text: OnlineDemo
       link: https://smail.pw/
-    - theme: brand
-      text: Quickstart
-      link: /quick-start
     - theme: alt
       text: Github
       link: https://github.com/akazwz/smail

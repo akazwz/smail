@@ -1,0 +1,13 @@
+name = "email-worker"
+main = "src/index.ts"
+compatibility_date = "2023-12-18"
+
+
+# Variable bindings. These are arbitrary, plaintext strings (similar to environment variables)
+# Note: Use secrets to store sensitive data.
+# Docs: https://developers.cloudflare.com/workers/platform/environment-variables
+[vars]
+# turso 中获取, 连接数据库地址
+TURSO_DB_URL = ""
+# turso 中获取, 连接数据库凭证
+TURSO_DB_RO_AUTH_TOKEN = ""

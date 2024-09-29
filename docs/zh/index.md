@@ -10,11 +10,15 @@ hero:
     alt: SMail
   actions:
     - theme: brand
-      text: 在线示例
+      text: 什么是 SMail?
+      link: /guide/what-is-smail
+
+    - theme: brand
+      text: alt
       link: https://smail.pw/
     - theme: brand
       text: 快速开始
-      link: /quick-start
+      link: /guide/deploy
     - theme: alt
       text: Github
       link: https://github.com/akazwz/smail

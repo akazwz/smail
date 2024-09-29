@@ -3,19 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "sqlite": "drizzle-kit generate:sqlite"
+    "sqlite": "drizzle-kit generate:sqlite",
+    "studio": "drizzle-kit studio --port 3001 --verbose"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@libsql/client": "0.4.0-pre.7",
-    "drizzle-orm": "^0.29.3",
+    "drizzle-orm": "^0.29.5",
     "drizzle-zod": "^0.5.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.20.12",
-    "typescript": "^5.3.3"
+    "drizzle-kit": "^0.20.14",
+    "typescript": "^5.4.3"
   }
 }

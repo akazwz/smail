@@ -6,7 +6,6 @@ import { nanoid } from 'nanoid/non-secure';
 import PostalMime from 'postal-mime';
 
 export interface Env {
-	DB: D1Database;
 	TURSO_DB_URL: string;
 	TURSO_DB_AUTH_TOKEN: string;
 }
@@ -42,7 +41,7 @@ export default {
 			const email = insertEmailSchema.parse(newEmail);
 			await insertEmail(db, email);
 		} catch (e) {
-			console.log(e);
+			console.log('insertEmail', e);
 		}
 	},
 };
