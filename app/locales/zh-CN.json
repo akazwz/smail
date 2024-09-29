@@ -1,0 +1,27 @@
+{
+	"title": "smail",
+	"description": "免费开源的临时邮箱服务",
+	"button": "获取邮箱",
+	"card_description": "这是你的临时邮箱, 邮件列表每10秒钟刷新",
+	"email_list": "邮件列表",
+	"email_empty": "暂无邮件",
+	"email_detail": "邮件详情",
+	"features": [
+		{
+			"title": "开源",
+			"description": "我们的代码是开源的，您可以在 GitHub 上查看。"
+		},
+		{
+			"title": "免费",
+			"description": "我们的服务永远是免费的。无需付费，无需订阅。"
+		},
+		{
+			"title": "简单",
+			"description": "只需一个点击，您就可以获取一个临时邮箱。"
+		},
+		{
+			"title": "自部署",
+			"description": "您可以自己部署一个 smail 服务，只需要几分钟。"
+		}
+	]
+}

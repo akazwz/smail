@@ -1,0 +1,27 @@
+{
+	"title": "smail",
+	"description": "A free and open-source temporary email service",
+	"button": "Get Email",
+	"card_description": "This is your temporary email, the email list refreshes every 10 seconds",
+	"email_list": "Email List",
+	"email_empty": "No email",
+	"email_detail": "Email Detail",
+	"features": [
+		{
+			"title": "Open-source",
+			"description": "Our code is open-source, you can view it on GitHub."
+		},
+		{
+			"title": "Free",
+			"description": "Our service is always free. No payment, no subscription."
+		},
+		{
+			"title": "Simple",
+			"description": "Just one click, you can get a temporary email."
+		},
+		{
+			"title": "Self-hosted",
+			"description": "You can deploy a smail service by yourself, just a few minutes."
+		}
+	]
+}

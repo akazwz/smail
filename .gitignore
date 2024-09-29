@@ -1,0 +1,12 @@
+node_modules
+
+/.idea
+
+/.cache
+/build
+.env
+.dev.vars
+
+.wrangler
+drizzle.config.ts
+
