@@ -174,7 +174,7 @@ export default function Index() {
 				) : (
 					<Form method="POST" className="flex flex-col gap-4">
 						<Turnstile
-							siteKey="1x00000000000000000000AA"
+							siteKey="0x4AAAAAAAPVzx6YMmopX9JY"
 							options={{
 								theme: "light",
 								refreshExpired: "auto",
