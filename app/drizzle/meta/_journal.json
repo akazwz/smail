@@ -1,20 +1,34 @@
 {
-	"version": "7",
-	"dialect": "sqlite",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "6",
-			"when": 1727525249278,
-			"tag": "0000_lumpy_skreet",
-			"breakpoints": true
-		},
-		{
-			"idx": 1,
-			"version": "6",
-			"when": 1727749408693,
-			"tag": "0001_polite_nocturne",
-			"breakpoints": true
-		}
-	]
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1727525249278,
+      "tag": "0000_lumpy_skreet",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1727749408693,
+      "tag": "0001_polite_nocturne",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1727755950564,
+      "tag": "0002_wet_mentallo",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1727756028486,
+      "tag": "0003_mixed_gideon",
+      "breakpoints": true
+    }
+  ]
 }

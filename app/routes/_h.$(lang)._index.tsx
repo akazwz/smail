@@ -76,6 +76,9 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
 			createdAt: true,
 		},
 		where: (emails, { eq }) => eq(emails.messageTo, email),
+		orderBy(fields, operators) {
+			return [operators.desc(fields.createdAt)];
+		},
 	});
 	const newEails = emails.map((email) => ({
 		...email,

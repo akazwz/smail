@@ -41,8 +41,10 @@ export const emails = sqliteTable(
 	},
 	(table) => {
 		return {
-			messageToIdx: index("message_to_idx").on(table.messageTo),
-			createdAtIdx: index("created_at_idx").on(table.createdAt),
+			messageToCreatedAtIdx: index("message_to_created_at_idx").on(
+				table.messageTo,
+				table.createdAt,
+			),
 		};
 	},
 );
