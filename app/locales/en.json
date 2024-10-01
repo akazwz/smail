@@ -23,5 +23,10 @@
 			"title": "Self-hosted",
 			"description": "You can deploy a smail service by yourself, just a few minutes."
 		}
-	]
+	],
+	"auth": {
+		"title": "The administrator has enabled password protection, please enter the password:",
+		"msg": "Password error",
+		"submit": "Submit"
+	}
 }

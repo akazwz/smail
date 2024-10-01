@@ -5,6 +5,7 @@ import {
 
 type SessionData = {
 	email: string;
+	password: string;
 };
 
 const DEFAULT_COOKIE_SECRET = "defalt_secret";

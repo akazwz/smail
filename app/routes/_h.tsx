@@ -6,8 +6,20 @@ import logoLight from "~/assets/smail_light.webp";
 import { GitHubIcon } from "~/icons/github";
 import { cn } from "~/lib/utils";
 import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { sessionWrapper } from "~/.server/session";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({ request, params, context }: LoaderFunctionArgs) {
+	if (context.cloudflare.env.PASSWORD) {
+		const { getSession } = sessionWrapper(context.cloudflare.env);
+		const session = await getSession(request.headers.get("Cookie"));
+		const { pathname } = new URL(request.url);
+		if (
+			session.data.password !== context.cloudflare.env.PASSWORD &&
+			!pathname.includes("auth")
+		) {
+			return redirect("/auth");
+		}
+	}
 	const lang = params.lang;
 	if (!lang) {
 		const headers = {

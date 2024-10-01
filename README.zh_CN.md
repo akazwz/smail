@@ -39,6 +39,9 @@
 
 完结: 访问你的worker就可以了,可以按需给worker自定义域名. 
 
+### 其他功能
+- 密码保护: 在cf后台worker环境变量中设置 PASSWORD, 访问时需要输入密码
+
 ## 鸣谢
 - [Email.ML](https://email.ml)
 

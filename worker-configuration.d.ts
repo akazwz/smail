@@ -4,5 +4,7 @@ interface Env {
 	KV: KVNamespace;
 	COOKIE_SECRET: string;
 	DOMAIN: string;
+	TURNSTILE_SITE_KEY: string;
+	PASSWORD: string;
 	DB: D1Database;
 }

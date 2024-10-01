@@ -52,6 +52,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => [
 	},
 ];
 
+const DEFAULT_TEST_TURNSTILE_SITE_KEY = "1x00000000000000000000AA";
+
 export async function loader({ request, params, context }: LoaderFunctionArgs) {
 	const { getSession } = sessionWrapper(context.cloudflare.env);
 	const session = await getSession(request.headers.get("Cookie"));
@@ -88,6 +90,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
 		locale: locale,
 		email,
 		emails: newEails,
+		turnstileSiteKey: context.cloudflare.env.TURNSTILE_SITE_KEY,
 	};
 }
 
@@ -132,7 +135,8 @@ const featureIcons = [
 ];
 
 export default function Index() {
-	const { lang, locale, email, emails } = useLoaderData<typeof loader>();
+	const { lang, locale, turnstileSiteKey, email, emails } =
+		useLoaderData<typeof loader>();
 	const navigation = useNavigation();
 
 	const [token, setToken] = useState("");
@@ -174,7 +178,7 @@ export default function Index() {
 				) : (
 					<Form method="POST" className="flex flex-col gap-4">
 						<Turnstile
-							siteKey="0x4AAAAAAAPVzx6YMmopX9JY"
+							siteKey={turnstileSiteKey || DEFAULT_TEST_TURNSTILE_SITE_KEY}
 							options={{
 								theme: "light",
 								refreshExpired: "auto",

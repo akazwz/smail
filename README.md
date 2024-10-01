@@ -39,6 +39,9 @@
 
 finished: visit your worker, you can customize the domain name for the worker as needed. If the project is updated later, you can synchronize it in your forked repository, and it will be automatically deployed
 
+### Other features
+- Password protection: set PASSWORD in cf worker environment variables, access requires password
+
 ## Credits
 - [Email.ML](https://email.ml)
 

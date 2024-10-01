@@ -19,6 +19,7 @@
 		"@formatjs/intl-localematcher": "^0.5.4",
 		"@marsidev/react-turnstile": "^1.0.2",
 		"@radix-ui/react-icons": "^1.3.0",
+		"@radix-ui/react-label": "^2.1.0",
 		"@radix-ui/react-scroll-area": "^1.1.0",
 		"@radix-ui/react-slot": "^1.1.0",
 		"@remix-run/cloudflare": "^2.12.1",
