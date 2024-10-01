@@ -41,6 +41,13 @@
 
 ### 其他功能
 - 密码保护: 在cf后台worker环境变量中设置 PASSWORD, 访问时需要输入密码
+  当然，你也可以在 wrangler.toml 末尾添加
+  ```
+  [vars]
+  COOKIE_SECRET = "secret"
+  DOMAIN = "example.com"
+  PASSWORD = "password"
+  ```
 
 ## 鸣谢
 - [Email.ML](https://email.ml)
