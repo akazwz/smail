@@ -21,13 +21,12 @@ export async function loader({ request, context, params }: LoaderFunctionArgs) {
 		where: (emails, { and, eq }) =>
 			and(eq(emails.id, id), eq(emails.messageTo, messageTo)),
 	});
-	// if (!email) {
-	// 	throw new Error("Email not found");
-	// }
+	if (!email) {
+		throw new Error("Email not found");
+	}
 	const newEmail = {
 		...email,
-		html: `<script>alert("ttt")</script>`,
-		createdAt: format(new Date(), "yyyy/MM/dd HH:mm:ss"),
+		createdAt: format(email.createdAt, "yyyy/MM/dd HH:mm:ss"),
 	};
 	const locale = await getLocaleData(params.lang || "en");
 	return { locale, email: newEmail };
