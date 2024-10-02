@@ -67,6 +67,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
 			locale,
 			email: null,
 			emails: [],
+			turnstileSiteKey: context.cloudflare.env.TURNSTILE_SITE_KEY,
 		};
 	}
 	const emails = await db.query.emails.findMany({
