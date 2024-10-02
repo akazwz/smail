@@ -21,12 +21,13 @@ export async function loader({ request, context, params }: LoaderFunctionArgs) {
 		where: (emails, { and, eq }) =>
 			and(eq(emails.id, id), eq(emails.messageTo, messageTo)),
 	});
-	if (!email) {
-		throw new Error("Email not found");
-	}
+	// if (!email) {
+	// 	throw new Error("Email not found");
+	// }
 	const newEmail = {
 		...email,
-		createdAt: format(email.createdAt, "yyyy/MM/dd HH:mm:ss"),
+		html: `<script>alert("ttt")</script>`,
+		createdAt: format(new Date(), "yyyy/MM/dd HH:mm:ss"),
 	};
 	const locale = await getLocaleData(params.lang || "en");
 	return { locale, email: newEmail };
@@ -56,6 +57,7 @@ export default function EmailDetail() {
 					title={email.subject || ""}
 					srcDoc={email.html || email.text || ""}
 					className="w-full h-full"
+					sandbox="allow-scripts"
 				/>
 			</div>
 		</div>
