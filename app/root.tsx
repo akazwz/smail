@@ -4,13 +4,18 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	useMatches,
 } from "@remix-run/react";
 
-import "./tailwind.css";
+import "~/tailwind.css";
 
 export function Layout({ children }: { children: React.ReactNode }) {
+	const matches = useMatches();
+	const root = matches.find((match) => match.id === "root")
+	const lang = root?.params.lang || "en"
+
 	return (
-		<html lang="en" className="light">
+		<html lang={lang} className="light">
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
