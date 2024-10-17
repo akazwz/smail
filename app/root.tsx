@@ -7,7 +7,6 @@ import {
 	ScrollRestoration,
 	useLoaderData,
 } from "@remix-run/react";
-
 import "~/tailwind.css";
 
 export async function loader({params}:LoaderFunctionArgs) {
