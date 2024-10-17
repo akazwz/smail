@@ -1,18 +1,23 @@
+import type { LoaderFunctionArgs } from "@remix-run/cloudflare";
 import {
 	Links,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	useMatches,
+	useLoaderData,
 } from "@remix-run/react";
 
 import "~/tailwind.css";
 
+export async function loader({params}:LoaderFunctionArgs) {
+	return {
+		lang: params.lang || "en"
+	}
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
-	const matches = useMatches();
-	const root = matches.find((match) => match.id === "root")
-	const lang = root?.params.lang || "en"
+	const { lang } = useLoaderData<typeof loader>();
 
 	return (
 		<html lang={lang} className="light">
