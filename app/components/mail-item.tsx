@@ -39,7 +39,7 @@ export function MailItem({
 			asChild
 			size="sm"
 			className={cn(
-				"h-20 w-full rounded-none justify-start gap-4 relative p-4",
+				"h-16 sm:h-20 w-full rounded-none justify-start gap-3 sm:gap-4 relative p-3 sm:p-4",
 				isRead ? "opacity-80" : "bg-blue-50 hover:bg-blue-100",
 			)}
 			variant="ghost"
@@ -48,11 +48,11 @@ export function MailItem({
 				{!isRead && (
 					<div className="absolute left-2 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-blue-600 rounded-full" />
 				)}
-				<Avatar className="flex-shrink-0">
+				<Avatar className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10">
 					<AvatarImage src={`https://unavatar.io/${domain}`} />
-					<AvatarFallback>{name.slice(0, 2).toUpperCase()}</AvatarFallback>
+					<AvatarFallback className="text-xs sm:text-sm">{name.slice(0, 2).toUpperCase()}</AvatarFallback>
 				</Avatar>
-				<div className="flex-1 min-w-0 space-y-1">
+				<div className="flex-1 min-w-0 space-y-0.5 sm:space-y-1">
 					<div className="flex items-center justify-between">
 						<span
 							className={cn(
@@ -69,7 +69,7 @@ export function MailItem({
 					<div className="text-xs text-muted-foreground truncate">{email}</div>
 					<div
 						className={cn(
-							"text-sm truncate",
+							"text-xs sm:text-sm truncate",
 							isRead ? "text-muted-foreground" : "text-gray-900 font-medium",
 						)}
 					>

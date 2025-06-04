@@ -233,48 +233,49 @@ export default function MailDetail({ loaderData }: Route.ComponentProps) {
 	return (
 		<div className="h-screen bg-gray-50 flex flex-col">
 			{/* Header */}
-			<header className="bg-white border-b px-4 py-3 shrink-0">
+			<header className="bg-white border-b px-3 sm:px-4 py-3 shrink-0">
 				<div className="w-full flex items-center justify-between">
-					<div className="flex items-center gap-3">
-						<Button asChild variant="ghost" size="sm">
+					<div className="flex items-center gap-2 sm:gap-3">
+						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm p-1 sm:p-2">
 							<Link to="/">
-								<ArrowLeft className="w-4 h-4" />
-								返回收件箱
+								<ArrowLeft className="w-3 sm:w-4 h-3 sm:h-4" />
+								<span className="hidden sm:inline ml-1">返回收件箱</span>
+								<span className="sm:hidden">返回</span>
 							</Link>
 						</Button>
-						<Separator orientation="vertical" className="h-6" />
-						<span className="text-sm text-gray-600">邮件详情</span>
+						<Separator orientation="vertical" className="h-4 sm:h-6" />
+						<span className="text-xs sm:text-sm text-gray-600">邮件详情</span>
 					</div>
 
 					<div className="flex items-center gap-2">
 						{navigation.state === "loading" && (
-							<Loader2 className="w-4 h-4 animate-spin" />
+							<Loader2 className="w-3 sm:w-4 h-3 sm:h-4 animate-spin" />
 						)}
 					</div>
 				</div>
 			</header>
 
 			{/* Email Header - Compact */}
-			<div className="bg-white border-b px-4 py-3 shrink-0">
-				<div className="flex items-start justify-between">
+			<div className="bg-white border-b px-3 sm:px-4 py-3 shrink-0">
+				<div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
 					<div className="flex-1 min-w-0">
-						<h1 className="text-lg font-semibold text-gray-900 mb-1">
+						<h1 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 break-words">
 							{email.subject || "(无主题)"}
 						</h1>
-						<div className="flex flex-wrap gap-4 text-sm text-gray-600">
-							<span>
+						<div className="space-y-1 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-4 text-xs sm:text-sm text-gray-600">
+							<div className="truncate">
 								<strong>发件人:</strong> {email.fromAddress}
-							</span>
-							<span>
+							</div>
+							<div className="truncate">
 								<strong>收件人:</strong> {email.toAddress}
-							</span>
-							<span>
+							</div>
+							<div>
 								<strong>时间:</strong> {formattedDate}
-							</span>
+							</div>
 						</div>
 					</div>
 
-					<div className="flex items-center gap-2 ml-4">
+					<div className="flex items-center gap-2 flex-shrink-0">
 						<Badge
 							variant={email.isRead ? "secondary" : "default"}
 							className="text-xs"
@@ -291,34 +292,36 @@ export default function MailDetail({ loaderData }: Route.ComponentProps) {
 				{attachments.length > 0 && (
 					<div className="mt-3 pt-3 border-t">
 						<div className="flex items-center gap-2 mb-2">
-							<Paperclip className="w-4 h-4" />
-							<span className="text-sm font-medium">
+							<Paperclip className="w-3 sm:w-4 h-3 sm:h-4" />
+							<span className="text-xs sm:text-sm font-medium">
 								附件 ({attachments.length})
 							</span>
 						</div>
-						<div className="flex flex-wrap gap-2">
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
 							{attachments.map((attachment) => (
 								<div
 									key={attachment.id}
-									className="flex items-center gap-2 px-2 py-1 bg-gray-50 border rounded text-xs"
+									className="flex items-center gap-2 px-2 py-1.5 bg-gray-50 border rounded text-xs"
 								>
 									{getFileIcon(attachment.filename, attachment.contentType)}
-									<span className="truncate max-w-32">
-										{attachment.filename || "未命名附件"}
-									</span>
-									<span className="text-gray-500">
-										{formatFileSize(attachment.size)}
-									</span>
+									<div className="flex-1 min-w-0">
+										<div className="truncate font-medium">
+											{attachment.filename || "未命名附件"}
+										</div>
+										<div className="text-gray-500 text-xs">
+											{formatFileSize(attachment.size)}
+										</div>
+									</div>
 									{attachment.uploadStatus === "uploaded" ? (
 										<a
 											href={`/attachment/${attachment.id}`}
-											className="inline-flex items-center justify-center h-6 w-6 p-0 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground"
+											className="inline-flex items-center justify-center h-6 w-6 p-0 rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground flex-shrink-0"
 											title="下载附件"
 										>
 											<Download className="w-3 h-3" />
 										</a>
 									) : (
-										<span className="text-xs text-gray-400">
+										<span className="text-xs text-gray-400 flex-shrink-0">
 											{attachment.uploadStatus === "pending"
 												? "处理中"
 												: "失败"}

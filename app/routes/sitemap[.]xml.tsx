@@ -11,13 +11,13 @@ export function loader({ request }: LoaderFunctionArgs) {
 	const protocol = host.includes("localhost") ? "http" : "https";
 	const domain = `${protocol}://${host}`;
 
-	// 网站主要页面
+	// 网站主要页面 - 只包含实际存在的路由
 	const pages = [
 		{
 			url: "",
 			changefreq: "daily",
 			priority: "1.0",
-			lastmod: new Date().toISOString().split("T")[0],
+			lastmod: "2025-01-01",
 		},
 		{
 			url: "/about",
@@ -26,15 +26,15 @@ export function loader({ request }: LoaderFunctionArgs) {
 			lastmod: "2025-01-01",
 		},
 		{
-			url: "/faq",
+			url: "/contact",
 			changefreq: "monthly",
 			priority: "0.7",
 			lastmod: "2025-01-01",
 		},
 		{
-			url: "/contact",
+			url: "/faq",
 			changefreq: "monthly",
-			priority: "0.6",
+			priority: "0.7",
 			lastmod: "2025-01-01",
 		},
 		{
@@ -49,41 +49,10 @@ export function loader({ request }: LoaderFunctionArgs) {
 			priority: "0.5",
 			lastmod: "2025-01-01",
 		},
-		{
-			url: "https://smail.pw",
-			lastmod: "2025-01-01",
-			changefreq: "daily",
-			priority: "1.0",
-		},
-		{
-			url: "https://smail.pw/about",
-			lastmod: "2025-01-01",
-			changefreq: "monthly",
-			priority: "0.7",
-		},
-		{
-			url: "https://smail.pw/privacy",
-			lastmod: "2025-01-01",
-			changefreq: "monthly",
-			priority: "0.5",
-		},
-		{
-			url: "https://smail.pw/terms",
-			lastmod: "2025-01-01",
-			changefreq: "monthly",
-			priority: "0.5",
-		},
-		{
-			url: "https://smail.pw/help",
-			lastmod: "2025-01-01",
-			changefreq: "monthly",
-			priority: "0.6",
-		},
 	];
 
 	const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages
 	.map(
 		(page) => `  <url>
@@ -91,7 +60,6 @@ ${pages
     <lastmod>${page.lastmod}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
-    <xhtml:link rel="alternate" hreflang="zh-CN" href="${domain}${page.url}" />
   </url>`,
 	)
 	.join("\n")}
@@ -100,9 +68,7 @@ ${pages
 	return new Response(sitemap, {
 		status: 200,
 		headers: {
-			"Content-Type": "application/xml",
-			"xml-version": "1.0",
-			encoding: "UTF-8",
+			"Content-Type": "application/xml; charset=utf-8",
 			"Cache-Control": "public, max-age=3600", // 缓存1小时
 		},
 	});

@@ -194,51 +194,51 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 						<span className="font-bold text-xl text-blue-600">Smail</span>
 					</Link>
 				</Button>
-				<nav className="flex items-center gap-2">
-					<Button asChild variant="ghost" size="sm">
+				<nav className="flex items-center gap-1 sm:gap-2">
+					<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
 						<Link to="/about">关于</Link>
 					</Button>
-					<Button asChild variant="ghost" size="sm">
+					<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
 						<Link to="/faq">FAQ</Link>
 					</Button>
-					<Button asChild variant="ghost" size="sm">
+					<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
 						<Link to="/contact">联系</Link>
 					</Button>
 				</nav>
 			</header>
-			<main className="p-4 flex flex-col gap-4 max-w-5xl mx-auto">
+			<main className="p-2 sm:p-4 flex flex-col gap-4 max-w-screen-xl mx-auto">
 				{/* Hero Section */}
-				<div className="text-center py-4">
-					<h1 className="text-3xl font-bold text-gray-900 mb-3">
+				<div className="text-center py-2 sm:py-4">
+					<h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 px-2">
 						免费临时邮箱服务
 					</h1>
-					<p className="text-lg text-gray-600 mb-4 max-w-2xl mx-auto">
+					<p className="text-base sm:text-lg text-gray-600 mb-3 sm:mb-4 max-w-sm sm:max-w-md lg:max-w-lg mx-auto px-2">
 						保护您的隐私，避免垃圾邮件。无需注册，即时获取临时邮箱地址
 					</p>
 				</div>
 
 				{/* Email Section */}
-				<div className="max-w-3xl mx-auto">
+				<div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto">
 					<div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
 						{/* Header */}
-						<div className="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-3">
+						<div className="bg-gradient-to-r from-blue-500 to-blue-600 px-3 sm:px-4 py-3">
 							<div className="text-center">
-								<h2 className="text-lg font-semibold text-white mb-1">
+								<h2 className="text-base sm:text-lg font-semibold text-white mb-1">
 									您的临时邮箱地址
 								</h2>
-								<p className="text-blue-100 text-sm">
+								<p className="text-blue-100 text-xs sm:text-sm">
 									有效期：24小时 | 自动刷新 | 完全免费
 								</p>
 							</div>
 						</div>
 
 						{/* Email Display */}
-						<div className="p-4">
+						<div className="p-3 sm:p-4">
 							{/* Email Address Display */}
-							<div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200">
-								<div className="text-center">
-									<div className="inline-block bg-white rounded-lg px-4 py-3 shadow-sm border border-gray-300 min-w-[320px] max-w-[420px] w-full sm:w-auto">
-										<span className="font-mono text-lg font-semibold text-gray-900 tracking-wide select-all break-all">
+							<div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-3 sm:p-4 border border-gray-200">
+								<div className="w-full">
+									<div className="bg-white rounded-lg px-3 sm:px-4 py-2 sm:py-3 shadow-sm border border-gray-300 w-full">
+										<span className="font-mono text-sm sm:text-lg font-semibold text-gray-900 tracking-wide select-all break-all block text-center">
 											{loaderData.email}
 										</span>
 									</div>
@@ -251,7 +251,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 									text={loaderData.email}
 									size="sm"
 									variant="default"
-									className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+									className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm"
 								/>
 								<Form method="post">
 									<Button
@@ -261,7 +261,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 										name="action"
 										value="delete"
 										disabled={isDeleting}
-										className="w-full border-gray-300 hover:bg-gray-50"
+										className="w-full border-gray-300 hover:bg-gray-50 text-sm"
 									>
 										{isDeleting ? (
 											<>
@@ -278,10 +278,10 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 							{/* Tips */}
 							<div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
 								<div className="flex items-start gap-2">
-									<span className="text-blue-500 text-sm">💡</span>
+									<span className="text-blue-500 text-sm flex-shrink-0">💡</span>
 									<div className="text-xs text-blue-700">
 										<p className="font-medium mb-1">使用提示：</p>
-										<p>
+										<p className="leading-relaxed">
 											发送邮件到此地址即可在下方收件箱查看，邮箱24小时后自动过期。收件箱每10秒自动刷新检查新邮件。
 										</p>
 									</div>
@@ -292,10 +292,10 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 				</div>
 
 				{/* Inbox Section */}
-				<div className="max-w-4xl w-full mx-auto border rounded-lg bg-white shadow-sm mt-2">
-					<div className="flex flex-row items-center justify-between text-sm font-medium p-4 border-b bg-gray-50 rounded-t-lg">
-						<div className="flex items-center gap-2">
-							<span className="text-lg font-semibold">收件箱</span>
+				<div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto border rounded-lg bg-white shadow-sm mt-2">
+					<div className="flex flex-col sm:flex-row sm:items-center justify-between text-sm font-medium p-3 sm:p-4 border-b bg-gray-50 rounded-t-lg gap-2 sm:gap-0">
+						<div className="flex items-center gap-2 flex-wrap">
+							<span className="text-base sm:text-lg font-semibold">收件箱</span>
 							<span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
 								{loaderData.stats.unread} 未读
 							</span>
@@ -309,22 +309,23 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 								</span>
 							)}
 						</div>
-						<Form method="post">
+						<Form method="post" className="flex-shrink-0">
 							<Button
 								variant="secondary"
 								size="sm"
 								name="action"
 								value="refresh"
 								disabled={isRefreshing || isAutoRefreshing}
+								className="text-xs sm:text-sm"
 							>
 								{isRefreshing ? (
 									<>
-										<Loader2Icon className="w-4 h-4 animate-spin mr-1" />
+										<Loader2Icon className="w-3 sm:w-4 h-3 sm:h-4 animate-spin mr-1" />
 										刷新中...
 									</>
 								) : (
 									<>
-										<RefreshCcwIcon className="w-4 h-4 mr-1" />
+										<RefreshCcwIcon className="w-3 sm:w-4 h-3 sm:h-4 mr-1" />
 										手动刷新
 									</>
 								)}
@@ -339,11 +340,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 								))}
 							</div>
 						) : (
-							<div className="flex flex-col items-center justify-center py-8 text-gray-500">
+							<div className="flex flex-col items-center justify-center py-8 text-gray-500 px-4">
 								<div className="text-4xl mb-3">📭</div>
-								<h3 className="text-lg font-semibold mb-2">收件箱为空</h3>
-								<p className="text-sm">您还没有收到任何邮件</p>
-								<p className="text-xs text-gray-400 mt-2">
+								<h3 className="text-lg font-semibold mb-2 text-center">收件箱为空</h3>
+								<p className="text-sm text-center">您还没有收到任何邮件</p>
+								<p className="text-xs text-gray-400 mt-2 text-center break-all">
 									发送邮件到 {loaderData.email} 来测试
 								</p>
 							</div>
@@ -352,24 +353,24 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 				</div>
 
 				{/* Features Section */}
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-					<div className="text-center p-6 bg-white rounded-lg border">
-						<div className="text-4xl mb-4">🔒</div>
-						<h3 className="text-lg font-semibold mb-2">隐私保护</h3>
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8 max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl mx-auto">
+					<div className="text-center p-4 sm:p-6 bg-white rounded-lg border">
+						<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🔒</div>
+						<h3 className="text-base sm:text-lg font-semibold mb-2">隐私保护</h3>
 						<p className="text-gray-600 text-sm">
 							保护您的真实邮箱地址，避免垃圾邮件和隐私泄露
 						</p>
 					</div>
-					<div className="text-center p-6 bg-white rounded-lg border">
-						<div className="text-4xl mb-4">⚡</div>
-						<h3 className="text-lg font-semibold mb-2">即时创建</h3>
+					<div className="text-center p-4 sm:p-6 bg-white rounded-lg border">
+						<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">⚡</div>
+						<h3 className="text-base sm:text-lg font-semibold mb-2">即时创建</h3>
 						<p className="text-gray-600 text-sm">
 							无需注册，一键生成临时邮箱地址，立即开始使用
 						</p>
 					</div>
-					<div className="text-center p-6 bg-white rounded-lg border">
-						<div className="text-4xl mb-4">🌍</div>
-						<h3 className="text-lg font-semibold mb-2">完全免费</h3>
+					<div className="text-center p-4 sm:p-6 bg-white rounded-lg border sm:col-span-2 lg:col-span-1">
+						<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🌍</div>
+						<h3 className="text-base sm:text-lg font-semibold mb-2">完全免费</h3>
 						<p className="text-gray-600 text-sm">
 							永久免费使用，无隐藏费用，无广告干扰
 						</p>
@@ -378,10 +379,10 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 			</main>
 
 			{/* Footer */}
-			<footer className="bg-white border-t mt-16">
-				<div className="max-w-6xl mx-auto px-4 py-8">
-					<div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-						<div>
+			<footer className="bg-white border-t mt-8 sm:mt-16">
+				<div className="max-w-screen-xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+						<div className="sm:col-span-2 lg:col-span-1">
 							<h3 className="font-bold text-xl text-blue-600 mb-4">Smail</h3>
 							<p className="text-gray-600 text-sm">
 								免费、安全、易用的临时邮箱服务
@@ -433,7 +434,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 							</ul>
 						</div>
 					</div>
-					<div className="border-t mt-8 pt-8 text-center text-gray-500 text-sm">
+					<div className="border-t mt-6 sm:mt-8 pt-6 sm:pt-8 text-center text-gray-500 text-sm">
 						<p>&copy; 2025 Smail. 保留所有权利。</p>
 					</div>
 				</div>
