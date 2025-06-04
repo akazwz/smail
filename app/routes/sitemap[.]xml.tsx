@@ -11,43 +11,46 @@ export function loader({ request }: LoaderFunctionArgs) {
 	const protocol = host.includes("localhost") ? "http" : "https";
 	const domain = `${protocol}://${host}`;
 
+	// 使用当前日期，ISO 8601格式
+	const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD格式
+
 	// 网站主要页面 - 只包含实际存在的路由
 	const pages = [
 		{
 			url: "",
 			changefreq: "daily",
 			priority: "1.0",
-			lastmod: "2025-01-01",
+			lastmod: currentDate,
 		},
 		{
 			url: "/about",
 			changefreq: "monthly",
 			priority: "0.8",
-			lastmod: "2025-01-01",
+			lastmod: currentDate,
 		},
 		{
 			url: "/contact",
 			changefreq: "monthly",
 			priority: "0.7",
-			lastmod: "2025-01-01",
+			lastmod: currentDate,
 		},
 		{
 			url: "/faq",
 			changefreq: "monthly",
 			priority: "0.7",
-			lastmod: "2025-01-01",
+			lastmod: currentDate,
 		},
 		{
 			url: "/privacy",
-			changefreq: "monthly",
+			changefreq: "yearly",
 			priority: "0.5",
-			lastmod: "2025-01-01",
+			lastmod: currentDate,
 		},
 		{
 			url: "/terms",
-			changefreq: "monthly",
+			changefreq: "yearly",
 			priority: "0.5",
-			lastmod: "2025-01-01",
+			lastmod: currentDate,
 		},
 	];
 
@@ -69,7 +72,8 @@ ${pages
 		status: 200,
 		headers: {
 			"Content-Type": "application/xml; charset=utf-8",
-			"Cache-Control": "public, max-age=3600", // 缓存1小时
+			"Cache-Control": "public, max-age=86400", // 缓存24小时
+			"X-Robots-Tag": "noindex", // sitemap本身不需要被索引
 		},
 	});
 }
