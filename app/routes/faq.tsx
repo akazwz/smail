@@ -111,7 +111,7 @@ export default function FAQ() {
 
 			{/* Hero Section */}
 			<section className="py-8 sm:py-16 bg-white">
-				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4 text-center">
+				<div className="max-w-screen-xl mx-auto px-3 sm:px-4 text-center">
 					<div className="flex justify-center mb-4 sm:mb-6">
 						<div className="bg-blue-100 p-3 sm:p-4 rounded-full">
 							<HelpCircleIcon className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
@@ -126,7 +126,7 @@ export default function FAQ() {
 
 			{/* FAQ Section */}
 			<section className="py-8 sm:py-16">
-				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4">
+				<div className="max-w-4xl mx-auto px-3 sm:px-4">
 					<div className="space-y-3 sm:space-y-4">
 						{faqs.map((faq) => (
 							<Card key={faq.id} className="hover:shadow-md transition-shadow">
@@ -149,7 +149,7 @@ export default function FAQ() {
 
 			{/* Help Section */}
 			<section className="py-8 sm:py-16 bg-white">
-				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4 text-center">
+				<div className="max-w-2xl mx-auto px-3 sm:px-4 text-center">
 					<h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
 						还有其他问题？
 					</h2>
@@ -169,12 +169,12 @@ export default function FAQ() {
 
 			{/* Quick Start */}
 			<section className="py-8 sm:py-16 bg-blue-50">
-				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl mx-auto px-3 sm:px-4">
+				<div className="max-w-screen-xl mx-auto px-3 sm:px-4">
 					<h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-center text-gray-900 mb-8 sm:mb-12">
 						快速开始使用
 					</h2>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-						<div className="text-center">
+						<div className="w-full text-center">
 							<div className="bg-blue-600 text-white w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl font-bold">
 								1
 							</div>
@@ -183,7 +183,7 @@ export default function FAQ() {
 								打开Smail主页，系统会自动为您生成临时邮箱
 							</p>
 						</div>
-						<div className="text-center">
+						<div className="w-full text-center">
 							<div className="bg-blue-600 text-white w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl font-bold">
 								2
 							</div>
@@ -192,7 +192,7 @@ export default function FAQ() {
 								点击复制按钮，将临时邮箱地址用于注册或验证
 							</p>
 						</div>
-						<div className="text-center">
+						<div className="w-full text-center">
 							<div className="bg-blue-600 text-white w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl font-bold">
 								3
 							</div>

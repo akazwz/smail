@@ -212,13 +212,13 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 					<h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 px-2">
 						免费临时邮箱服务
 					</h1>
-					<p className="text-base sm:text-lg text-gray-600 mb-3 sm:mb-4 max-w-sm sm:max-w-md lg:max-w-lg mx-auto px-2">
+					<p className="text-base sm:text-lg text-gray-600 mb-3 sm:mb-4 max-w-2xl mx-auto px-2">
 						保护您的隐私，避免垃圾邮件。无需注册，即时获取临时邮箱地址
 					</p>
 				</div>
 
 				{/* Email Section */}
-				<div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto">
+				<div className="w-full max-w-xl mx-auto">
 					<div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
 						{/* Header */}
 						<div className="bg-gradient-to-r from-blue-500 to-blue-600 px-3 sm:px-4 py-3">
@@ -292,7 +292,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 				</div>
 
 				{/* Inbox Section */}
-				<div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto border rounded-lg bg-white shadow-sm mt-2">
+				<div className="w-full max-w-4xl mx-auto border rounded-lg bg-white shadow-sm mt-2">
 					<div className="flex flex-col sm:flex-row sm:items-center justify-between text-sm font-medium p-3 sm:p-4 border-b bg-gray-50 rounded-t-lg gap-2 sm:gap-0">
 						<div className="flex items-center gap-2 flex-wrap">
 							<span className="text-base sm:text-lg font-semibold">收件箱</span>
@@ -353,27 +353,31 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 				</div>
 
 				{/* Features Section */}
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8 max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl mx-auto">
-					<div className="text-center p-4 sm:p-6 bg-white rounded-lg border">
-						<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🔒</div>
-						<h3 className="text-base sm:text-lg font-semibold mb-2">隐私保护</h3>
-						<p className="text-gray-600 text-sm">
-							保护您的真实邮箱地址，避免垃圾邮件和隐私泄露
-						</p>
-					</div>
-					<div className="text-center p-4 sm:p-6 bg-white rounded-lg border">
-						<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">⚡</div>
-						<h3 className="text-base sm:text-lg font-semibold mb-2">即时创建</h3>
-						<p className="text-gray-600 text-sm">
-							无需注册，一键生成临时邮箱地址，立即开始使用
-						</p>
-					</div>
-					<div className="text-center p-4 sm:p-6 bg-white rounded-lg border sm:col-span-2 lg:col-span-1">
-						<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🌍</div>
-						<h3 className="text-base sm:text-lg font-semibold mb-2">完全免费</h3>
-						<p className="text-gray-600 text-sm">
-							永久免费使用，无隐藏费用，无广告干扰
-						</p>
+				<div className="py-8 sm:py-16">
+					<div className="max-w-screen-xl mx-auto px-3 sm:px-4">
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+							<div className="w-full text-center p-4 sm:p-6 bg-white rounded-lg border">
+								<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🔒</div>
+								<h3 className="text-base sm:text-lg font-semibold mb-2">隐私保护</h3>
+								<p className="text-gray-600 text-sm">
+									保护您的真实邮箱地址，避免垃圾邮件和隐私泄露
+								</p>
+							</div>
+							<div className="w-full text-center p-4 sm:p-6 bg-white rounded-lg border">
+								<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">⚡</div>
+								<h3 className="text-base sm:text-lg font-semibold mb-2">即时创建</h3>
+								<p className="text-gray-600 text-sm">
+									无需注册，一键生成临时邮箱地址，立即开始使用
+								</p>
+							</div>
+							<div className="w-full text-center p-4 sm:p-6 bg-white rounded-lg border lg:col-span-1">
+								<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🌍</div>
+								<h3 className="text-base sm:text-lg font-semibold mb-2">完全免费</h3>
+								<p className="text-gray-600 text-sm">
+									永久免费使用，无隐藏费用，无广告干扰
+								</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</main>

@@ -274,15 +274,17 @@ export default function Contact({ loaderData }: ComponentProps) {
 
 			{/* Additional Help */}
 			<section className="py-8 sm:py-16 bg-white">
-				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl mx-auto px-3 sm:px-4 text-center">
-					<h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
-						其他获取帮助的方式
-					</h2>
-					<p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
-						我们提供多种方式来为您提供支持
-					</p>
+				<div className="max-w-screen-xl mx-auto px-3 sm:px-4">
+					<div className="text-center mb-8 sm:mb-12">
+						<h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
+							其他获取帮助的方式
+						</h2>
+						<p className="text-base sm:text-lg text-gray-600">
+							我们提供多种方式来为您提供支持
+						</p>
+					</div>
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-						<Card className="text-center">
+						<Card className="w-full text-center">
 							<CardContent className="pt-4 sm:pt-6">
 								<div className="bg-blue-100 w-12 sm:w-14 lg:w-16 h-12 sm:h-14 lg:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
 									<MessageCircleIcon className="w-6 sm:w-7 lg:w-8 h-6 sm:h-7 lg:h-8 text-blue-600" />
@@ -296,7 +298,7 @@ export default function Contact({ loaderData }: ComponentProps) {
 								</Button>
 							</CardContent>
 						</Card>
-						<Card className="text-center">
+						<Card className="w-full text-center">
 							<CardContent className="pt-4 sm:pt-6">
 								<div className="bg-green-100 w-12 sm:w-14 lg:w-16 h-12 sm:h-14 lg:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
 									<MailIcon className="w-6 sm:w-7 lg:w-8 h-6 sm:h-7 lg:h-8 text-green-600" />
@@ -308,7 +310,7 @@ export default function Contact({ loaderData }: ComponentProps) {
 								</Button>
 							</CardContent>
 						</Card>
-						<Card className="text-center">
+						<Card className="w-full text-center">
 							<CardContent className="pt-4 sm:pt-6">
 								<div className="bg-purple-100 w-12 sm:w-14 lg:w-16 h-12 sm:h-14 lg:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
 									<ClockIcon className="w-6 sm:w-7 lg:w-8 h-6 sm:h-7 lg:h-8 text-purple-600" />
