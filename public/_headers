@@ -1,4 +1,50 @@
-/favicon.ico
-  Cache-Control: public, max-age=3600, s-maxage=3600
-/assets/*
+/*
+  # 安全头部
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  
+  # 性能优化
   Cache-Control: public, max-age=31536000, immutable
+
+# HTML 页面的特殊缓存策略
+/*.html
+  Cache-Control: public, max-age=3600, must-revalidate
+
+# API 路由不缓存
+/api/*
+  Cache-Control: no-store, no-cache, must-revalidate
+  
+/dev/*
+  Cache-Control: no-store, no-cache, must-revalidate
+
+# 静态资源长期缓存
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+  
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+  
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+  
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+  
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+  
+/*.ico
+  Cache-Control: public, max-age=31536000, immutable
+
+# 特殊文件
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+
+/site.webmanifest
+  Cache-Control: public, max-age=86400 

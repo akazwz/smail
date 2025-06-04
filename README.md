@@ -1,49 +1,178 @@
-<p align="center">
-  <span>
-   English | 
-   <a href="https://github.com/akazwz/smail/blob/main/README.zh_CN.md">简体中文</a>
-  </span>
-<p>
-<br />
-<p align="center">
-  <a href="https://smail.pw" target="_blank" rel="noopener">
-    <img width="180" src="https://cdn.bytepacker.com/c34b4517-83aa-428a-978b-fa30b9aaec3b/smail_light.webp" alt="SMail logo">
-  </a>
-</p>
-<br/>
-<div align="center">
-  <p>Use cloudflare worker to quickly build a temporary email service<p>
-</div>
+# Smail - 临时邮箱服务
 
-# Smail 📨
-- 📁Use cloudflare email worker to receive emails
-- 🖼Provide web application
-- 💡Simplify the application, deploy it from the beginning, only need one worker
+一个基于 React Router v7 和 Cloudflare Workers 构建的现代化临时邮箱服务。
 
-## Quick Start
-- Click [Smail](https://smail.pw) to start
-- Follow the instructions below to build your service
+## 🌟 功能特性
 
-## Prerequisites
-- cloudflare account
-- Domain name in cloudflare and enable email routing function (enable in domain email settings)
-- Create KV and D1 databases in Workers and Pages
+- 🚀 **快速生成**: 一键生成临时邮箱地址
+- 📧 **实时接收**: 即时接收和查看邮件
+- 🔒 **隐私保护**: 邮箱到期后自动删除数据
+- 📱 **响应式设计**: 完美适配桌面和移动设备
+- ⚡️ **无服务器架构**: 基于 Cloudflare Workers，全球加速
+- 🗄️ **现代化技术栈**: React Router v7、TypeScript、TailwindCSS
+- 📊 **数据存储**: 使用 Cloudflare D1 数据库和 R2 对象存储
 
-## Self-built
-- star this repository (not necessary, lmao, but thank you for the star)
-- clone the repository, modify the KV id and D1 database id in wrangler.toml to your own
-- Migrate the database, run pnpm wrangler d1 migrations apply smail --remote
-- Deploy the worker, run pnpm run deploy
-- Add environment variables, enter worker settings->variables and secrets: set COOKIE_SECRET: key for encrypting cookies, DOMAIN: your domain name
-- Enter domain management->email->routing rules->Catch-all address. Here choose to send to the worker, and then select the created worker
+## 🛠️ 技术栈
 
-finished: visit your worker, you can customize the domain name for the worker as needed. If the project is updated later, you can synchronize it in your forked repository, and it will be automatically deployed
+- **前端**: React Router v7, TypeScript, TailwindCSS
+- **后端**: Cloudflare Workers, Email Workers
+- **数据库**: Cloudflare D1 (SQLite)
+- **存储**: Cloudflare R2 (附件存储)
+- **ORM**: Drizzle ORM
+- **邮件解析**: postal-mime
 
-### Other features
-- Password protection: set PASSWORD in cf worker environment variables, access requires password
+## 🚀 快速开始
 
-## Credits
-- [Email.ML](https://email.ml)
+### 安装依赖
 
-## Star History
-[![Star History Chart](https://api.star-history.com/svg?repos=akazwz/smail&type=Date)](https://star-history.com/#akazwz/smail&Date)
+```bash
+pnpm install
+```
+
+### 设置数据库
+
+```bash
+# 生成数据库迁移文件
+pnpm run db:generate
+
+# 应用迁移到本地数据库
+pnpm run db:migrate
+```
+
+### 启动开发服务器
+
+```bash
+pnpm dev
+```
+
+应用将在 http://localhost:5173 可用。
+
+## 🧪 本地开发和测试
+
+### 发送测试邮件
+
+```bash
+# 快速发送测试邮件
+pnpm run test:email
+
+# 发送自定义测试邮件（带附件）
+pnpm run test:email:custom [收件人] [发件人] [端口] [是否包含附件]
+
+# 例如：
+pnpm run test:email:custom mytest@smail.pw sender@example.com 5173 true
+```
+
+### 数据库管理
+
+```bash
+# 查看迁移状态
+pnpm run db:list
+
+# 重置数据库（清空所有数据）
+pnpm run db:reset
+
+# 重新应用迁移
+pnpm run db:migrate
+```
+
+详细的本地开发指南请查看：[docs/local-development.md](docs/local-development.md)
+
+## 📦 生产环境构建
+
+创建生产构建：
+
+```bash
+pnpm run build
+```
+
+## 🚀 部署
+
+### 直接部署到生产环境
+
+```bash
+pnpm run deploy
+```
+
+### 部署预览版本
+
+```bash
+pnpm wrangler versions upload
+```
+
+验证后可以将版本提升到生产环境：
+
+```bash
+pnpm wrangler versions deploy
+```
+
+### 部署前准备
+
+1. **配置 Cloudflare 服务**:
+   - 创建 D1 数据库：`wrangler d1 create smail-database`
+   - 创建 KV 命名空间：`wrangler kv namespace create "smail-kv"`
+   - 创建 R2 存储桶：`wrangler r2 bucket create smail-attachments`
+   - 设置 Email Routing
+
+2. **配置 wrangler.jsonc**:
+   复制 `wrangler.example.jsonc` 并填入你的资源ID：
+   ```bash
+   cp wrangler.example.jsonc wrangler.jsonc
+   # 编辑 wrangler.jsonc，填入实际的ID
+   ```
+
+3. **运行远程迁移**:
+   ```bash
+   pnpm run db:migrate:remote
+   ```
+
+## 📂 项目结构
+
+```
+├── app/                    # 应用代码
+│   ├── components/         # React 组件
+│   ├── db/                 # 数据库相关
+│   │   ├── migrations/     # 数据库迁移文件
+│   │   └── schema.ts       # 数据库模式定义
+│   ├── lib/                # 工具函数和数据库操作
+│   └── routes/             # 路由组件
+├── workers/                # Cloudflare Workers
+│   └── app.ts              # Email Worker
+├── scripts/                # 开发脚本
+│   ├── test-email.js       # 邮件测试脚本
+│   └── test-email.sh       # Shell 测试脚本
+├── docs/                   # 文档
+└── wrangler.jsonc          # Cloudflare 配置
+```
+
+## 🎨 样式
+
+项目使用 [Tailwind CSS](https://tailwindcss.com/) 进行样式设计，支持：
+- 响应式设计
+- 暗色模式
+- 现代化 UI 组件
+- 自定义设计系统
+
+## 🤝 贡献
+
+欢迎贡献代码！请：
+
+1. Fork 项目
+2. 创建功能分支
+3. 提交更改
+4. 推送到分支
+5. 创建 Pull Request
+
+## 📄 许可证
+
+本项目采用 MIT 许可证。
+
+## 🛟 支持
+
+如有问题，请：
+- 查看 [本地开发指南](docs/local-development.md)
+- 提交 GitHub Issue
+- 查看 Cloudflare Workers 文档
+
+---
+
+使用 ❤️ 和 React Router 构建。

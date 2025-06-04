@@ -1,12 +1,14 @@
-node_modules
+.DS_Store
+/node_modules/
+*.tsbuildinfo
 
-/.idea
+# React Router
+/.react-router/
+/build/
 
-/.cache
-/build
-.env
-.dev.vars
-
+# Cloudflare
+.mf
 .wrangler
-drizzle.config.ts
+.dev.vars*
 
+wrangler.jsonc

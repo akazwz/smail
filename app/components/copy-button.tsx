@@ -1,28 +1,48 @@
-import { CheckIcon, ClipboardIcon } from "lucide-react";
+import type { VariantProps } from "class-variance-authority";
+import { CheckIcon, CopyIcon, XIcon } from "lucide-react";
 import { useState } from "react";
-import { Button } from "~/components/ui/button";
 
-export function CopyButton({ content }: { content: string }) {
-	const [status, setStatus] = useState<"idle" | "copied">("idle");
+import { Button, type buttonVariants } from "~/components/ui/button";
+
+interface CopyButtonProps extends VariantProps<typeof buttonVariants> {
+	text: string;
+	className?: string;
+}
+
+export function CopyButton({ text, ...props }: CopyButtonProps) {
 	const icons = {
-		idle: <ClipboardIcon strokeWidth="1.5px" />,
-		copied: <CheckIcon strokeWidth="1.5px" />,
+		idle: <CopyIcon />,
+		success: <CheckIcon className="text-green-500" />,
+		error: <XIcon className="text-red-500" />,
 	};
-
-	async function copy() {
-		try {
-			await navigator.clipboard.writeText(content);
-			setStatus("copied");
-		} catch (error) {
-			console.error(error);
-		} finally {
-			setTimeout(() => setStatus("idle"), 1000);
-		}
-	}
-
+	const texts = {
+		idle: "复制地址",
+		success: "复制成功",
+		error: "复制失败",
+	};
+	const [icon, setIcon] = useState<keyof typeof icons>("idle");
 	return (
-		<Button variant="secondary" onClick={copy}>
-			{icons[status]}
+		<Button
+			variant="outline"
+			onClick={() => {
+				navigator.clipboard
+					.writeText(text)
+					.then(() => {
+						setIcon("success");
+					})
+					.catch(() => {
+						setIcon("error");
+					})
+					.finally(() => {
+						setTimeout(() => {
+							setIcon("idle");
+						}, 2000);
+					});
+			}}
+			{...props}
+		>
+			{icons[icon]}
+			<span>{texts[icon]}</span>
 		</Button>
 	);
 }

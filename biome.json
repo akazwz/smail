@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.2/schema.json",
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
 	"vcs": {
 		"enabled": false,
 		"clientKind": "git",
@@ -7,7 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": [".wrangler", "build", "app/emails.json"]
+		"ignore": [".react-router", ".wrangler"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -22,12 +22,6 @@
 			"recommended": true,
 			"security": {
 				"noDangerouslySetInnerHtml": "off"
-			},
-			"suspicious": {
-				"noArrayIndexKey": "off"
-			},
-			"correctness": {
-				"useJsxKeyInIterable": "off"
 			}
 		}
 	},

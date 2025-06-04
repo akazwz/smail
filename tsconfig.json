@@ -1,36 +1,18 @@
 {
-	"include": [
-		"**/*.ts",
-		"**/*.tsx",
-		"**/.server/**/*.ts",
-		"**/.server/**/*.tsx",
-		"**/.client/**/*.ts",
-		"**/.client/**/*.tsx"
+	"files": [],
+	"references": [
+		{ "path": "./tsconfig.node.json" },
+		{ "path": "./tsconfig.cloudflare.json" }
 	],
 	"compilerOptions": {
-		"lib": ["DOM", "DOM.Iterable", "ES2022"],
-		"types": [
-			"@remix-run/cloudflare",
-			"vite/client",
-			"@cloudflare/workers-types/2023-07-01"
-		],
-		"isolatedModules": true,
-		"esModuleInterop": true,
-		"jsx": "react-jsx",
-		"module": "ESNext",
-		"moduleResolution": "Bundler",
-		"resolveJsonModule": true,
-		"target": "ES2022",
-		"strict": true,
-		"allowJs": true,
+		"checkJs": true,
+		"verbatimModuleSyntax": true,
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"noEmit": true,
 		"baseUrl": ".",
 		"paths": {
 			"~/*": ["./app/*"]
-		},
-
-		// Vite takes care of building everything, not tsc.
-		"noEmit": true
+		}
 	}
 }
