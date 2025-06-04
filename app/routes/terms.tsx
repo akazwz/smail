@@ -59,7 +59,7 @@ export default function Terms() {
 						使用Smail服务前，请仔细阅读以下服务条款
 					</p>
 					<p className="text-sm text-gray-500 mt-4">
-						最后更新时间：2024年1月15日
+						最后更新时间：2025年1月15日
 					</p>
 				</div>
 			</section>

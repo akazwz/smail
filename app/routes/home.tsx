@@ -434,7 +434,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 						</div>
 					</div>
 					<div className="border-t mt-8 pt-8 text-center text-gray-500 text-sm">
-						<p>&copy; 2024 Smail. 保留所有权利。</p>
+						<p>&copy; 2025 Smail. 保留所有权利。</p>
 					</div>
 				</div>
 			</footer>

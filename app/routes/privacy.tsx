@@ -59,7 +59,7 @@ export default function Privacy() {
 						我们承诺保护您的隐私，以下是我们的隐私保护政策
 					</p>
 					<p className="text-sm text-gray-500 mt-4">
-						最后更新时间：2024年1月15日
+						最后更新时间：2025年1月15日
 					</p>
 				</div>
 			</section>
