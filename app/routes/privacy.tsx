@@ -26,20 +26,20 @@ export default function Privacy() {
 		<div className="min-h-dvh bg-gray-50">
 			{/* Header */}
 			<header className="bg-white border-b">
-				<div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+				<div className="max-w-screen-xl mx-auto px-3 sm:px-4 py-4 flex items-center justify-between">
 					<Button asChild variant="ghost" size="sm">
 						<Link to="/">
 							<span className="font-bold text-xl">Smail</span>
 						</Link>
 					</Button>
-					<nav className="flex items-center gap-4">
-						<Button asChild variant="ghost" size="sm">
+					<nav className="flex items-center gap-1 sm:gap-4">
+						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
 							<Link to="/about">关于我们</Link>
 						</Button>
-						<Button asChild variant="ghost" size="sm">
+						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
 							<Link to="/faq">FAQ</Link>
 						</Button>
-						<Button asChild>
+						<Button asChild className="text-xs sm:text-sm px-2 sm:px-4">
 							<Link to="/">开始使用</Link>
 						</Button>
 					</nav>
@@ -47,27 +47,27 @@ export default function Privacy() {
 			</header>
 
 			{/* Hero Section */}
-			<section className="py-16 bg-white">
-				<div className="max-w-4xl mx-auto px-4 text-center">
-					<div className="flex justify-center mb-6">
-						<div className="bg-blue-100 p-4 rounded-full">
-							<ShieldIcon className="w-8 h-8 text-blue-600" />
+			<section className="py-8 sm:py-16 bg-white">
+				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4 text-center">
+					<div className="flex justify-center mb-4 sm:mb-6">
+						<div className="bg-blue-100 p-3 sm:p-4 rounded-full">
+							<ShieldIcon className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
 						</div>
 					</div>
-					<h1 className="text-4xl font-bold text-gray-900 mb-4">隐私政策</h1>
-					<p className="text-xl text-gray-600 max-w-2xl mx-auto">
+					<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">隐私政策</h1>
+					<p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-3 sm:mb-4">
 						我们承诺保护您的隐私，以下是我们的隐私保护政策
 					</p>
-					<p className="text-sm text-gray-500 mt-4">
+					<p className="text-sm text-gray-500">
 						最后更新时间：2025年1月15日
 					</p>
 				</div>
 			</section>
 
 			{/* Privacy Content */}
-			<section className="py-16">
-				<div className="max-w-4xl mx-auto px-4">
-					<div className="space-y-8">
+			<section className="py-8 sm:py-16">
+				<div className="max-w-screen-lg mx-auto px-3 sm:px-4">
+					<div className="space-y-6 sm:space-y-8">
 						<Card>
 							<CardHeader>
 								<CardTitle>信息收集</CardTitle>
@@ -287,19 +287,19 @@ export default function Privacy() {
 			</section>
 
 			{/* CTA Section */}
-			<section className="py-16 bg-white">
-				<div className="max-w-4xl mx-auto px-4 text-center">
-					<h2 className="text-3xl font-bold text-gray-900 mb-4">
+			<section className="py-8 sm:py-16 bg-white">
+				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4 text-center">
+					<h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
 						放心使用我们的服务
 					</h2>
-					<p className="text-lg text-gray-600 mb-8">
+					<p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
 						我们承诺保护您的隐私，让您安心使用临时邮箱服务
 					</p>
-					<div className="flex flex-col sm:flex-row gap-4 justify-center">
-						<Button asChild size="lg">
+					<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+						<Button asChild size="lg" className="text-sm sm:text-base">
 							<Link to="/">开始使用</Link>
 						</Button>
-						<Button asChild variant="outline" size="lg">
+						<Button asChild variant="outline" size="lg" className="text-sm sm:text-base">
 							<Link to="/contact">联系我们</Link>
 						</Button>
 					</div>

@@ -89,20 +89,20 @@ export default function FAQ() {
 		<div className="min-h-dvh bg-gray-50">
 			{/* Header */}
 			<header className="bg-white border-b">
-				<div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+				<div className="max-w-screen-xl mx-auto px-3 sm:px-4 py-4 flex items-center justify-between">
 					<Button asChild variant="ghost" size="sm">
 						<Link to="/">
 							<span className="font-bold text-xl">Smail</span>
 						</Link>
 					</Button>
-					<nav className="flex items-center gap-4">
-						<Button asChild variant="ghost" size="sm">
+					<nav className="flex items-center gap-1 sm:gap-4">
+						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
 							<Link to="/about">关于我们</Link>
 						</Button>
-						<Button asChild variant="ghost" size="sm">
+						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
 							<Link to="/contact">联系我们</Link>
 						</Button>
-						<Button asChild>
+						<Button asChild className="text-xs sm:text-sm px-2 sm:px-4">
 							<Link to="/">开始使用</Link>
 						</Button>
 					</nav>
@@ -110,34 +110,34 @@ export default function FAQ() {
 			</header>
 
 			{/* Hero Section */}
-			<section className="py-16 bg-white">
-				<div className="max-w-4xl mx-auto px-4 text-center">
-					<div className="flex justify-center mb-6">
-						<div className="bg-blue-100 p-4 rounded-full">
-							<HelpCircleIcon className="w-8 h-8 text-blue-600" />
+			<section className="py-8 sm:py-16 bg-white">
+				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4 text-center">
+					<div className="flex justify-center mb-4 sm:mb-6">
+						<div className="bg-blue-100 p-3 sm:p-4 rounded-full">
+							<HelpCircleIcon className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
 						</div>
 					</div>
-					<h1 className="text-4xl font-bold text-gray-900 mb-4">常见问题</h1>
-					<p className="text-xl text-gray-600 max-w-2xl mx-auto">
+					<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">常见问题</h1>
+					<p className="text-base sm:text-lg lg:text-xl text-gray-600">
 						找到您关于Smail临时邮箱服务的答案
 					</p>
 				</div>
 			</section>
 
 			{/* FAQ Section */}
-			<section className="py-16">
-				<div className="max-w-4xl mx-auto px-4">
-					<div className="space-y-4">
+			<section className="py-8 sm:py-16">
+				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4">
+					<div className="space-y-3 sm:space-y-4">
 						{faqs.map((faq) => (
 							<Card key={faq.id} className="hover:shadow-md transition-shadow">
-								<CardHeader>
-									<CardTitle className="flex items-center justify-between text-left">
-										<span>{faq.question}</span>
-										<ChevronDownIcon className="w-5 h-5 text-gray-400" />
+								<CardHeader className="pb-2 sm:pb-4">
+									<CardTitle className="flex items-center justify-between text-left text-sm sm:text-base lg:text-lg">
+										<span className="pr-2">{faq.question}</span>
+										<ChevronDownIcon className="w-4 sm:w-5 h-4 sm:h-5 text-gray-400 flex-shrink-0" />
 									</CardTitle>
 								</CardHeader>
-								<CardContent>
-									<CardDescription className="text-gray-600 text-base leading-relaxed">
+								<CardContent className="pt-0">
+									<CardDescription className="text-gray-600 text-sm sm:text-base leading-relaxed">
 										{faq.answer}
 									</CardDescription>
 								</CardContent>
@@ -148,19 +148,19 @@ export default function FAQ() {
 			</section>
 
 			{/* Help Section */}
-			<section className="py-16 bg-white">
-				<div className="max-w-4xl mx-auto px-4 text-center">
-					<h2 className="text-3xl font-bold text-gray-900 mb-4">
+			<section className="py-8 sm:py-16 bg-white">
+				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4 text-center">
+					<h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
 						还有其他问题？
 					</h2>
-					<p className="text-lg text-gray-600 mb-8">
+					<p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
 						如果您没有找到想要的答案，请随时联系我们
 					</p>
-					<div className="flex flex-col sm:flex-row gap-4 justify-center">
-						<Button asChild variant="outline" size="lg">
+					<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+						<Button asChild variant="outline" size="lg" className="text-sm sm:text-base">
 							<Link to="/contact">联系客服</Link>
 						</Button>
-						<Button asChild size="lg">
+						<Button asChild size="lg" className="text-sm sm:text-base">
 							<Link to="/">立即使用</Link>
 						</Button>
 					</div>
@@ -168,36 +168,36 @@ export default function FAQ() {
 			</section>
 
 			{/* Quick Start */}
-			<section className="py-16 bg-blue-50">
-				<div className="max-w-4xl mx-auto px-4">
-					<h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+			<section className="py-8 sm:py-16 bg-blue-50">
+				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl mx-auto px-3 sm:px-4">
+					<h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-center text-gray-900 mb-8 sm:mb-12">
 						快速开始使用
 					</h2>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
 						<div className="text-center">
-							<div className="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+							<div className="bg-blue-600 text-white w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl font-bold">
 								1
 							</div>
-							<h3 className="text-xl font-semibold mb-2">访问主页</h3>
-							<p className="text-gray-600">
+							<h3 className="text-lg sm:text-xl font-semibold mb-2">访问主页</h3>
+							<p className="text-gray-600 text-sm sm:text-base">
 								打开Smail主页，系统会自动为您生成临时邮箱
 							</p>
 						</div>
 						<div className="text-center">
-							<div className="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+							<div className="bg-blue-600 text-white w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl font-bold">
 								2
 							</div>
-							<h3 className="text-xl font-semibold mb-2">复制邮箱地址</h3>
-							<p className="text-gray-600">
+							<h3 className="text-lg sm:text-xl font-semibold mb-2">复制邮箱地址</h3>
+							<p className="text-gray-600 text-sm sm:text-base">
 								点击复制按钮，将临时邮箱地址用于注册或验证
 							</p>
 						</div>
 						<div className="text-center">
-							<div className="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+							<div className="bg-blue-600 text-white w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl font-bold">
 								3
 							</div>
-							<h3 className="text-xl font-semibold mb-2">接收邮件</h3>
-							<p className="text-gray-600">
+							<h3 className="text-lg sm:text-xl font-semibold mb-2">接收邮件</h3>
+							<p className="text-gray-600 text-sm sm:text-base">
 								刷新页面即可查看收到的邮件，点击可查看详情
 							</p>
 						</div>

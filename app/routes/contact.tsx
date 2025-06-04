@@ -57,20 +57,20 @@ export default function Contact({ loaderData }: ComponentProps) {
 		<div className="min-h-dvh bg-gray-50">
 			{/* Header */}
 			<header className="bg-white border-b">
-				<div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+				<div className="max-w-screen-xl mx-auto px-3 sm:px-4 py-4 flex items-center justify-between">
 					<Button asChild variant="ghost" size="sm">
 						<Link to="/">
 							<span className="font-bold text-xl">Smail</span>
 						</Link>
 					</Button>
-					<nav className="flex items-center gap-4">
-						<Button asChild variant="ghost" size="sm">
+					<nav className="flex items-center gap-1 sm:gap-4">
+						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
 							<Link to="/about">关于我们</Link>
 						</Button>
-						<Button asChild variant="ghost" size="sm">
+						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
 							<Link to="/faq">FAQ</Link>
 						</Button>
-						<Button asChild>
+						<Button asChild className="text-xs sm:text-sm px-2 sm:px-4">
 							<Link to="/">开始使用</Link>
 						</Button>
 					</nav>
@@ -78,30 +78,30 @@ export default function Contact({ loaderData }: ComponentProps) {
 			</header>
 
 			{/* Hero Section */}
-			<section className="py-16 bg-white">
-				<div className="max-w-4xl mx-auto px-4 text-center">
-					<div className="flex justify-center mb-6">
-						<div className="bg-blue-100 p-4 rounded-full">
-							<MessageCircleIcon className="w-8 h-8 text-blue-600" />
+			<section className="py-8 sm:py-16 bg-white">
+				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4 text-center">
+					<div className="flex justify-center mb-4 sm:mb-6">
+						<div className="bg-blue-100 p-3 sm:p-4 rounded-full">
+							<MessageCircleIcon className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
 						</div>
 					</div>
-					<h1 className="text-4xl font-bold text-gray-900 mb-4">联系我们</h1>
-					<p className="text-xl text-gray-600 max-w-2xl mx-auto">
+					<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">联系我们</h1>
+					<p className="text-base sm:text-lg lg:text-xl text-gray-600">
 						有问题或建议？我们很乐意听取您的意见
 					</p>
 				</div>
 			</section>
 
 			{success && (
-				<section className="py-8">
-					<div className="max-w-4xl mx-auto px-4">
+				<section className="py-4 sm:py-8">
+					<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4">
 						<Card className="bg-green-50 border-green-200">
-							<CardContent className="pt-6">
+							<CardContent className="pt-4 sm:pt-6">
 								<div className="text-center">
-									<h3 className="text-lg font-semibold text-green-800 mb-2">
+									<h3 className="text-base sm:text-lg font-semibold text-green-800 mb-2">
 										消息发送成功！
 									</h3>
-									<p className="text-green-600">
+									<p className="text-green-600 text-sm sm:text-base">
 										感谢您的反馈，我们会尽快回复您的消息。
 									</p>
 								</div>
@@ -112,15 +112,15 @@ export default function Contact({ loaderData }: ComponentProps) {
 			)}
 
 			{/* Contact Form & Info */}
-			<section className="py-16">
-				<div className="max-w-6xl mx-auto px-4">
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+			<section className="py-8 sm:py-16">
+				<div className="max-w-screen-xl mx-auto px-3 sm:px-4">
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
 						{/* Contact Form */}
 						<div>
 							<Card>
 								<CardHeader>
-									<CardTitle>发送消息</CardTitle>
-									<CardDescription>
+									<CardTitle className="text-lg sm:text-xl">发送消息</CardTitle>
+									<CardDescription className="text-sm sm:text-base">
 										填写下面的表单，我们会尽快回复您
 									</CardDescription>
 								</CardHeader>
@@ -139,7 +139,7 @@ export default function Contact({ loaderData }: ComponentProps) {
 													id="name"
 													name="name"
 													required
-													className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+													className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
 													placeholder="请输入您的姓名"
 												/>
 											</div>
@@ -155,7 +155,7 @@ export default function Contact({ loaderData }: ComponentProps) {
 													id="email"
 													name="email"
 													required
-													className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+													className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
 													placeholder="请输入您的邮箱"
 												/>
 											</div>
@@ -171,7 +171,7 @@ export default function Contact({ loaderData }: ComponentProps) {
 												id="subject"
 												name="subject"
 												required
-												className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+												className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
 											>
 												<option value="">请选择主题</option>
 												<option value="bug">问题反馈</option>
@@ -193,11 +193,11 @@ export default function Contact({ loaderData }: ComponentProps) {
 												name="message"
 												required
 												rows={6}
-												className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+												className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
 												placeholder="请详细描述您的问题或建议..."
 											/>
 										</div>
-										<Button type="submit" className="w-full">
+										<Button type="submit" className="w-full text-sm sm:text-base">
 											发送消息
 										</Button>
 									</Form>
@@ -207,21 +207,21 @@ export default function Contact({ loaderData }: ComponentProps) {
 
 						{/* Contact Info */}
 						<div>
-							<div className="space-y-6">
+							<div className="space-y-4 sm:space-y-6">
 								<Card>
 									<CardHeader>
-										<CardTitle className="flex items-center gap-2">
-											<MailIcon className="w-5 h-5 text-blue-600" />
+										<CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+											<MailIcon className="w-4 sm:w-5 h-4 sm:h-5 text-blue-600" />
 											邮箱联系
 										</CardTitle>
 									</CardHeader>
 									<CardContent>
-										<p className="text-gray-600 mb-2">
+										<p className="text-gray-600 mb-2 text-sm sm:text-base">
 											您也可以直接发送邮件给我们：
 										</p>
 										<a
 											href="mailto:support@smail.pw"
-											className="text-blue-600 font-medium hover:underline"
+											className="text-blue-600 font-medium hover:underline text-sm sm:text-base break-all"
 										>
 											support@smail.pw
 										</a>
@@ -230,13 +230,13 @@ export default function Contact({ loaderData }: ComponentProps) {
 
 								<Card>
 									<CardHeader>
-										<CardTitle className="flex items-center gap-2">
-											<ClockIcon className="w-5 h-5 text-green-600" />
+										<CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+											<ClockIcon className="w-4 sm:w-5 h-4 sm:h-5 text-green-600" />
 											响应时间
 										</CardTitle>
 									</CardHeader>
 									<CardContent>
-										<div className="space-y-2">
+										<div className="space-y-2 text-sm sm:text-base">
 											<div className="flex justify-between">
 												<span className="text-gray-600">一般问题：</span>
 												<span className="font-medium">24小时内</span>
@@ -255,13 +255,13 @@ export default function Contact({ loaderData }: ComponentProps) {
 
 								<Card>
 									<CardHeader>
-										<CardTitle>常见问题</CardTitle>
+										<CardTitle className="text-lg sm:text-xl">常见问题</CardTitle>
 									</CardHeader>
 									<CardContent>
-										<p className="text-gray-600 mb-4">
+										<p className="text-gray-600 mb-4 text-sm sm:text-base">
 											在联系我们之前，您可以先查看我们的常见问题页面，也许能找到您要的答案。
 										</p>
-										<Button asChild variant="outline" className="w-full">
+										<Button asChild variant="outline" className="w-full text-sm sm:text-base">
 											<Link to="/faq">查看 FAQ</Link>
 										</Button>
 									</CardContent>
@@ -273,51 +273,51 @@ export default function Contact({ loaderData }: ComponentProps) {
 			</section>
 
 			{/* Additional Help */}
-			<section className="py-16 bg-white">
-				<div className="max-w-4xl mx-auto px-4 text-center">
-					<h2 className="text-3xl font-bold text-gray-900 mb-4">
+			<section className="py-8 sm:py-16 bg-white">
+				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-2xl mx-auto px-3 sm:px-4 text-center">
+					<h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
 						其他获取帮助的方式
 					</h2>
-					<p className="text-lg text-gray-600 mb-8">
+					<p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
 						我们提供多种方式来为您提供支持
 					</p>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
 						<Card className="text-center">
-							<CardContent className="pt-6">
-								<div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-									<MessageCircleIcon className="w-8 h-8 text-blue-600" />
+							<CardContent className="pt-4 sm:pt-6">
+								<div className="bg-blue-100 w-12 sm:w-14 lg:w-16 h-12 sm:h-14 lg:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+									<MessageCircleIcon className="w-6 sm:w-7 lg:w-8 h-6 sm:h-7 lg:h-8 text-blue-600" />
 								</div>
-								<h3 className="text-xl font-semibold mb-2">在线文档</h3>
-								<p className="text-gray-600 mb-4">
+								<h3 className="text-lg sm:text-xl font-semibold mb-2">在线文档</h3>
+								<p className="text-gray-600 mb-4 text-sm sm:text-base">
 									查看详细的使用说明和帮助文档
 								</p>
-								<Button variant="outline" size="sm">
+								<Button variant="outline" size="sm" className="text-xs sm:text-sm">
 									查看文档
 								</Button>
 							</CardContent>
 						</Card>
 						<Card className="text-center">
-							<CardContent className="pt-6">
-								<div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-									<MailIcon className="w-8 h-8 text-green-600" />
+							<CardContent className="pt-4 sm:pt-6">
+								<div className="bg-green-100 w-12 sm:w-14 lg:w-16 h-12 sm:h-14 lg:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+									<MailIcon className="w-6 sm:w-7 lg:w-8 h-6 sm:h-7 lg:h-8 text-green-600" />
 								</div>
-								<h3 className="text-xl font-semibold mb-2">邮件支持</h3>
-								<p className="text-gray-600 mb-4">发送邮件给我们的支持团队</p>
-								<Button variant="outline" size="sm">
+								<h3 className="text-lg sm:text-xl font-semibold mb-2">邮件支持</h3>
+								<p className="text-gray-600 mb-4 text-sm sm:text-base">发送邮件给我们的支持团队</p>
+								<Button variant="outline" size="sm" className="text-xs sm:text-sm">
 									发送邮件
 								</Button>
 							</CardContent>
 						</Card>
 						<Card className="text-center">
-							<CardContent className="pt-6">
-								<div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-									<ClockIcon className="w-8 h-8 text-purple-600" />
+							<CardContent className="pt-4 sm:pt-6">
+								<div className="bg-purple-100 w-12 sm:w-14 lg:w-16 h-12 sm:h-14 lg:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+									<ClockIcon className="w-6 sm:w-7 lg:w-8 h-6 sm:h-7 lg:h-8 text-purple-600" />
 								</div>
-								<h3 className="text-xl font-semibold mb-2">快速响应</h3>
-								<p className="text-gray-600 mb-4">
+								<h3 className="text-lg sm:text-xl font-semibold mb-2">快速响应</h3>
+								<p className="text-gray-600 mb-4 text-sm sm:text-base">
 									我们承诺在24小时内回复您的问题
 								</p>
-								<Button variant="outline" size="sm">
+								<Button variant="outline" size="sm" className="text-xs sm:text-sm">
 									了解更多
 								</Button>
 							</CardContent>
