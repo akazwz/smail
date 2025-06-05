@@ -1,4 +1,4 @@
-import { Github, Mail, MessageSquare, Shield } from "lucide-react";
+import { Github, Mail, MessageSquare, Shield, Twitter } from "lucide-react";
 import { Link } from "react-router";
 
 export function Footer() {
@@ -32,11 +32,20 @@ export function Footer() {
 								<MessageSquare className="h-5 w-5" />
 							</Link>
 							<a
-								href="https://github.com/smail-pw"
+								href="https://github.com/akazwz/smail"
 								className="text-gray-400 hover:text-blue-400 transition-colors"
 								aria-label="GitHub"
 							>
 								<Github className="h-5 w-5" />
+							</a>
+							<a
+								href="https://twitter.com/akazwz_"
+								className="text-gray-400 hover:text-blue-400 transition-colors"
+								aria-label="Twitter"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<Twitter className="h-5 w-5" />
 							</a>
 							<Link
 								to="/privacy"
