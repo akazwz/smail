@@ -288,8 +288,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 									{/* Tips */}
 									<div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
 										<div className="flex items-start gap-3">
-											<div className="bg-blue-600 rounded-full p-1 flex-shrink-0 mt-0.5">
-												<span className="text-white text-xs">💡</span>
+											<div className="bg-blue-600 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
+												<span className="text-white text-sm">💡</span>
 											</div>
 											<div className="text-sm">
 												<p className="font-semibold text-blue-800 mb-1">使用提示</p>
