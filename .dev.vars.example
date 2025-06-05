@@ -1,0 +1,6 @@
+# 本地开发环境变量配置示例
+# 复制此文件为 .dev.vars 并填入实际值
+
+# Session 密钥 - 用于用户会话加密
+# 使用以下命令生成：openssl rand -base64 32
+SESSION_SECRET=your_session_secret_here_use_openssl_rand_base64_32_to_generate 

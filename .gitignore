@@ -9,6 +9,6 @@
 # Cloudflare
 .mf
 .wrangler
-.dev.vars*
+.dev.vars
 
 wrangler.jsonc

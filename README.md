@@ -29,6 +29,23 @@
 pnpm install
 ```
 
+### 配置环境变量
+
+复制环境变量示例文件并配置：
+
+```bash
+cp .dev.vars.example .dev.vars
+```
+
+编辑 `.dev.vars` 文件，设置必要的环境变量：
+
+```bash
+# 生成 Session 密钥
+openssl rand -base64 32
+
+# 将生成的密钥填入 .dev.vars 文件中的 SESSION_SECRET
+```
+
 ### 设置数据库
 
 ```bash
