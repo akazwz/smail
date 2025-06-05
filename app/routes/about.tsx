@@ -55,7 +55,10 @@ export default function About() {
 			<section className="py-10 sm:py-16 lg:py-20">
 				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4 text-center">
 					<h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-800 mb-4 sm:mb-6">
-						关于 <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Smail</span>
+						关于{" "}
+						<span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+							Smail
+						</span>
 					</h1>
 					<p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8">
 						Smail

@@ -17,7 +17,13 @@ import { Footer } from "~/components/Footer";
 import { MailItem } from "~/components/mail-item";
 import { Navigation } from "~/components/Navigation";
 import { Button } from "~/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "~/components/ui/card";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import {
 	createDB,
@@ -228,9 +234,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 										<div className="bg-blue-600 rounded-lg p-2">
 											<Mail className="h-5 w-5 text-white" />
 										</div>
-										<span className="text-gray-800">
-											您的临时邮箱地址
-										</span>
+										<span className="text-gray-800">您的临时邮箱地址</span>
 									</CardTitle>
 									<div className="flex flex-wrap items-center gap-2 text-sm">
 										<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -248,7 +252,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 									{/* 邮箱地址显示区域 */}
 									<div className="bg-gray-50 rounded-lg p-4 border border-gray-200 mb-6">
 										<div className="text-center">
-											<p className="text-xs text-gray-500 mb-2 font-medium">您的专属邮箱地址</p>
+											<p className="text-xs text-gray-500 mb-2 font-medium">
+												您的专属邮箱地址
+											</p>
 											<span className="font-mono text-base sm:text-lg font-bold text-gray-900 tracking-wide select-all break-all block">
 												{loaderData.email}
 											</span>
@@ -292,7 +298,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 												<span className="text-white text-sm">💡</span>
 											</div>
 											<div className="text-sm">
-												<p className="font-semibold text-blue-800 mb-1">使用提示</p>
+												<p className="font-semibold text-blue-800 mb-1">
+													使用提示
+												</p>
 												<p className="text-blue-700 leading-relaxed">
 													发送邮件到此地址即可在右侧收件箱查看，邮箱24小时后自动过期。收件箱每10秒自动刷新检查新邮件。
 												</p>
@@ -363,7 +371,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 												<h3 className="text-lg font-semibold mb-2 text-center">
 													收件箱为空
 												</h3>
-												<p className="text-sm text-center">您还没有收到任何邮件</p>
+												<p className="text-sm text-center">
+													您还没有收到任何邮件
+												</p>
 												<p className="text-xs text-gray-400 mt-2 text-center break-all">
 													发送邮件到 {loaderData.email} 来测试
 												</p>
