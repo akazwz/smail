@@ -222,40 +222,36 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 						{/* 左侧：邮箱地址 */}
 						<div className="space-y-6">
 							{/* 邮箱地址卡片 */}
-							<Card className="border-0 shadow-xl bg-gradient-to-br from-white to-blue-50/50 h-full">
+							<Card className="border-0 shadow-lg bg-white h-full">
 								<CardHeader className="pb-4">
 									<CardTitle className="flex items-center space-x-2 text-xl">
-										<div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg p-2">
+										<div className="bg-blue-600 rounded-lg p-2">
 											<Mail className="h-5 w-5 text-white" />
 										</div>
-										<span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+										<span className="text-gray-800">
 											您的临时邮箱地址
 										</span>
 									</CardTitle>
 									<div className="flex flex-wrap items-center gap-2 text-sm">
-										<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+										<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
 											✓ 24小时有效
 										</span>
 										<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
 											⚡ 自动刷新
 										</span>
-										<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+										<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
 											🎁 完全免费
 										</span>
 									</div>
 								</CardHeader>
 								<CardContent>
 									{/* 邮箱地址显示区域 */}
-									<div className="relative bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl p-[2px] mb-6">
-										<div className="bg-white rounded-[10px] p-4">
-											<div className="text-center">
-												<p className="text-xs text-gray-500 mb-2 font-medium">您的专属邮箱地址</p>
-												<div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
-													<span className="font-mono text-base sm:text-lg font-bold text-gray-900 tracking-wide select-all break-all block">
-														{loaderData.email}
-													</span>
-												</div>
-											</div>
+									<div className="bg-gray-50 rounded-lg p-4 border border-gray-200 mb-6">
+										<div className="text-center">
+											<p className="text-xs text-gray-500 mb-2 font-medium">您的专属邮箱地址</p>
+											<span className="font-mono text-base sm:text-lg font-bold text-gray-900 tracking-wide select-all break-all block">
+												{loaderData.email}
+											</span>
 										</div>
 									</div>
 
@@ -265,7 +261,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 											text={loaderData.email}
 											size="default"
 											variant="default"
-											className="w-full h-10 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-md hover:shadow-lg transition-all"
+											className="w-full h-10 bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg transition-all"
 										/>
 										<Form method="post" className="w-full">
 											<Button
@@ -290,9 +286,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 									</div>
 
 									{/* Tips */}
-									<div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-4 border border-blue-200/50">
+									<div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
 										<div className="flex items-start gap-3">
-											<div className="bg-blue-500 rounded-full p-1 flex-shrink-0 mt-0.5">
+											<div className="bg-blue-600 rounded-full p-1 flex-shrink-0 mt-0.5">
 												<span className="text-white text-xs">💡</span>
 											</div>
 											<div className="text-sm">
