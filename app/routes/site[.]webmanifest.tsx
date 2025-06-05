@@ -15,16 +15,28 @@ export function loader(_: LoaderFunctionArgs) {
 		categories: ["productivity", "utilities"],
 		icons: [
 			{
-				src: "/android-chrome-192x192.png",
+				src: "/icon-192.png",
 				sizes: "192x192",
 				type: "image/png",
-				purpose: "maskable any",
+				purpose: "any",
 			},
 			{
-				src: "/android-chrome-512x512.png",
+				src: "/icon-512.png",
 				sizes: "512x512",
 				type: "image/png",
-				purpose: "maskable any",
+				purpose: "any",
+			},
+			{
+				src: "/icon-192-maskable.png",
+				sizes: "192x192",
+				type: "image/png",
+				purpose: "maskable",
+			},
+			{
+				src: "/icon-512-maskable.png",
+				sizes: "512x512",
+				type: "image/png",
+				purpose: "maskable",
 			},
 		],
 		shortcuts: [
@@ -35,7 +47,7 @@ export function loader(_: LoaderFunctionArgs) {
 				url: "/?action=new",
 				icons: [
 					{
-						src: "/android-chrome-192x192.png",
+						src: "/icon-192.png",
 						sizes: "192x192",
 						type: "image/png",
 					},

@@ -1,5 +1,7 @@
 import { CheckCircleIcon, GlobeIcon, ShieldIcon, ZapIcon } from "lucide-react";
 import { Link } from "react-router";
+import { Footer } from "~/components/Footer";
+import { Navigation } from "~/components/Navigation";
 import { Button } from "~/components/ui/button";
 import {
 	Card,
@@ -46,44 +48,14 @@ export default function About() {
 	];
 
 	return (
-		<div className="min-h-dvh bg-gradient-to-br from-blue-50 to-indigo-100">
-			{/* Header */}
-			<header className="bg-white border-b">
-				<div className="max-w-screen-xl mx-auto px-3 sm:px-4 py-4 flex items-center justify-between">
-					<Button asChild variant="ghost" size="sm">
-						<Link to="/">
-							<span className="font-bold text-xl">Smail</span>
-						</Link>
-					</Button>
-					<nav className="flex items-center gap-1 sm:gap-4">
-						<Button
-							asChild
-							variant="ghost"
-							size="sm"
-							className="text-xs sm:text-sm px-2 sm:px-4"
-						>
-							<Link to="/faq">FAQ</Link>
-						</Button>
-						<Button
-							asChild
-							variant="ghost"
-							size="sm"
-							className="text-xs sm:text-sm px-2 sm:px-4"
-						>
-							<Link to="/contact">联系我们</Link>
-						</Button>
-						<Button asChild className="text-xs sm:text-sm px-2 sm:px-4">
-							<Link to="/">开始使用</Link>
-						</Button>
-					</nav>
-				</div>
-			</header>
+		<div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-50">
+			<Navigation currentPath="/about" />
 
 			{/* Hero Section */}
 			<section className="py-10 sm:py-16 lg:py-20">
 				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4 text-center">
-					<h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
-						关于 <span className="text-blue-600">Smail</span>
+					<h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-800 mb-4 sm:mb-6">
+						关于 <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Smail</span>
 					</h1>
 					<p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8">
 						Smail
@@ -197,67 +169,7 @@ export default function About() {
 				</div>
 			</section>
 
-			{/* Footer */}
-			<footer className="bg-gray-900 text-white py-8 sm:py-12">
-				<div className="max-w-screen-xl mx-auto px-3 sm:px-4">
-					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-						<div className="sm:col-span-2 md:col-span-1">
-							<h3 className="text-lg sm:text-xl font-bold mb-4">Smail</h3>
-							<p className="text-gray-400 text-sm sm:text-base">
-								免费、安全、易用的临时邮箱服务
-							</p>
-						</div>
-						<div>
-							<h4 className="font-semibold mb-4 text-sm sm:text-base">服务</h4>
-							<ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-								<li>
-									<Link to="/" className="hover:text-white">
-										临时邮箱
-									</Link>
-								</li>
-								<li>
-									<Link to="/faq" className="hover:text-white">
-										常见问题
-									</Link>
-								</li>
-							</ul>
-						</div>
-						<div>
-							<h4 className="font-semibold mb-4 text-sm sm:text-base">公司</h4>
-							<ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-								<li>
-									<Link to="/about" className="hover:text-white">
-										关于我们
-									</Link>
-								</li>
-								<li>
-									<Link to="/contact" className="hover:text-white">
-										联系我们
-									</Link>
-								</li>
-							</ul>
-						</div>
-						<div>
-							<h4 className="font-semibold mb-4 text-sm sm:text-base">法律</h4>
-							<ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-								<li>
-									<Link to="/privacy" className="hover:text-white">
-										隐私政策
-									</Link>
-								</li>
-								<li>
-									<Link to="/terms" className="hover:text-white">
-										服务条款
-									</Link>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div className="border-t border-gray-800 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center text-gray-400">
-						<p>&copy; 2025 Smail. 保留所有权利。</p>
-					</div>
-				</div>
-			</footer>
+			<Footer />
 		</div>
 	);
 }

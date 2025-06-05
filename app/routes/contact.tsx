@@ -1,5 +1,7 @@
 import { ClockIcon, MailIcon, MessageCircleIcon } from "lucide-react";
 import { Form, Link, data, redirect } from "react-router";
+import { Footer } from "~/components/Footer";
+import { Navigation } from "~/components/Navigation";
 import { Button } from "~/components/ui/button";
 import {
 	Card,
@@ -54,38 +56,8 @@ export default function Contact({ loaderData }: ComponentProps) {
 	const { success } = loaderData || { success: false };
 
 	return (
-		<div className="min-h-dvh bg-gray-50">
-			{/* Header */}
-			<header className="bg-white border-b">
-				<div className="max-w-screen-xl mx-auto px-3 sm:px-4 py-4 flex items-center justify-between">
-					<Button asChild variant="ghost" size="sm">
-						<Link to="/">
-							<span className="font-bold text-xl">Smail</span>
-						</Link>
-					</Button>
-					<nav className="flex items-center gap-1 sm:gap-4">
-						<Button
-							asChild
-							variant="ghost"
-							size="sm"
-							className="text-xs sm:text-sm px-2 sm:px-4"
-						>
-							<Link to="/about">关于我们</Link>
-						</Button>
-						<Button
-							asChild
-							variant="ghost"
-							size="sm"
-							className="text-xs sm:text-sm px-2 sm:px-4"
-						>
-							<Link to="/faq">FAQ</Link>
-						</Button>
-						<Button asChild className="text-xs sm:text-sm px-2 sm:px-4">
-							<Link to="/">开始使用</Link>
-						</Button>
-					</nav>
-				</div>
-			</header>
+		<div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-50">
+			<Navigation currentPath="/contact" />
 
 			{/* Hero Section */}
 			<section className="py-8 sm:py-16 bg-white">
@@ -95,8 +67,8 @@ export default function Contact({ loaderData }: ComponentProps) {
 							<MessageCircleIcon className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
 						</div>
 					</div>
-					<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-						联系我们
+					<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 sm:mb-4">
+						<span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">联系我们</span>
 					</h1>
 					<p className="text-base sm:text-lg lg:text-xl text-gray-600">
 						有问题或建议？我们很乐意听取您的意见
@@ -368,6 +340,8 @@ export default function Contact({ loaderData }: ComponentProps) {
 					</div>
 				</div>
 			</section>
+
+			<Footer />
 		</div>
 	);
 }

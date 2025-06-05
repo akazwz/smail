@@ -1,0 +1,19 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0891b2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded background with gradient -->
+  <rect width="32" height="32" rx="6" ry="6" fill="url(#bgGradient)" />
+  
+  <!-- Mail icon - exact lucide Mail icon -->
+  <g transform="translate(4, 4)" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Mail envelope body -->
+    <rect x="2" y="4" width="20" height="16" rx="2"/>
+    <!-- Mail envelope flap -->
+    <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+  </g>
+</svg> 
