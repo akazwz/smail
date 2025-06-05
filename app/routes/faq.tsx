@@ -96,10 +96,20 @@ export default function FAQ() {
 						</Link>
 					</Button>
 					<nav className="flex items-center gap-1 sm:gap-4">
-						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
+						<Button
+							asChild
+							variant="ghost"
+							size="sm"
+							className="text-xs sm:text-sm px-2 sm:px-4"
+						>
 							<Link to="/about">关于我们</Link>
 						</Button>
-						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
+						<Button
+							asChild
+							variant="ghost"
+							size="sm"
+							className="text-xs sm:text-sm px-2 sm:px-4"
+						>
 							<Link to="/contact">联系我们</Link>
 						</Button>
 						<Button asChild className="text-xs sm:text-sm px-2 sm:px-4">
@@ -117,7 +127,9 @@ export default function FAQ() {
 							<HelpCircleIcon className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
 						</div>
 					</div>
-					<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">常见问题</h1>
+					<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+						常见问题
+					</h1>
 					<p className="text-base sm:text-lg lg:text-xl text-gray-600">
 						找到您关于Smail临时邮箱服务的答案
 					</p>
@@ -157,7 +169,12 @@ export default function FAQ() {
 						如果您没有找到想要的答案，请随时联系我们
 					</p>
 					<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-						<Button asChild variant="outline" size="lg" className="text-sm sm:text-base">
+						<Button
+							asChild
+							variant="outline"
+							size="lg"
+							className="text-sm sm:text-base"
+						>
 							<Link to="/contact">联系客服</Link>
 						</Button>
 						<Button asChild size="lg" className="text-sm sm:text-base">
@@ -178,7 +195,9 @@ export default function FAQ() {
 							<div className="bg-blue-600 text-white w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl font-bold">
 								1
 							</div>
-							<h3 className="text-lg sm:text-xl font-semibold mb-2">访问主页</h3>
+							<h3 className="text-lg sm:text-xl font-semibold mb-2">
+								访问主页
+							</h3>
 							<p className="text-gray-600 text-sm sm:text-base">
 								打开Smail主页，系统会自动为您生成临时邮箱
 							</p>
@@ -187,7 +206,9 @@ export default function FAQ() {
 							<div className="bg-blue-600 text-white w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl font-bold">
 								2
 							</div>
-							<h3 className="text-lg sm:text-xl font-semibold mb-2">复制邮箱地址</h3>
+							<h3 className="text-lg sm:text-xl font-semibold mb-2">
+								复制邮箱地址
+							</h3>
 							<p className="text-gray-600 text-sm sm:text-base">
 								点击复制按钮，将临时邮箱地址用于注册或验证
 							</p>
@@ -196,7 +217,9 @@ export default function FAQ() {
 							<div className="bg-blue-600 text-white w-10 sm:w-12 h-10 sm:h-12 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl font-bold">
 								3
 							</div>
-							<h3 className="text-lg sm:text-xl font-semibold mb-2">接收邮件</h3>
+							<h3 className="text-lg sm:text-xl font-semibold mb-2">
+								接收邮件
+							</h3>
 							<p className="text-gray-600 text-sm sm:text-base">
 								刷新页面即可查看收到的邮件，点击可查看详情
 							</p>

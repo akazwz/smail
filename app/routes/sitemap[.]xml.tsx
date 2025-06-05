@@ -12,7 +12,7 @@ export function loader({ request }: LoaderFunctionArgs) {
 	const domain = `${protocol}://${host}`;
 
 	// 使用当前日期，ISO 8601格式
-	const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD格式
+	const currentDate = new Date().toISOString().split("T")[0]; // YYYY-MM-DD格式
 
 	// 网站主要页面 - 只包含实际存在的路由
 	const pages = [
@@ -71,9 +71,8 @@ ${pages
 	return new Response(sitemap, {
 		status: 200,
 		headers: {
-			"Content-Type": "application/xml; charset=utf-8",
-			"Cache-Control": "public, max-age=86400", // 缓存24小时
-			"X-Robots-Tag": "noindex", // sitemap本身不需要被索引
+			"Content-Type": "application/xml",
+			"Cache-Control": "public, max-age=3600", // 缓存1小时
 		},
 	});
 }

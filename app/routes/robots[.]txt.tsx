@@ -29,4 +29,4 @@ Sitemap: ${domain}/sitemap.xml`;
 			"Cache-Control": "public, max-age=86400", // 缓存24小时
 		},
 	});
-} 
+}

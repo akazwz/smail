@@ -33,10 +33,20 @@ export default function Terms() {
 						</Link>
 					</Button>
 					<nav className="flex items-center gap-1 sm:gap-4">
-						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
+						<Button
+							asChild
+							variant="ghost"
+							size="sm"
+							className="text-xs sm:text-sm px-2 sm:px-4"
+						>
 							<Link to="/about">关于我们</Link>
 						</Button>
-						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
+						<Button
+							asChild
+							variant="ghost"
+							size="sm"
+							className="text-xs sm:text-sm px-2 sm:px-4"
+						>
 							<Link to="/faq">FAQ</Link>
 						</Button>
 						<Button asChild className="text-xs sm:text-sm px-2 sm:px-4">
@@ -54,13 +64,13 @@ export default function Terms() {
 							<FileTextIcon className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600" />
 						</div>
 					</div>
-					<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">服务条款</h1>
+					<h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+						服务条款
+					</h1>
 					<p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-3 sm:mb-4">
 						使用Smail服务前，请仔细阅读以下服务条款
 					</p>
-					<p className="text-sm text-gray-500">
-						最后更新时间：2025年1月15日
-					</p>
+					<p className="text-sm text-gray-500">最后更新时间：2025年1月15日</p>
 				</div>
 			</section>
 
@@ -338,7 +348,12 @@ export default function Terms() {
 						<Button asChild size="lg" className="text-sm sm:text-base">
 							<Link to="/">同意并开始使用</Link>
 						</Button>
-						<Button asChild variant="outline" size="lg" className="text-sm sm:text-base">
+						<Button
+							asChild
+							variant="outline"
+							size="lg"
+							className="text-sm sm:text-base"
+						>
 							<Link to="/contact">有疑问？联系我们</Link>
 						</Button>
 					</div>

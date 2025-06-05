@@ -236,7 +236,12 @@ export default function MailDetail({ loaderData }: Route.ComponentProps) {
 			<header className="bg-white border-b px-3 sm:px-4 py-3 shrink-0">
 				<div className="w-full flex items-center justify-between">
 					<div className="flex items-center gap-2 sm:gap-3">
-						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm p-1 sm:p-2">
+						<Button
+							asChild
+							variant="ghost"
+							size="sm"
+							className="text-xs sm:text-sm p-1 sm:p-2"
+						>
 							<Link to="/">
 								<ArrowLeft className="w-3 sm:w-4 h-3 sm:h-4" />
 								<span className="hidden sm:inline ml-1">返回收件箱</span>

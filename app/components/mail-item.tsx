@@ -50,7 +50,9 @@ export function MailItem({
 				)}
 				<Avatar className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10">
 					<AvatarImage src={`https://unavatar.io/${domain}`} />
-					<AvatarFallback className="text-xs sm:text-sm">{name.slice(0, 2).toUpperCase()}</AvatarFallback>
+					<AvatarFallback className="text-xs sm:text-sm">
+						{name.slice(0, 2).toUpperCase()}
+					</AvatarFallback>
 				</Avatar>
 				<div className="flex-1 min-w-0 space-y-0.5 sm:space-y-1">
 					<div className="flex items-center justify-between">

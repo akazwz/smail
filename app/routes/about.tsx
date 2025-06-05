@@ -56,10 +56,20 @@ export default function About() {
 						</Link>
 					</Button>
 					<nav className="flex items-center gap-1 sm:gap-4">
-						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
+						<Button
+							asChild
+							variant="ghost"
+							size="sm"
+							className="text-xs sm:text-sm px-2 sm:px-4"
+						>
 							<Link to="/faq">FAQ</Link>
 						</Button>
-						<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
+						<Button
+							asChild
+							variant="ghost"
+							size="sm"
+							className="text-xs sm:text-sm px-2 sm:px-4"
+						>
 							<Link to="/contact">联系我们</Link>
 						</Button>
 						<Button asChild className="text-xs sm:text-sm px-2 sm:px-4">
@@ -96,7 +106,9 @@ export default function About() {
 							>
 								<CardHeader className="pb-3 sm:pb-4">
 									<feature.icon className="w-8 sm:w-10 lg:w-12 h-8 sm:h-10 lg:h-12 text-blue-600 mx-auto mb-3 sm:mb-4" />
-									<CardTitle className="text-lg sm:text-xl">{feature.title}</CardTitle>
+									<CardTitle className="text-lg sm:text-xl">
+										{feature.title}
+									</CardTitle>
 								</CardHeader>
 								<CardContent>
 									<CardDescription className="text-gray-600 text-sm sm:text-base">
@@ -125,27 +137,39 @@ export default function About() {
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
 						<div className="text-center">
 							<div className="bg-blue-100 w-12 sm:w-14 lg:w-16 h-12 sm:h-14 lg:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-								<span className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600">1</span>
+								<span className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-600">
+									1
+								</span>
 							</div>
-							<h3 className="text-lg sm:text-xl font-semibold mb-2">简单易用</h3>
+							<h3 className="text-lg sm:text-xl font-semibold mb-2">
+								简单易用
+							</h3>
 							<p className="text-gray-600 text-sm sm:text-base">
 								无需复杂的注册流程，一键即可获得临时邮箱
 							</p>
 						</div>
 						<div className="text-center">
 							<div className="bg-green-100 w-12 sm:w-14 lg:w-16 h-12 sm:h-14 lg:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-								<span className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600">2</span>
+								<span className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600">
+									2
+								</span>
 							</div>
-							<h3 className="text-lg sm:text-xl font-semibold mb-2">安全可靠</h3>
+							<h3 className="text-lg sm:text-xl font-semibold mb-2">
+								安全可靠
+							</h3>
 							<p className="text-gray-600 text-sm sm:text-base">
 								采用最新的安全技术，保护您的邮件内容安全
 							</p>
 						</div>
 						<div className="text-center">
 							<div className="bg-purple-100 w-12 sm:w-14 lg:w-16 h-12 sm:h-14 lg:h-16 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-								<span className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600">3</span>
+								<span className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600">
+									3
+								</span>
 							</div>
-							<h3 className="text-lg sm:text-xl font-semibold mb-2">持续改进</h3>
+							<h3 className="text-lg sm:text-xl font-semibold mb-2">
+								持续改进
+							</h3>
 							<p className="text-gray-600 text-sm sm:text-base">
 								我们不断优化服务，为用户提供更好的体验
 							</p>
@@ -163,7 +187,11 @@ export default function About() {
 					<p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
 						立即获取您的临时邮箱，开始保护您的隐私
 					</p>
-					<Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6">
+					<Button
+						asChild
+						size="lg"
+						className="text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6"
+					>
 						<Link to="/">立即开始</Link>
 					</Button>
 				</div>
@@ -175,7 +203,9 @@ export default function About() {
 					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
 						<div className="sm:col-span-2 md:col-span-1">
 							<h3 className="text-lg sm:text-xl font-bold mb-4">Smail</h3>
-							<p className="text-gray-400 text-sm sm:text-base">免费、安全、易用的临时邮箱服务</p>
+							<p className="text-gray-400 text-sm sm:text-base">
+								免费、安全、易用的临时邮箱服务
+							</p>
 						</div>
 						<div>
 							<h4 className="font-semibold mb-4 text-sm sm:text-base">服务</h4>

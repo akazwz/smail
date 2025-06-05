@@ -2,7 +2,14 @@ import randomName from "@scaleway/random-name";
 import { Loader2Icon, RefreshCcwIcon } from "lucide-react";
 import { customAlphabet } from "nanoid";
 import React from "react";
-import { Form, Link, data, redirect, useNavigation, useRevalidator } from "react-router";
+import {
+	Form,
+	Link,
+	data,
+	redirect,
+	useNavigation,
+	useRevalidator,
+} from "react-router";
 
 import { commitSession, getSession } from "~/.server/session";
 import { CopyButton } from "~/components/copy-button";
@@ -161,30 +168,33 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 	React.useEffect(() => {
 		const interval = setInterval(() => {
 			// 只有在页面可见且没有正在进行其他操作时才自动刷新
-			if (document.visibilityState === 'visible' && 
-			    navigation.state === 'idle' && 
-			    revalidator.state === 'idle') {
+			if (
+				document.visibilityState === "visible" &&
+				navigation.state === "idle" &&
+				revalidator.state === "idle"
+			) {
 				revalidator.revalidate();
 			}
 		}, 10000); // 10秒
 
 		// 页面重新获得焦点时也刷新一次
 		const handleFocus = () => {
-			if (navigation.state === 'idle' && revalidator.state === 'idle') {
+			if (navigation.state === "idle" && revalidator.state === "idle") {
 				revalidator.revalidate();
 			}
 		};
 
-		window.addEventListener('focus', handleFocus);
+		window.addEventListener("focus", handleFocus);
 
 		return () => {
 			clearInterval(interval);
-			window.removeEventListener('focus', handleFocus);
+			window.removeEventListener("focus", handleFocus);
 		};
 	}, [navigation.state, revalidator]);
 
 	// 判断是否正在自动刷新
-	const isAutoRefreshing = revalidator.state === 'loading' && navigation.state === 'idle';
+	const isAutoRefreshing =
+		revalidator.state === "loading" && navigation.state === "idle";
 
 	return (
 		<div className="min-h-dvh bg-gray-50">
@@ -195,13 +205,28 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 					</Link>
 				</Button>
 				<nav className="flex items-center gap-1 sm:gap-2">
-					<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
+					<Button
+						asChild
+						variant="ghost"
+						size="sm"
+						className="text-xs sm:text-sm px-2 sm:px-4"
+					>
 						<Link to="/about">关于</Link>
 					</Button>
-					<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
+					<Button
+						asChild
+						variant="ghost"
+						size="sm"
+						className="text-xs sm:text-sm px-2 sm:px-4"
+					>
 						<Link to="/faq">FAQ</Link>
 					</Button>
-					<Button asChild variant="ghost" size="sm" className="text-xs sm:text-sm px-2 sm:px-4">
+					<Button
+						asChild
+						variant="ghost"
+						size="sm"
+						className="text-xs sm:text-sm px-2 sm:px-4"
+					>
 						<Link to="/contact">联系</Link>
 					</Button>
 				</nav>
@@ -278,7 +303,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 							{/* Tips */}
 							<div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
 								<div className="flex items-start gap-2">
-									<span className="text-blue-500 text-sm flex-shrink-0">💡</span>
+									<span className="text-blue-500 text-sm flex-shrink-0">
+										💡
+									</span>
 									<div className="text-xs text-blue-700">
 										<p className="font-medium mb-1">使用提示：</p>
 										<p className="leading-relaxed">
@@ -342,7 +369,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 						) : (
 							<div className="flex flex-col items-center justify-center py-8 text-gray-500 px-4">
 								<div className="text-4xl mb-3">📭</div>
-								<h3 className="text-lg font-semibold mb-2 text-center">收件箱为空</h3>
+								<h3 className="text-lg font-semibold mb-2 text-center">
+									收件箱为空
+								</h3>
 								<p className="text-sm text-center">您还没有收到任何邮件</p>
 								<p className="text-xs text-gray-400 mt-2 text-center break-all">
 									发送邮件到 {loaderData.email} 来测试
@@ -358,21 +387,27 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 							<div className="w-full text-center p-4 sm:p-6 bg-white rounded-lg border">
 								<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🔒</div>
-								<h3 className="text-base sm:text-lg font-semibold mb-2">隐私保护</h3>
+								<h3 className="text-base sm:text-lg font-semibold mb-2">
+									隐私保护
+								</h3>
 								<p className="text-gray-600 text-sm">
 									保护您的真实邮箱地址，避免垃圾邮件和隐私泄露
 								</p>
 							</div>
 							<div className="w-full text-center p-4 sm:p-6 bg-white rounded-lg border">
 								<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">⚡</div>
-								<h3 className="text-base sm:text-lg font-semibold mb-2">即时创建</h3>
+								<h3 className="text-base sm:text-lg font-semibold mb-2">
+									即时创建
+								</h3>
 								<p className="text-gray-600 text-sm">
 									无需注册，一键生成临时邮箱地址，立即开始使用
 								</p>
 							</div>
 							<div className="w-full text-center p-4 sm:p-6 bg-white rounded-lg border lg:col-span-1">
 								<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🌍</div>
-								<h3 className="text-base sm:text-lg font-semibold mb-2">完全免费</h3>
+								<h3 className="text-base sm:text-lg font-semibold mb-2">
+									完全免费
+								</h3>
 								<p className="text-gray-600 text-sm">
 									永久免费使用，无隐藏费用，无广告干扰
 								</p>
