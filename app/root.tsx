@@ -13,7 +13,10 @@ import "./app.css";
 // 全局默认 meta 配置
 export function meta() {
 	return [
-		{ title: "Smail - 免费临时邮箱服务 | 保护隐私，避免垃圾邮件" },
+		{
+			title:
+				"Smail - 免费临时邮箱服务 | 一次性邮件地址生成器，无需注册即时使用，24小时有效保护隐私",
+		},
 		{
 			name: "description",
 			content:
@@ -30,7 +33,10 @@ export function meta() {
 
 		// Open Graph 标签
 		{ property: "og:type", content: "website" },
-		{ property: "og:title", content: "Smail - 免费临时邮箱服务" },
+		{
+			property: "og:title",
+			content: "Smail - 免费临时邮箱服务 | 一次性邮件地址生成器",
+		},
 		{
 			property: "og:description",
 			content: "保护隐私的免费临时邮箱服务，无需注册，即时使用，24小时有效。",
@@ -40,7 +46,10 @@ export function meta() {
 
 		// Twitter Card
 		{ name: "twitter:card", content: "summary_large_image" },
-		{ name: "twitter:title", content: "Smail - 免费临时邮箱服务" },
+		{
+			name: "twitter:title",
+			content: "Smail - 免费临时邮箱服务 | 一次性邮件地址生成器",
+		},
 		{
 			name: "twitter:description",
 			content: "保护隐私的免费临时邮箱服务，无需注册，即时使用。",

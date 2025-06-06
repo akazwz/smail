@@ -13,10 +13,11 @@ import type { Route } from "./+types/privacy";
 
 export function meta(_: Route.MetaArgs) {
 	return [
-		{ title: "隐私政策 - smail 临时邮箱" },
+		{ title: "隐私保护政策 - Smail如何保障用户数据安全和隐私" },
 		{
 			name: "description",
-			content: "smail临时邮箱隐私政策，了解我们如何保护您的隐私和数据安全",
+			content:
+				"查看Smail临时邮箱详细隐私政策，了解数据收集、使用、保护措施。我们承诺24小时自动删除邮件，不保存用户个人信息，SSL加密传输，全面保障您的隐私安全。",
 		},
 	];
 }

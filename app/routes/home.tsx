@@ -13,9 +13,7 @@ import {
 
 import { commitSession, getSession } from "~/.server/session";
 import { CopyButton } from "~/components/copy-button";
-import { Footer } from "~/components/Footer";
 import { MailItem } from "~/components/mail-item";
-import { Navigation } from "~/components/Navigation";
 import { Button } from "~/components/ui/button";
 import {
 	Card,
@@ -36,11 +34,14 @@ import type { Route } from "./+types/home";
 
 export function meta(_: Route.MetaArgs) {
 	return [
-		{ title: "Smail - 免费临时邮箱服务 | 一次性邮箱 | 保护隐私" },
+		{
+			title:
+				"Smail - 免费临时邮箱生成器 | 一次性邮箱地址生成 | 24小时有效保护隐私",
+		},
 		{
 			name: "description",
 			content:
-				"Smail是最好用的免费临时邮箱服务。无需注册，即时获取临时邮箱地址，保护您的真实邮箱免受垃圾邮件骚扰。支持附件，24小时有效，完全免费使用。",
+				"Smail提供最专业的免费临时邮箱服务，无需注册即可获得一次性邮件地址。24小时有效期，支持附件下载，完全匿名保护隐私。告别垃圾邮件，立即免费使用临时邮箱！",
 		},
 		{
 			name: "keywords",
@@ -49,7 +50,10 @@ export function meta(_: Route.MetaArgs) {
 		},
 
 		// Open Graph 优化
-		{ property: "og:title", content: "Smail - 免费临时邮箱服务" },
+		{
+			property: "og:title",
+			content: "Smail - 免费临时邮箱生成器 | 一次性邮件地址",
+		},
 		{
 			property: "og:description",
 			content:
@@ -62,7 +66,7 @@ export function meta(_: Route.MetaArgs) {
 
 		// Twitter Card
 		{ name: "twitter:card", content: "summary_large_image" },
-		{ name: "twitter:title", content: "Smail - 免费临时邮箱服务" },
+		{ name: "twitter:title", content: "Smail - 免费临时邮箱生成器" },
 		{
 			name: "twitter:description",
 			content: "保护隐私的免费临时邮箱，无需注册，即时使用。",
@@ -207,8 +211,6 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-50">
-			<Navigation currentPath="/" />
-
 			<main className="container mx-auto px-4 py-8">
 				<div className="max-w-6xl mx-auto">
 					{/* Hero Section */}
@@ -427,8 +429,6 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 					</div>
 				</div>
 			</main>
-
-			<Footer />
 		</div>
 	);
 }

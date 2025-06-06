@@ -1,7 +1,5 @@
 import { ChevronDownIcon, HelpCircleIcon } from "lucide-react";
 import { Link } from "react-router";
-import { Footer } from "~/components/Footer";
-import { Navigation } from "~/components/Navigation";
 import { Button } from "~/components/ui/button";
 import {
 	Card,
@@ -15,10 +13,11 @@ import type { Route } from "./+types/faq";
 
 export function meta(_: Route.MetaArgs) {
 	return [
-		{ title: "常见问题 - smail 临时邮箱" },
+		{ title: "常见问题解答 - Smail临时邮箱使用指南及疑难解答" },
 		{
 			name: "description",
-			content: "smail临时邮箱常见问题解答，帮助您更好地使用我们的服务",
+			content:
+				"Smail临时邮箱常见问题全面解答：如何使用一次性邮箱、邮件保存时长、附件下载、隐私安全等。快速找到使用临时邮箱服务的答案，轻松上手免费临时邮件服务。",
 		},
 	];
 }
@@ -89,8 +88,6 @@ export default function FAQ() {
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-50">
-			<Navigation currentPath="/faq" />
-
 			{/* Hero Section */}
 			<section className="py-8 sm:py-16 bg-white">
 				<div className="max-w-screen-xl mx-auto px-3 sm:px-4 text-center">
@@ -201,8 +198,6 @@ export default function FAQ() {
 					</div>
 				</div>
 			</section>
-
-			<Footer />
 		</div>
 	);
 }

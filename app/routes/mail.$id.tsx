@@ -154,6 +154,42 @@ function formatFileSize(bytes?: number | null) {
 	return `${Math.round((bytes / 1024 ** i) * 100) / 100} ${sizes[i]}`;
 }
 
+export function meta({ data }: Route.MetaArgs) {
+	if (!data?.email) {
+		return [
+			{ title: "邮件详情 - Smail临时邮箱" },
+			{
+				name: "description",
+				content: "查看您在Smail临时邮箱中收到的邮件详情。",
+			},
+			// 即使是404页面也要阻止索引
+			{ name: "robots", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
+			{ name: "googlebot", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
+			{ name: "bingbot", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
+		];
+	}
+
+	const { email } = data;
+	const fromDomain = email.fromAddress.split("@")[1] || "未知发件人";
+	const shortSubject = email.subject?.substring(0, 30) || "无主题";
+
+	return [
+		{ title: `${shortSubject} - 来自${fromDomain}的邮件 | Smail临时邮箱` },
+		{
+			name: "description",
+			content: `查看来自${email.fromAddress}的邮件"${email.subject || "无主题"}"。接收时间：${new Date(email.receivedAt).toLocaleDateString("zh-CN")}。`,
+		},
+		// 阻止搜索引擎索引邮件内容页面
+		{ name: "robots", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
+		{ name: "googlebot", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
+		{ name: "bingbot", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
+		// 阻止缓存
+		{ "http-equiv": "cache-control", content: "no-cache, no-store, must-revalidate" },
+		{ "http-equiv": "pragma", content: "no-cache" },
+		{ "http-equiv": "expires", content: "0" },
+	];
+}
+
 export async function loader({ params, context }: Route.LoaderArgs) {
 	const { id } = params;
 

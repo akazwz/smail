@@ -18,6 +18,21 @@ Allow: /
 Disallow: /api/
 Disallow: /_dev/
 Disallow: /admin/
+Disallow: /mail/
+Disallow: /attachment/
+Disallow: /dev/
+
+# 隐私保护 - 邮件内容页面
+User-agent: *
+Disallow: /mail/*
+
+# 开发环境页面
+User-agent: *
+Disallow: /dev/*
+
+# 附件下载页面
+User-agent: *
+Disallow: /attachment/*
 
 # Sitemap位置
 Sitemap: ${domain}/sitemap.xml`;

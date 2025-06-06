@@ -1,7 +1,5 @@
 import { ClockIcon, MailIcon, MessageCircleIcon } from "lucide-react";
 import { Form, Link, data, redirect } from "react-router";
-import { Footer } from "~/components/Footer";
-import { Navigation } from "~/components/Navigation";
 import { Button } from "~/components/ui/button";
 import {
 	Card,
@@ -15,8 +13,12 @@ import type { Route } from "./+types/contact";
 
 export function meta(_: Route.MetaArgs) {
 	return [
-		{ title: "联系我们 - smail 临时邮箱" },
-		{ name: "description", content: "联系smail团队，获取帮助或提供反馈建议" },
+		{ title: "联系Smail团队 - 技术支持、反馈建议、商务合作" },
+		{
+			name: "description",
+			content:
+				"联系Smail团队获取技术支持、反馈问题或合作咨询。我们提供多种联系方式，快速响应用户需求。如遇临时邮箱使用问题、功能建议或商务合作，欢迎随时联系我们。",
+		},
 	];
 }
 
@@ -57,8 +59,6 @@ export default function Contact({ loaderData }: ComponentProps) {
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-50">
-			<Navigation currentPath="/contact" />
-
 			{/* Hero Section */}
 			<section className="py-8 sm:py-16 bg-white">
 				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4 text-center">
@@ -342,8 +342,6 @@ export default function Contact({ loaderData }: ComponentProps) {
 					</div>
 				</div>
 			</section>
-
-			<Footer />
 		</div>
 	);
 }

@@ -1,7 +1,5 @@
 import { CheckCircleIcon, GlobeIcon, ShieldIcon, ZapIcon } from "lucide-react";
 import { Link } from "react-router";
-import { Footer } from "~/components/Footer";
-import { Navigation } from "~/components/Navigation";
 import { Button } from "~/components/ui/button";
 import {
 	Card,
@@ -15,10 +13,11 @@ import type { Route } from "./+types/about";
 
 export function meta(_: Route.MetaArgs) {
 	return [
-		{ title: "关于我们 - smail 临时邮箱" },
+		{ title: "关于Smail团队 - 致力于打造最安全的临时邮箱平台" },
 		{
 			name: "description",
-			content: "了解smail临时邮箱服务，免费、安全、无限制的临时邮箱解决方案",
+			content:
+				"了解Smail团队和我们的使命：为全球用户提供免费、安全、无广告的临时邮箱服务。专注隐私保护，助力用户远离垃圾邮件困扰，打造最可靠的一次性邮箱平台。",
 		},
 	];
 }
@@ -49,8 +48,6 @@ export default function About() {
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-50">
-			<Navigation currentPath="/about" />
-
 			{/* Hero Section */}
 			<section className="py-10 sm:py-16 lg:py-20">
 				<div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-3 sm:px-4 text-center">
@@ -171,8 +168,6 @@ export default function About() {
 					</Button>
 				</div>
 			</section>
-
-			<Footer />
 		</div>
 	);
 }

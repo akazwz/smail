@@ -13,10 +13,11 @@ import type { Route } from "./+types/terms";
 
 export function meta(_: Route.MetaArgs) {
 	return [
-		{ title: "服务条款 - smail 临时邮箱" },
+		{ title: "服务使用条款 - Smail临时邮箱用户协议及使用规范" },
 		{
 			name: "description",
-			content: "smail临时邮箱服务条款，了解服务的使用规则和条件",
+			content:
+				"阅读Smail临时邮箱完整服务条款，包含使用规则、服务范围、用户责任、免责声明等。了解免费临时邮件服务的合理使用政策，确保安全合规使用一次性邮箱。",
 		},
 	];
 }
