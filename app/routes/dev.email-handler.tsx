@@ -119,12 +119,22 @@ export function meta() {
 		{ title: "开发环境邮件处理器 - Smail" },
 		{
 			name: "description",
-			content: "开发环境专用的邮件处理路由，用于模拟 Cloudflare Workers 的 email handler 功能。",
+			content:
+				"开发环境专用的邮件处理路由，用于模拟 Cloudflare Workers 的 email handler 功能。",
 		},
 		// 开发页面不应该被搜索引擎索引
-		{ name: "robots", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
-		{ name: "googlebot", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
-		{ name: "bingbot", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
+		{
+			name: "robots",
+			content: "noindex, nofollow, noarchive, nosnippet, noimageindex",
+		},
+		{
+			name: "googlebot",
+			content: "noindex, nofollow, noarchive, nosnippet, noimageindex",
+		},
+		{
+			name: "bingbot",
+			content: "noindex, nofollow, noarchive, nosnippet, noimageindex",
+		},
 	];
 }
 

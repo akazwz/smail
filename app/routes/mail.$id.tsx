@@ -163,9 +163,18 @@ export function meta({ data }: Route.MetaArgs) {
 				content: "查看您在Smail临时邮箱中收到的邮件详情。",
 			},
 			// 即使是404页面也要阻止索引
-			{ name: "robots", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
-			{ name: "googlebot", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
-			{ name: "bingbot", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
+			{
+				name: "robots",
+				content: "noindex, nofollow, noarchive, nosnippet, noimageindex",
+			},
+			{
+				name: "googlebot",
+				content: "noindex, nofollow, noarchive, nosnippet, noimageindex",
+			},
+			{
+				name: "bingbot",
+				content: "noindex, nofollow, noarchive, nosnippet, noimageindex",
+			},
 		];
 	}
 
@@ -180,11 +189,23 @@ export function meta({ data }: Route.MetaArgs) {
 			content: `查看来自${email.fromAddress}的邮件"${email.subject || "无主题"}"。接收时间：${new Date(email.receivedAt).toLocaleDateString("zh-CN")}。`,
 		},
 		// 阻止搜索引擎索引邮件内容页面
-		{ name: "robots", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
-		{ name: "googlebot", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
-		{ name: "bingbot", content: "noindex, nofollow, noarchive, nosnippet, noimageindex" },
+		{
+			name: "robots",
+			content: "noindex, nofollow, noarchive, nosnippet, noimageindex",
+		},
+		{
+			name: "googlebot",
+			content: "noindex, nofollow, noarchive, nosnippet, noimageindex",
+		},
+		{
+			name: "bingbot",
+			content: "noindex, nofollow, noarchive, nosnippet, noimageindex",
+		},
 		// 阻止缓存
-		{ "http-equiv": "cache-control", content: "no-cache, no-store, must-revalidate" },
+		{
+			"http-equiv": "cache-control",
+			content: "no-cache, no-store, must-revalidate",
+		},
 		{ "http-equiv": "pragma", content: "no-cache" },
 		{ "http-equiv": "expires", content: "0" },
 	];

@@ -20,4 +20,6 @@ export default [
 	route("/sitemap.xml", "routes/sitemap[.]xml.tsx"),
 	route("/robots.txt", "routes/robots[.]txt.tsx"),
 	route("/site.webmanifest", "routes/site[.]webmanifest.tsx"),
+	// 捕获所有未匹配的路径，自动跳转到首页
+	route("*", "routes/$.ts"),
 ] satisfies RouteConfig;
