@@ -1,5 +1,5 @@
 import { env } from "cloudflare:workers";
-import { and, count, desc, eq, gt } from "drizzle-orm";
+import { and, count, desc, eq, gt, lte } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { nanoid } from "nanoid";
 import {
@@ -148,7 +148,7 @@ export async function cleanupExpiredEmails(
 	const now = new Date();
 
 	// 删除过期的邮箱（CASCADE 会自动删除相关邮件和附件）
-	await db.delete(mailboxes).where(eq(mailboxes.expiresAt, now));
+	await db.delete(mailboxes).where(lte(mailboxes.expiresAt, now));
 }
 
 // 获取邮箱统计信息
