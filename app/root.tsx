@@ -1,167 +1,153 @@
 import {
+	isRouteErrorResponse,
 	Links,
 	Meta,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	isRouteErrorResponse,
+	useLoaderData,
+	useLocation,
 } from "react-router";
 
+import {
+	DEFAULT_LOCALE,
+	getLocaleDirection,
+	getLocaleFromPathname,
+	normalizePathname,
+	SUPPORTED_LOCALES,
+	stripLocalePrefix,
+	toLocalePath,
+} from "~/i18n/config";
+import {
+	BASE_URL,
+	BLOG_INDEXABLE_LOCALES,
+	isBlogBasePath,
+	isBlogLocaleIndexable,
+	isMarkdownBasePath,
+	isMarkdownLocaleIndexable,
+	MARKDOWN_INDEXABLE_LOCALES,
+} from "~/seo.config";
+import { DEFAULT_THEME, parseThemeFromCookieHeader } from "~/utils/theme";
 import type { Route } from "./+types/root";
 import "./app.css";
 
-// 全局默认 meta 配置
-export function meta() {
+const SITE_OG_TITLE = "smail.pw · 24-Hour Temporary Email";
+const SITE_OG_DESCRIPTION =
+	"Free disposable email inbox with 24-hour auto-expiry. Use a temporary address for sign-ups and verification.";
+
+export async function loader({ request }: Route.LoaderArgs) {
+	const theme = parseThemeFromCookieHeader(request.headers.get("Cookie"));
+	return { theme };
+}
+
+export function meta({ location }: Route.MetaArgs) {
+	const pathname = normalizePathname(location.pathname);
+	const locale = getLocaleFromPathname(pathname);
+	const basePath = stripLocalePrefix(pathname);
+	const isMarkdownPage = isMarkdownBasePath(basePath);
+	const isBlogPage = isBlogBasePath(basePath);
+
+	const canonicalLocale =
+		isMarkdownPage && !isMarkdownLocaleIndexable(locale)
+			? DEFAULT_LOCALE
+			: isBlogPage && !isBlogLocaleIndexable(locale)
+				? DEFAULT_LOCALE
+				: locale;
+	const canonicalPath = toLocalePath(basePath, canonicalLocale);
+	const rssLocale = canonicalLocale === "zh" ? "zh" : DEFAULT_LOCALE;
+	const canonicalUrl = `${BASE_URL}${canonicalPath}`;
+	const alternateLocales = isMarkdownPage
+		? MARKDOWN_INDEXABLE_LOCALES
+		: isBlogPage
+			? BLOG_INDEXABLE_LOCALES
+			: SUPPORTED_LOCALES;
+	const alternateLinks = alternateLocales.map((supportedLocale) => ({
+		tagName: "link" as const,
+		rel: "alternate",
+		hrefLang: supportedLocale,
+		href: `${BASE_URL}${toLocalePath(basePath, supportedLocale)}`,
+	}));
+
 	return [
 		{
-			title:
-				"Smail - 免费临时邮箱服务 | 一次性邮件地址生成器，无需注册即时使用，24小时有效保护隐私",
+			tagName: "link",
+			rel: "canonical",
+			href: canonicalUrl,
+		},
+		...alternateLinks,
+		{
+			tagName: "link",
+			rel: "alternate",
+			hrefLang: "x-default",
+			href: `${BASE_URL}${toLocalePath(basePath, DEFAULT_LOCALE)}`,
 		},
 		{
-			name: "description",
-			content:
-				"Smail提供免费、安全、无广告的临时邮箱服务。无需注册，即时获取临时邮箱地址，保护您的隐私，避免垃圾邮件。24小时有效期，支持附件，完全免费。",
+			tagName: "link",
+			rel: "alternate",
+			type: "application/rss+xml",
+			title: "smail.pw Blog RSS",
+			href: `${BASE_URL}${toLocalePath("/rss.xml", rssLocale)}`,
 		},
 		{
-			name: "keywords",
-			content:
-				"临时邮箱,一次性邮箱,临时邮件,disposable email,temp mail,临时email,免费邮箱,隐私保护,垃圾邮件防护",
+			property: "og:type",
+			content: "website",
 		},
-		{ name: "author", content: "Smail Team" },
-		{ name: "robots", content: "index, follow" },
-		{ name: "googlebot", content: "index, follow" },
-
-		// Open Graph 标签
-		{ property: "og:type", content: "website" },
+		{
+			property: "og:site_name",
+			content: "smail.pw",
+		},
+		{
+			property: "og:url",
+			content: canonicalUrl,
+		},
 		{
 			property: "og:title",
-			content: "Smail - 免费临时邮箱服务 | 一次性邮件地址生成器",
+			content: SITE_OG_TITLE,
 		},
 		{
 			property: "og:description",
-			content: "保护隐私的免费临时邮箱服务，无需注册，即时使用，24小时有效。",
+			content: SITE_OG_DESCRIPTION,
 		},
-		{ property: "og:site_name", content: "Smail" },
-		{ property: "og:locale", content: "zh_CN" },
-
-		// Twitter Card
-		{ name: "twitter:card", content: "summary_large_image" },
+		{
+			name: "twitter:card",
+			content: "summary",
+		},
 		{
 			name: "twitter:title",
-			content: "Smail - 免费临时邮箱服务 | 一次性邮件地址生成器",
+			content: SITE_OG_TITLE,
 		},
 		{
 			name: "twitter:description",
-			content: "保护隐私的免费临时邮箱服务，无需注册，即时使用。",
+			content: SITE_OG_DESCRIPTION,
 		},
-
-		// 移动端优化
-		{ name: "format-detection", content: "telephone=no" },
-		{ name: "mobile-web-app-capable", content: "yes" },
-		{ name: "apple-mobile-web-app-capable", content: "yes" },
-		{ name: "apple-mobile-web-app-status-bar-style", content: "default" },
-		{ name: "apple-mobile-web-app-title", content: "Smail" },
 	];
 }
 
-export const links: Route.LinksFunction = () => [
-	// 字体预加载优化
-	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
-	{
-		rel: "preconnect",
-		href: "https://fonts.gstatic.com",
-		crossOrigin: "anonymous",
-	},
-	{
-		rel: "preload",
-		href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-		as: "style",
-	},
-	{
-		rel: "stylesheet",
-		href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-	},
-
-	// Favicon and App Icons
-	{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-	{ rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-	{
-		rel: "icon",
-		type: "image/png",
-		sizes: "32x32",
-		href: "/favicon-32.png",
-	},
-	{
-		rel: "icon",
-		type: "image/png",
-		sizes: "16x16",
-		href: "/favicon-16.png",
-	},
-	{ rel: "apple-touch-icon", sizes: "192x192", href: "/icon-192.png" },
-	{ rel: "manifest", href: "/site.webmanifest" },
-
-	// SEO 相关
-	{ rel: "canonical", href: "https://smail.pw" },
-	{ rel: "alternate", hrefLang: "zh-CN", href: "https://smail.pw" },
-];
-
 export function Layout({ children }: { children: React.ReactNode }) {
-	// 结构化数据 JSON
-	const structuredData = {
-		"@context": "https://schema.org",
-		"@type": "WebApplication",
-		name: "Smail",
-		description: "免费临时邮箱服务，保护隐私，避免垃圾邮件",
-		url: "https://smail.pw",
-		applicationCategory: "UtilityApplication",
-		operatingSystem: "Any",
-		offers: {
-			"@type": "Offer",
-			price: "0",
-			priceCurrency: "USD",
-		},
-		author: {
-			"@type": "Organization",
-			name: "Smail Team",
-		},
-		keywords: "临时邮箱,一次性邮箱,临时邮件,disposable email,temp mail",
-		applicationSubCategory: "Email Service",
-		featureList: [
-			"免费使用",
-			"无需注册",
-			"隐私保护",
-			"24小时有效期",
-			"支持附件",
-			"实时接收邮件",
-		],
-	};
+	const location = useLocation();
+	const { theme } = useLoaderData<typeof loader>();
+	const locale = getLocaleFromPathname(location.pathname);
+	const resolvedTheme = theme ?? DEFAULT_THEME;
+	const initialBackground = resolvedTheme === "light" ? "#f4f8ff" : "#06111d";
+	const initialTextColor = resolvedTheme === "light" ? "#1f3451" : "#f2f9ff";
 
 	return (
-		<html lang="zh-CN">
-			<head>
-				<meta charSet="utf-8" />
-				<meta
-					name="viewport"
-					content="width=device-width, initial-scale=1, viewport-fit=cover"
-				/>
-				<Meta />
-				<Links />
-
-				{/* JSON-LD 结构化数据 */}
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{
-						__html: JSON.stringify(structuredData),
-					}}
-				/>
-
-				{/* 统计脚本 */}
-				<script
-					defer
-					src="https://u.pexni.com/script.js"
-					data-website-id="09979220-99e5-4973-b1b2-5e46163fe2d2"
-				/>
-			</head>
+		<html
+			lang={locale}
+			dir={getLocaleDirection(locale)}
+			data-theme={resolvedTheme === "light" ? "light" : undefined}
+		>
+				<head>
+					<meta charSet="utf-8" />
+					<meta name="viewport" content="width=device-width, initial-scale=1" />
+					<Meta />
+					<style
+						dangerouslySetInnerHTML={{
+							__html: `html,body{background:${initialBackground};color:${initialTextColor};}`,
+						}}
+					/>
+					<Links />
+				</head>
 			<body>
 				{children}
 				<ScrollRestoration />

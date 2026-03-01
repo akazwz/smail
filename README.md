@@ -1,195 +1,161 @@
-# Smail - 临时邮箱服务
+# smail.pw（smail-v3）
 
-一个基于 React Router v7 和 Cloudflare Workers 构建的现代化临时邮箱服务。
+基于 React Router Framework Mode + Cloudflare Workers 的临时邮箱服务。
 
-## 🌟 功能特性
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/akazwz/smail)
 
-- 🚀 **快速生成**: 一键生成临时邮箱地址
-- 📧 **实时接收**: 即时接收和查看邮件
-- 🔒 **隐私保护**: 邮箱到期后自动删除数据
-- 📱 **响应式设计**: 完美适配桌面和移动设备
-- ⚡️ **无服务器架构**: 基于 Cloudflare Workers，全球加速
-- 🗄️ **现代化技术栈**: React Router v7、TypeScript、TailwindCSS
-- 📊 **数据存储**: 使用 Cloudflare D1 数据库和 R2 对象存储
+- 线上域名：`https://smail.pw`
+- Worker 名称：`smail-app`
+- 默认语言：`en`（同时支持 10 种语言）
 
-## 🛠️ 技术栈
+## 一键部署（Deploy to Cloudflare）
 
-- **前端**: React Router v7, TypeScript, TailwindCSS
-- **后端**: Cloudflare Workers, Email Workers
-- **数据库**: Cloudflare D1 (SQLite)
-- **存储**: Cloudflare R2 (附件存储)
-- **ORM**: Drizzle ORM
-- **邮件解析**: postal-mime
+- 上方按钮可让其他开发者将本项目一键部署到他们自己的 Cloudflare 账号。
+- 部署流程会基于仓库中的 `wrangler.jsonc` 自动创建并绑定所需资源（KV / D1 / R2）。
+- 项目仓库需要保持公开（public）才能让他人正常使用该按钮。
 
-## 🚀 快速开始
+## 项目简介
 
-### 安装依赖
+这是一个面向低风险场景的临时邮箱网站，核心目标是：
+
+- 一键生成临时邮箱地址
+- 即时查看收件箱
+- 用于注册验证、OTP、一次性下载等短期流程
+- 避免暴露长期个人邮箱
+
+项目同时包含多语言 SEO 页面（Markdown）和多语言博客。
+
+## 技术栈
+
+- React 19 + React Router 7（Framework Mode，SSR）
+- Cloudflare Workers（HTTP + Email Worker）
+- Cloudflare D1（存储邮件元数据）
+- Cloudflare R2（存储邮件原始内容）
+- Cloudflare KV（Session 存储）
+- Tailwind CSS 4
+- Markdoc（渲染 Markdown 页面与博客）
+
+## 核心功能
+
+- 首页临时邮箱收件箱
+- 邮件预览弹窗（解析 HTML/Text）
+- 多语言路由（`/:lang?`）
+- SEO 路由：`/robots.txt`、`/sitemap.xml`、`/rss.xml`
+- 多语言 Markdown 页面（about/faq/privacy/terms + 长尾 SEO 落地页）
+- 多语言博客列表、分页、文章页
+
+## 数据流（真实实现）
+
+1. 邮件进入 Worker 的 `email` 事件（`workers/app.ts`）
+2. 解析原始邮件后：
+   - 元数据写入 D1 `emails` 表（`id/to_address/from/subject/time`）
+   - 原始邮件内容写入 R2（对象 key 为 `id`）
+3. 首页按当前会话中的地址读取 D1 列表
+4. 打开邮件详情时，通过 `/api/email/:id`：
+   - 校验该邮件地址属于当前会话
+   - 校验地址是否超过 24h
+   - 从 R2 读取原始邮件并解析后返回
+
+说明：当前“24 小时”主要体现在会话可访问窗口与前端展示逻辑；`scheduled` 清理入口已预留，但未实现数据库物理清理逻辑。
+
+## 目录结构
+
+```text
+app/
+  routes/              # 路由模块（home、md、blog、api、sitemap、robots 等）
+  md/                  # 多语言 SEO Markdown 页面
+  blog/                # 多语言博客内容与元数据
+  i18n/                # 语言配置与文案
+  .server/session.ts   # KV Session
+  utils/               # 公共工具（meta、theme、retention 等）
+workers/
+  app.ts               # Cloudflare Worker 入口（fetch + email）
+migrations/
+  *.sql                # D1 迁移
+wrangler.jsonc         # Cloudflare 绑定配置
+```
+
+## 本地开发
+
+### 1. 安装依赖
 
 ```bash
 pnpm install
 ```
 
-### 配置环境变量
-
-复制环境变量示例文件并配置：
+### 2. 启动开发
 
 ```bash
-cp .dev.vars.example .dev.vars
+pnpm run dev
 ```
 
-编辑 `.dev.vars` 文件，设置必要的环境变量：
+默认访问：`http://localhost:5173`
+
+### 3. 类型检查
 
 ```bash
-# 生成 Session 密钥
-openssl rand -base64 32
-
-# 将生成的密钥填入 .dev.vars 文件中的 SESSION_SECRET
+pnpm run typecheck
 ```
 
-### 设置数据库
-
-```bash
-# 生成数据库迁移文件
-pnpm run db:generate
-
-# 应用迁移到本地数据库
-pnpm run db:migrate
-```
-
-### 启动开发服务器
-
-```bash
-pnpm dev
-```
-
-应用将在 http://localhost:5173 可用。
-
-## 🧪 本地开发和测试
-
-### 发送测试邮件
-
-```bash
-# 快速发送测试邮件
-pnpm run test:email
-
-# 发送自定义测试邮件（带附件）
-pnpm run test:email:custom [收件人] [发件人] [端口] [是否包含附件]
-
-# 例如：
-pnpm run test:email:custom mytest@smail.pw sender@example.com 5173 true
-```
-
-### 数据库管理
-
-```bash
-# 查看迁移状态
-pnpm run db:list
-
-# 重置数据库（清空所有数据）
-pnpm run db:reset
-
-# 重新应用迁移
-pnpm run db:migrate
-```
-
-详细的本地开发指南请查看：[docs/local-development.md](docs/local-development.md)
-
-## 📦 生产环境构建
-
-创建生产构建：
+### 4. 生产构建与预览
 
 ```bash
 pnpm run build
+pnpm run preview
 ```
 
-## 🚀 部署
+## 常用命令
 
-### 直接部署到生产环境
+- `pnpm run dev`：本地开发
+- `pnpm run build`：生产构建
+- `pnpm run preview`：本地预览构建产物
+- `pnpm run typecheck`：Cloudflare 类型生成 + 路由类型生成 + TS 检查
+- `pnpm run deploy`：构建后部署到 Cloudflare Workers
+- `pnpm run migrate`：对远端 D1（`smail-v3`）执行迁移
+
+## Cloudflare 资源绑定
+
+`wrangler.jsonc` 当前使用以下绑定：
+
+- `KV`：Session 存储
+- `D1`：邮件元数据（数据库名 `smail-v3`）
+- `R2`：邮件内容对象存储（桶名 `smailv3`）
+- `triggers.crons`：`*/30 * * * *`（30 分钟触发一次，当前 `scheduled` 未实现清理）
+
+## 数据库迁移
+
+当前迁移文件：
+
+- `migrations/20260211_create_emails.sql`
+- `migrations/20260212_email_indexes.sql`
+
+首次部署或表结构变更后，执行：
+
+```bash
+pnpm run migrate
+```
+
+## 多语言与 SEO
+
+- 支持语言：`en/zh/es/fr/de/ja/ko/ru/pt/ar`
+- 默认语言为 `en`，默认语言不带前缀
+- Markdown 页面与博客均支持多语言
+- 自动生成 sitemap（包含首页、Markdown 页、博客列表/分页/文章）
+
+## 部署说明
 
 ```bash
 pnpm run deploy
 ```
 
-### 部署预览版本
+发布前建议至少执行：
 
 ```bash
-pnpm wrangler versions upload
+pnpm run typecheck
+pnpm run build
 ```
 
-验证后可以将版本提升到生产环境：
+## 重要边界
 
-```bash
-pnpm wrangler versions deploy
-```
-
-### 部署前准备
-
-1. **配置 Cloudflare 服务**:
-   - 创建 D1 数据库：`wrangler d1 create smail-database`
-   - 创建 KV 命名空间：`wrangler kv namespace create "smail-kv"`
-   - 创建 R2 存储桶：`wrangler r2 bucket create smail-attachments`
-   - 设置 Email Routing
-
-2. **配置 wrangler.jsonc**:
-   复制 `wrangler.example.jsonc` 并填入你的资源ID：
-   ```bash
-   cp wrangler.example.jsonc wrangler.jsonc
-   # 编辑 wrangler.jsonc，填入实际的ID
-   ```
-
-3. **运行远程迁移**:
-   ```bash
-   pnpm run db:migrate:remote
-   ```
-
-## 📂 项目结构
-
-```
-├── app/                    # 应用代码
-│   ├── components/         # React 组件
-│   ├── db/                 # 数据库相关
-│   │   ├── migrations/     # 数据库迁移文件
-│   │   └── schema.ts       # 数据库模式定义
-│   ├── lib/                # 工具函数和数据库操作
-│   └── routes/             # 路由组件
-├── workers/                # Cloudflare Workers
-│   └── app.ts              # Email Worker
-├── scripts/                # 开发脚本
-│   ├── test-email.js       # 邮件测试脚本
-│   └── test-email.sh       # Shell 测试脚本
-├── docs/                   # 文档
-└── wrangler.jsonc          # Cloudflare 配置
-```
-
-## 🎨 样式
-
-项目使用 [Tailwind CSS](https://tailwindcss.com/) 进行样式设计，支持：
-- 响应式设计
-- 暗色模式
-- 现代化 UI 组件
-- 自定义设计系统
-
-## 🤝 贡献
-
-欢迎贡献代码！请：
-
-1. Fork 项目
-2. 创建功能分支
-3. 提交更改
-4. 推送到分支
-5. 创建 Pull Request
-
-## 📄 许可证
-
-本项目采用 MIT 许可证。
-
-## 🛟 支持
-
-如有问题，请：
-- 查看 [本地开发指南](docs/local-development.md)
-- 提交 GitHub Issue
-- 查看 Cloudflare Workers 文档
-
----
-
-使用 ❤️ 和 React Router 构建。
+- 本项目面向临时收信与低风险验证场景。
+- 不建议用于银行、工作、政务、法律与关键账号找回等高敏感场景。

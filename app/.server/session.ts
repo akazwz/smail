@@ -1,20 +1,62 @@
-import { env } from "cloudflare:workers";
 import { createWorkersKVSessionStorage } from "@react-router/cloudflare";
 import { createCookie } from "react-router";
 
-const sessionCookie = createCookie("__session", {
-	secrets: [env.SESSION_SECRET],
-	sameSite: true,
-});
-
 type SessionData = {
-	email: string;
+	addresses: string[];
+	addressIssuedAt?: number;
 };
 
-const { getSession, commitSession, destroySession } =
-	createWorkersKVSessionStorage<SessionData>({
-		kv: env.KV,
-		cookie: sessionCookie,
+export const getCookie = () => {
+	return createCookie("__session", {
+		httpOnly: true,
+		sameSite: "lax",
+		secure: true,
 	});
+};
 
-export { getSession, commitSession, destroySession };
+let sessionStorage: ReturnType<
+	typeof createWorkersKVSessionStorage<SessionData>
+> | null = null;
+
+async function getSessionStorage() {
+	if (!sessionStorage) {
+		// 延迟到运行时才 import cloudflare:workers，避免 build 时报错
+		const { env } = await import("cloudflare:workers");
+		sessionStorage = createWorkersKVSessionStorage<SessionData>({
+			cookie: getCookie(),
+			kv: env.KV,
+		});
+	}
+	return sessionStorage;
+}
+
+export async function getSession(
+	...args: Parameters<
+		ReturnType<typeof createWorkersKVSessionStorage<SessionData>>["getSession"]
+	>
+) {
+	const storage = await getSessionStorage();
+	return storage.getSession(...args);
+}
+
+export async function commitSession(
+	...args: Parameters<
+		ReturnType<
+			typeof createWorkersKVSessionStorage<SessionData>
+		>["commitSession"]
+	>
+) {
+	const storage = await getSessionStorage();
+	return storage.commitSession(...args);
+}
+
+export async function destroySession(
+	...args: Parameters<
+		ReturnType<
+			typeof createWorkersKVSessionStorage<SessionData>
+		>["destroySession"]
+	>
+) {
+	const storage = await getSessionStorage();
+	return storage.destroySession(...args);
+}

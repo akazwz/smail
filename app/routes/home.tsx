@@ -1,434 +1,1002 @@
-import randomName from "@scaleway/random-name";
-import { Loader2Icon, Mail, RefreshCcwIcon } from "lucide-react";
-import { customAlphabet } from "nanoid";
-import React from "react";
+import { useEffect, useState } from "react";
 import {
-	Form,
-	Link,
 	data,
+	Link,
 	redirect,
-	useNavigation,
+	useFetcher,
 	useRevalidator,
 } from "react-router";
-
 import { commitSession, getSession } from "~/.server/session";
-import { CopyButton } from "~/components/copy-button";
-import { MailItem } from "~/components/mail-item";
-import { Button } from "~/components/ui/button";
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "~/components/ui/card";
-import { ScrollArea } from "~/components/ui/scroll-area";
-import {
-	createDB,
-	getEmailsByAddress,
-	getMailboxStats,
-	getOrCreateMailbox,
-} from "~/lib/db";
-
+	DEFAULT_LOCALE,
+	type Locale,
+	resolveLocaleParam,
+	stripDefaultLocalePrefix,
+	toIntlLocale,
+	toLocalePath,
+} from "~/i18n/config";
+import { getDictionary } from "~/i18n/messages";
+import { BASE_URL } from "~/seo.config";
+import type { Email, EmailDetail } from "~/types/email";
+import { generateEmailAddress } from "~/utils/mail";
+import { MAIL_RETENTION_MS } from "~/utils/mail-retention";
+import { mergeRouteMeta } from "~/utils/meta";
 import type { Route } from "./+types/home";
 
-export function meta(_: Route.MetaArgs) {
-	return [
+function getLocaleFromParams(lang: string | undefined): Locale {
+	const { locale } = resolveLocaleParam(lang);
+	return locale;
+}
+
+function formatRefreshTime(timestamp: number, locale: Locale): string {
+	return new Date(timestamp).toLocaleTimeString(toIntlLocale(locale), {
+		hour: "2-digit",
+		minute: "2-digit",
+		timeZone: "UTC",
+	});
+}
+
+const SEO_GUIDES_COPY: Record<
+	Locale,
+	{ title: string; items: Array<{ label: string; path: string }> }
+> = {
+	en: {
+		title: "Popular temporary email guides",
+		items: [
+			{ label: "24 Hour Temporary Email", path: "/temporary-email-24-hours" },
+			{
+				label: "Temporary Email No Registration",
+				path: "/temporary-email-no-registration",
+			},
+			{
+				label: "Disposable Email for Verification",
+				path: "/disposable-email-for-verification",
+			},
+			{
+				label: "Temporary Email for Registration",
+				path: "/temporary-email-for-registration",
+			},
+			{ label: "Online Temporary Email", path: "/online-temporary-email" },
+		],
+	},
+	zh: {
+		title: "热门临时邮箱指南",
+		items: [
+			{ label: "24 小时临时邮箱", path: "/temporary-email-24-hours" },
+			{ label: "免注册临时邮箱", path: "/temporary-email-no-registration" },
+			{ label: "验证码一次性邮箱", path: "/disposable-email-for-verification" },
+			{ label: "临时邮箱注册指南", path: "/temporary-email-for-registration" },
+			{ label: "在线临时邮箱", path: "/online-temporary-email" },
+		],
+	},
+	es: {
+		title: "Guías populares de correo temporal",
+		items: [
+			{ label: "Correo temporal 24 horas", path: "/temporary-email-24-hours" },
+			{
+				label: "Correo temporal sin registro",
+				path: "/temporary-email-no-registration",
+			},
+			{
+				label: "Correo desechable para verificación",
+				path: "/disposable-email-for-verification",
+			},
+			{
+				label: "Correo temporal para registro",
+				path: "/temporary-email-for-registration",
+			},
+			{ label: "Correo temporal online", path: "/online-temporary-email" },
+		],
+	},
+	fr: {
+		title: "Guides populaires d'email temporaire",
+		items: [
+			{
+				label: "Email temporaire 24 heures",
+				path: "/temporary-email-24-hours",
+			},
+			{
+				label: "Email temporaire sans inscription",
+				path: "/temporary-email-no-registration",
+			},
+			{
+				label: "Email jetable pour vérification",
+				path: "/disposable-email-for-verification",
+			},
+			{
+				label: "Email temporaire pour inscription",
+				path: "/temporary-email-for-registration",
+			},
+			{ label: "Email temporaire en ligne", path: "/online-temporary-email" },
+		],
+	},
+	de: {
+		title: "Beliebte Temp-Mail-Anleitungen",
+		items: [
+			{
+				label: "24-Stunden-Temporäre E-Mail",
+				path: "/temporary-email-24-hours",
+			},
+			{
+				label: "Temporäre E-Mail ohne Registrierung",
+				path: "/temporary-email-no-registration",
+			},
+			{
+				label: "Wegwerf-E-Mail für Verifizierung",
+				path: "/disposable-email-for-verification",
+			},
+			{
+				label: "Temporäre E-Mail für Registrierung",
+				path: "/temporary-email-for-registration",
+			},
+			{ label: "Online-Temporäre E-Mail", path: "/online-temporary-email" },
+		],
+	},
+	ja: {
+		title: "人気の一時メールガイド",
+		items: [
+			{ label: "24時間一時メール", path: "/temporary-email-24-hours" },
+			{
+				label: "登録不要の一時メール",
+				path: "/temporary-email-no-registration",
+			},
+			{
+				label: "認証用使い捨てメール",
+				path: "/disposable-email-for-verification",
+			},
+			{
+				label: "登録向け一時メール",
+				path: "/temporary-email-for-registration",
+			},
+			{ label: "オンライン一時メール", path: "/online-temporary-email" },
+		],
+	},
+	ko: {
+		title: "인기 임시 이메일 가이드",
+		items: [
+			{ label: "24시간 임시 이메일", path: "/temporary-email-24-hours" },
+			{
+				label: "가입 없는 임시 이메일",
+				path: "/temporary-email-no-registration",
+			},
+			{
+				label: "인증용 일회용 이메일",
+				path: "/disposable-email-for-verification",
+			},
+			{
+				label: "가입용 임시 이메일",
+				path: "/temporary-email-for-registration",
+			},
+			{ label: "온라인 임시 이메일", path: "/online-temporary-email" },
+		],
+	},
+	ru: {
+		title: "Популярные гайды по временной почте",
+		items: [
+			{
+				label: "Временная почта на 24 часа",
+				path: "/temporary-email-24-hours",
+			},
+			{
+				label: "Временная почта без регистрации",
+				path: "/temporary-email-no-registration",
+			},
+			{
+				label: "Одноразовая почта для верификации",
+				path: "/disposable-email-for-verification",
+			},
+			{
+				label: "Временная почта для регистрации",
+				path: "/temporary-email-for-registration",
+			},
+			{ label: "Онлайн временная почта", path: "/online-temporary-email" },
+		],
+	},
+	pt: {
+		title: "Guias populares de email temporário",
+		items: [
+			{ label: "Email temporário 24 horas", path: "/temporary-email-24-hours" },
+			{
+				label: "Email temporário sem cadastro",
+				path: "/temporary-email-no-registration",
+			},
+			{
+				label: "Email descartável para verificação",
+				path: "/disposable-email-for-verification",
+			},
+			{
+				label: "Email temporário para cadastro",
+				path: "/temporary-email-for-registration",
+			},
+			{ label: "Email temporário online", path: "/online-temporary-email" },
+		],
+	},
+	ar: {
+		title: "أدلة البريد المؤقت الشائعة",
+		items: [
+			{ label: "بريد مؤقت لمدة 24 ساعة", path: "/temporary-email-24-hours" },
+			{
+				label: "بريد مؤقت بدون تسجيل",
+				path: "/temporary-email-no-registration",
+			},
+			{
+				label: "بريد مؤقت لرموز التحقق",
+				path: "/disposable-email-for-verification",
+			},
+			{ label: "بريد مؤقت للتسجيل", path: "/temporary-email-for-registration" },
+			{ label: "بريد مؤقت أونلاين", path: "/online-temporary-email" },
+		],
+	},
+};
+
+function getSeoGuides(locale: Locale): {
+	title: string;
+	items: Array<{ label: string; path: string }>;
+} {
+	return SEO_GUIDES_COPY[locale] ?? SEO_GUIDES_COPY.en;
+}
+
+type SeoNarrative = {
+	title: string;
+	description: string;
+	points: string[];
+};
+
+const SEO_NARRATIVE_COPY: Record<Locale, SeoNarrative> = {
+	en: {
+		title: "Why use smail.pw temporary email",
+		description:
+			"smail.pw is a free temporary email generator (temp mail) for low-risk sign-ups, OTP verification, and one-time downloads. Create a 24-hour disposable inbox in seconds.",
+		points: [
+			"Works well for temporary email registration and verification code workflows",
+			"No sign-up or password setup for quick temp mail access",
+			"Useful when users search smail temp mail or no-registration disposable inbox",
+			"Use a permanent mailbox for banking, work, and identity-critical accounts",
+		],
+	},
+	zh: {
+		title: "为什么选择 smail.pw 临时邮箱",
+		description:
+			"smail.pw 是免费临时邮箱生成器，覆盖临时邮箱、一次性邮箱、24小时邮箱等常见场景。适合临时邮箱注册、验证码（OTP）接收和在线临时收信。",
+		points: [
+			"适合临时邮箱注册、活动领取、下载验证等低风险场景",
+			"免注册、免密码，作为免费临时邮箱快速使用，减少真实邮箱暴露",
+			"部分站点会限制临时邮箱域名，收不到信可尝试重发与刷新",
+			"银行、工作和重要账号请务必使用长期邮箱",
+		],
+	},
+	es: {
+		title: "Por qué usar el correo temporal de smail.pw",
+		description:
+			"smail.pw ofrece correo temporal gratis (temp mail) para registros rápidos, verificación OTP y descargas puntuales con retención de 24 horas.",
+		points: [
+			"Útil para flujos de registro y verificación de bajo riesgo",
+			"Sin cuenta ni contraseña para empezar de inmediato",
+			"Si no llega el correo, prueba reenviar y actualizar la bandeja",
+		],
+	},
+	fr: {
+		title: "Pourquoi utiliser l'email temporaire smail.pw",
+		description:
+			"smail.pw fournit un email temporaire gratuit (temp mail) pour inscription rapide, OTP et usages ponctuels avec rétention de 24h.",
+		points: [
+			"Adapté aux inscriptions et vérifications à faible risque",
+			"Aucun compte ni mot de passe requis pour commencer",
+			"En cas de non-réception, renvoyez le code puis rafraîchissez la boîte",
+		],
+	},
+	de: {
+		title: "Warum temporäre E-Mail von smail.pw",
+		description:
+			"smail.pw bietet kostenlose Temp Mail für schnelle Registrierungen, OTP-Verifizierung und einmalige Nutzung mit 24h Aufbewahrung.",
+		points: [
+			"Ideal für risikoarme Registrierung und Verifizierung",
+			"Kein Konto und kein Passwort für den Sofortstart",
+			"Bei fehlender Zustellung: erneut senden und Posteingang aktualisieren",
+		],
+	},
+	ja: {
+		title: "smail.pw の一時メールを使う理由",
+		description:
+			"smail.pw は無料の一時メール（temp mail）です。登録・OTP認証・短期利用向けに24時間の受信箱をすぐ作成できます。",
+		points: [
+			"低リスクの登録と認証フローに最適",
+			"アカウント登録やパスワード設定が不要",
+			"届かない場合は再送と受信箱更新を試してください",
+		],
+	},
+	ko: {
+		title: "smail.pw 임시 이메일을 쓰는 이유",
+		description:
+			"smail.pw는 무료 임시 이메일(temp mail) 서비스로, 가입/OTP 인증/일회성 사용에 맞춘 24시간 메일함을 즉시 제공합니다.",
+		points: [
+			"저위험 가입 및 인증 흐름에 적합",
+			"계정 생성과 비밀번호 없이 바로 사용",
+			"메일이 안 오면 재전송 후 받은편지함을 새로고침",
+		],
+	},
+	ru: {
+		title: "Почему стоит использовать временную почту smail.pw",
+		description:
+			"smail.pw — бесплатный temp mail для быстрых регистраций, OTP-подтверждений и одноразовых задач с хранением до 24 часов.",
+		points: [
+			"Подходит для низкорисковых регистраций и подтверждений",
+			"Без аккаунта и пароля — можно начать сразу",
+			"Если письмо не пришло, попробуйте повторную отправку и обновление",
+		],
+	},
+	pt: {
+		title: "Por que usar o email temporário do smail.pw",
+		description:
+			"smail.pw oferece temp mail grátis para cadastro rápido, OTP e uso pontual, com caixa descartável por 24 horas.",
+		points: [
+			"Bom para cadastro e verificação de baixo risco",
+			"Sem conta e sem senha para começar imediatamente",
+			"Se o email atrasar, reenvie e atualize a caixa de entrada",
+		],
+	},
+	ar: {
+		title: "لماذا تستخدم البريد المؤقت من smail.pw",
+		description:
+			"يوفر smail.pw بريدًا مؤقتًا مجانيًا (temp mail) للتسجيل السريع ورموز OTP والاستخدام القصير مع احتفاظ لمدة 24 ساعة.",
+		points: [
+			"مناسب لعمليات التسجيل والتحقق منخفضة المخاطر",
+			"بدون حساب أو كلمة مرور لبدء الاستخدام فورًا",
+			"عند تأخر الرسالة جرّب إعادة الإرسال ثم تحديث الوارد",
+		],
+	},
+};
+
+function getSeoNarrative(locale: Locale): SeoNarrative {
+	return SEO_NARRATIVE_COPY[locale] ?? SEO_NARRATIVE_COPY.en;
+}
+
+function getHomeJsonLd(locale: Locale) {
+	const localizedHomeUrl = `${BASE_URL}${toLocalePath("/", locale)}`;
+	const descriptionByLocale: Record<Locale, string> = {
+		en: "smail.pw provides free temporary email (temp mail) inboxes for sign-up and OTP verification with 24-hour auto cleanup.",
+		zh: "smail.pw 提供免费临时邮箱（一次性邮箱）服务，适合临时邮箱注册和验证码接收，邮件 24 小时后自动清理。",
+		es: "smail.pw ofrece correo temporal gratis (temp mail) para registros y códigos OTP con limpieza automática en 24 horas.",
+		fr: "smail.pw propose un email temporaire gratuit (temp mail) pour inscription et OTP avec suppression automatique après 24h.",
+		de: "smail.pw bietet kostenlose temporäre E-Mail (Temp Mail) für Registrierung und OTP mit automatischer 24h-Bereinigung.",
+		ja: "smail.pw は登録とOTP認証に使える無料の一時メール（temp mail）を提供し、24時間後に自動削除されます。",
+		ko: "smail.pw는 가입과 OTP 인증에 쓰는 무료 임시 이메일(temp mail)을 제공하며 24시간 후 자동 정리됩니다.",
+		ru: "smail.pw предоставляет бесплатную временную почту (temp mail) для регистрации и OTP с автоочисткой через 24 часа.",
+		pt: "smail.pw oferece email temporário grátis (temp mail) para cadastro e OTP com limpeza automática após 24h.",
+		ar: "يوفر smail.pw بريدًا مؤقتًا مجانيًا (temp mail) للتسجيل ورموز OTP مع حذف تلقائي بعد 24 ساعة.",
+	};
+	const description = descriptionByLocale[locale] ?? descriptionByLocale.en;
+
+	return {
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "WebSite",
+				name: "smail.pw",
+				url: localizedHomeUrl,
+				inLanguage: locale,
+				description,
+				potentialAction: {
+					"@type": "UseAction",
+					target: localizedHomeUrl,
+				},
+			},
+			{
+				"@type": "WebApplication",
+				name: "smail.pw Temporary Email",
+				url: localizedHomeUrl,
+				applicationCategory: "UtilitiesApplication",
+				operatingSystem: "Web",
+				inLanguage: locale,
+				description,
+				offers: {
+					"@type": "Offer",
+					price: "0",
+					priceCurrency: "USD",
+				},
+			},
+		],
+	};
+}
+
+export function meta({ params, matches }: Route.MetaArgs) {
+	const locale = getLocaleFromParams(params.lang);
+	const copy = getDictionary(locale).home;
+
+	return mergeRouteMeta(matches, [
 		{
-			title:
-				"Smail - 免费临时邮箱生成器 | 一次性邮箱地址生成 | 24小时有效保护隐私",
+			title: copy.title,
 		},
 		{
 			name: "description",
-			content:
-				"Smail提供最专业的免费临时邮箱服务，无需注册即可获得一次性邮件地址。24小时有效期，支持附件下载，完全匿名保护隐私。告别垃圾邮件，立即免费使用临时邮箱！",
+			content: copy.description,
 		},
 		{
 			name: "keywords",
-			content:
-				"临时邮箱,一次性邮箱,临时邮件,临时email,免费邮箱,隐私保护,垃圾邮件防护,临时邮箱网站,免费临时邮箱,临时邮箱服务,24小时邮箱,无需注册邮箱",
+			content: copy.keywords,
 		},
-
-		// Open Graph 优化
-		{
-			property: "og:title",
-			content: "Smail - 免费临时邮箱生成器 | 一次性邮件地址",
-		},
-		{
-			property: "og:description",
-			content:
-				"保护隐私的免费临时邮箱，无需注册，即时使用，24小时有效，支持附件下载。",
-		},
-		{ property: "og:type", content: "website" },
-		{ property: "og:url", content: "https://smail.pw" },
-		{ property: "og:site_name", content: "Smail" },
-		{ property: "og:locale", content: "zh_CN" },
-
-		// Twitter Card
-		{ name: "twitter:card", content: "summary_large_image" },
-		{ name: "twitter:title", content: "Smail - 免费临时邮箱生成器" },
-		{
-			name: "twitter:description",
-			content: "保护隐私的免费临时邮箱，无需注册，即时使用。",
-		},
-
-		// 额外的SEO优化
 		{
 			name: "robots",
-			content:
-				"index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+			content: "index, follow",
 		},
-		{ name: "googlebot", content: "index, follow" },
-		{ name: "bingbot", content: "index, follow" },
-		{ name: "format-detection", content: "telephone=no" },
-		{ name: "theme-color", content: "#2563eb" },
-
-		// 结构化数据
-		{ name: "application-name", content: "Smail" },
-		{ name: "apple-mobile-web-app-title", content: "Smail" },
-		{ name: "msapplication-TileColor", content: "#2563eb" },
-	];
+	]);
 }
 
-function generateEmail() {
-	const name = randomName();
-	const random = customAlphabet("0123456789", 4)();
-	return `${name}-${random}@smail.pw`;
+function isAddressExpired(
+	addressIssuedAt: number | undefined,
+	now = Date.now(),
+): boolean {
+	if (!addressIssuedAt) {
+		return false;
+	}
+	return now - addressIssuedAt >= MAIL_RETENTION_MS;
 }
 
-export async function loader({ request, context }: Route.LoaderArgs) {
-	const session = await getSession(request.headers.get("Cookie"));
-	let email = session.get("email");
+function EmailModal({
+	email,
+	onClose,
+	copy,
+}: {
+	email: Email;
+	onClose: () => void;
+	copy: ReturnType<typeof getDictionary>["home"]["modal"];
+}) {
+	const [detail, setDetail] = useState<EmailDetail | null>(null);
+	const [loading, setLoading] = useState(true);
 
-	if (!email) {
-		email = generateEmail();
-		session.set("email", email);
+	useEffect(() => {
+		setLoading(true);
+		fetch(`/api/email/${email.id}`, {
+			credentials: "include",
+		})
+			.then((res) => res.json() as Promise<EmailDetail>)
+			.then((emailDetail) => {
+				setDetail(emailDetail);
+				setLoading(false);
+			})
+			.catch(() => setLoading(false));
+	}, [email.id]);
+
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === "Escape") onClose();
+		};
+		document.addEventListener("keydown", handleKeyDown);
+		return () => document.removeEventListener("keydown", handleKeyDown);
+	}, [onClose]);
+
+	return (
+		<div
+			className="modal-backdrop fixed inset-0 z-50 flex items-center justify-center px-4 backdrop-blur-sm"
+			onClick={onClose}
+		>
+			<div
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="email-preview-title"
+				className="glass-panel modal-sheet flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden"
+				onClick={(e) => e.stopPropagation()}
+			>
+				<div className="border-theme-soft flex items-start justify-between gap-3 border-b px-4 py-4 sm:px-5">
+					<div className="space-y-1">
+						<div className="text-theme-faint text-[11px] font-semibold uppercase tracking-[0.16em]">
+							{copy.title}
+						</div>
+						<div
+							id="email-preview-title"
+							className="text-theme-primary font-display max-w-xl truncate pr-2 text-base font-semibold sm:text-[1.05rem]"
+						>
+							{email.subject}
+						</div>
+					</div>
+					<button
+						type="button"
+						aria-label="Close email preview"
+						onClick={onClose}
+						className="border-theme-strong text-theme-secondary bg-theme-soft inline-flex h-8 w-8 items-center justify-center rounded-full border hover:brightness-95"
+					>
+						<svg
+							viewBox="0 0 20 20"
+							fill="none"
+							stroke="currentColor"
+							strokeWidth="1.8"
+							className="h-4 w-4"
+							aria-hidden="true"
+						>
+							<path d="M5 5L15 15M15 5L5 15" strokeLinecap="round" />
+						</svg>
+					</button>
+				</div>
+
+				<div className="border-theme-soft text-theme-secondary grid gap-2.5 border-b px-4 py-3 text-[12px] leading-relaxed sm:grid-cols-2 sm:px-5">
+					<div className="border-theme-soft bg-theme-subtle min-w-0 rounded-lg border px-3 py-2.5">
+						<span className="text-theme-faint block text-[11px] font-semibold uppercase tracking-[0.1em]">
+							{copy.from}
+						</span>
+						<p className="mt-1 break-all">
+							{email.from_name} &lt;{email.from_address}&gt;
+						</p>
+					</div>
+					<div className="border-theme-soft bg-theme-subtle rounded-lg border px-3 py-2.5">
+						<span className="text-theme-faint block text-[11px] font-semibold uppercase tracking-[0.1em]">
+							{copy.time}
+						</span>
+						<p className="mt-1">{new Date(email.time).toLocaleString()}</p>
+					</div>
+				</div>
+
+				<div className="p-4 sm:p-5">
+					{loading ? (
+						<div className="text-theme-muted flex h-[min(62vh,700px)] items-center justify-center rounded-xl border border-dashed border-theme-soft text-[13px]">
+							{copy.loading}
+						</div>
+					) : detail?.body ? (
+						<iframe
+							srcDoc={detail.body}
+							title="Email content"
+							className="border-theme-soft h-[min(62vh,700px)] w-full overflow-hidden rounded-xl border bg-white"
+							sandbox=""
+							referrerPolicy="no-referrer"
+						/>
+					) : (
+						<div className="text-theme-muted flex h-[min(62vh,700px)] items-center justify-center rounded-xl border border-dashed border-theme-soft text-[13px]">
+							{copy.empty}
+						</div>
+					)}
+				</div>
+			</div>
+		</div>
+	);
+}
+
+function formatTime(
+	timestamp: number,
+	locale: Locale,
+	referenceNow: number,
+): string {
+	const intlLocale = toIntlLocale(locale);
+	const relative = new Intl.RelativeTimeFormat(intlLocale, { numeric: "auto" });
+	const diffSeconds = Math.round((timestamp - referenceNow) / 1000);
+
+	if (Math.abs(diffSeconds) < 60) {
+		return relative.format(diffSeconds, "second");
+	}
+
+	const diffMinutes = Math.round(diffSeconds / 60);
+	if (Math.abs(diffMinutes) < 60) {
+		return relative.format(diffMinutes, "minute");
+	}
+
+	const diffHours = Math.round(diffMinutes / 60);
+	if (Math.abs(diffHours) < 24) {
+		return relative.format(diffHours, "hour");
+	}
+
+	const diffDays = Math.round(diffHours / 24);
+	if (Math.abs(diffDays) < 7) {
+		return relative.format(diffDays, "day");
+	}
+
+	return new Date(timestamp).toLocaleDateString(intlLocale, {
+		timeZone: "UTC",
+	});
+}
+
+async function getEmails(d1: D1Database, toAddress: string) {
+	const { results } = await d1
+		.prepare(
+			"SELECT * FROM emails WHERE to_address = ? ORDER BY time DESC LIMIT 100",
+		)
+		.bind(toAddress)
+		.all();
+	return results as Email[];
+}
+
+export async function loader({ request, context, params }: Route.LoaderArgs) {
+	const { locale, shouldRedirectToDefault, isInvalid } = resolveLocaleParam(
+		params.lang,
+	);
+	if (isInvalid) {
+		throw new Response("Not Found", { status: 404 });
+	}
+	if (shouldRedirectToDefault) {
+		const url = new URL(request.url);
+		const normalizedPath = stripDefaultLocalePrefix(url.pathname);
+		throw redirect(`${normalizedPath}${url.search}`, 301);
+	}
+
+	const cookieHeader = request.headers.get("Cookie");
+	const session = await getSession(cookieHeader);
+	let addresses = (session.get("addresses") || []) as string[];
+	const addressIssuedAt = session.get("addressIssuedAt");
+	const now = Date.now();
+	let shouldCommitSession = false;
+
+	if (addresses.length > 0 && isAddressExpired(addressIssuedAt, now)) {
+		addresses = [generateEmailAddress()];
+		session.set("addresses", addresses);
+		session.set("addressIssuedAt", now);
+		shouldCommitSession = true;
+	} else if (addresses.length > 0 && !addressIssuedAt) {
+		session.set("addressIssuedAt", now);
+		shouldCommitSession = true;
+	}
+
+	const emails =
+		addresses.length > 0
+			? await getEmails(context.cloudflare.env.D1, addresses[0]!)
+			: [];
+
+	if (shouldCommitSession) {
+		const headers = new Headers();
+		headers.set("Set-Cookie", await commitSession(session));
 		return data(
 			{
-				email,
-				mails: [],
-				stats: { total: 0, unread: 0 },
+				addresses,
+				emails,
+				locale,
+				renderedAt: now,
 			},
-			{
-				headers: {
-					"Set-Cookie": await commitSession(session),
-				},
-			},
+			{ headers },
 		);
 	}
 
-	try {
-		// 创建数据库连接
-		const db = createDB();
-
-		// 获取或创建邮箱
-		const mailbox = await getOrCreateMailbox(db, email);
-
-		// 获取邮件列表
-		const emails = await getEmailsByAddress(db, email);
-
-		// 获取统计信息
-		const stats = await getMailboxStats(db, mailbox.id);
-
-		// 转换邮件数据格式以适配前端组件
-		const mails = emails.map((emailRecord) => ({
-			id: emailRecord.id,
-			name: emailRecord.fromAddress.split("@")[0] || emailRecord.fromAddress,
-			email: emailRecord.fromAddress,
-			subject: emailRecord.subject || "(无主题)",
-			date: emailRecord.receivedAt.toISOString().split("T")[0], // 格式化日期
-			isRead: emailRecord.isRead,
-		}));
-
-		return { email, mails, stats };
-	} catch (error) {
-		console.error("Error loading emails:", error);
-		// 出错时返回空数据
-		return {
-			email,
-			mails: [],
-			stats: { total: 0, unread: 0 },
-		};
-	}
+	return {
+		addresses,
+		emails,
+		locale,
+		renderedAt: now,
+	};
 }
 
-export async function action({ request, context }: Route.ActionArgs) {
-	await new Promise((resolve) => setTimeout(resolve, 1000));
+export async function action({ request }: Route.ActionArgs) {
 	const formData = await request.formData();
-	const action = formData.get("action");
-	if (action === "refresh") {
-		return redirect("/");
+	const intent = formData.get("intent");
+	const cookieHeader = request.headers.get("Cookie");
+	const session = await getSession(cookieHeader);
+	let addresses: string[] = (session.get("addresses") || []) as string[];
+	switch (intent) {
+		case "generate": {
+			addresses = [generateEmailAddress()];
+			session.set("addressIssuedAt", Date.now());
+			break;
+		}
+		case "delete": {
+			addresses = [];
+			session.unset("addressIssuedAt");
+			break;
+		}
 	}
-	if (action === "delete") {
-		const session = await getSession(request.headers.get("Cookie"));
-		session.set("email", generateEmail());
-		await commitSession(session);
-		return redirect("/");
-	}
-	return null;
+	session.set("addresses", addresses);
+	const cookie = await commitSession(session);
+	const headers = new Headers();
+	headers.set("Set-Cookie", cookie);
+	return data(
+		{
+			addresses: session.get("addresses") || [],
+		},
+		{
+			headers,
+		},
+	);
 }
 
-export default function Home({ loaderData }: Route.ComponentProps) {
-	const navigation = useNavigation();
+export default function Home({ loaderData, actionData }: Route.ComponentProps) {
+	const fetcher = useFetcher<typeof actionData>();
 	const revalidator = useRevalidator();
-	const isSubmitting = navigation.state === "submitting";
-	const isRefreshing =
-		navigation.formData?.get("action") === "refresh" && isSubmitting;
-	const isDeleting =
-		navigation.formData?.get("action") === "delete" && isSubmitting;
+	const [copied, setCopied] = useState(false);
+	const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
+	const [lastInboxRefreshAt, setLastInboxRefreshAt] = useState(() =>
+		loaderData.renderedAt,
+	);
+	const locale = loaderData.locale || DEFAULT_LOCALE;
+	const copy = getDictionary(locale).home;
+	const seoGuides = getSeoGuides(locale);
+	const seoNarrative = getSeoNarrative(locale);
+	const homeJsonLd = getHomeJsonLd(locale);
+	const addresses = fetcher.data?.addresses || loaderData.addresses;
+	const emails = loaderData.emails;
+	const isSubmitting = fetcher.state === "submitting";
+	const submittingIntent = fetcher.formData?.get("intent");
+	const isRefreshingInbox = revalidator.state !== "idle";
 
-	// 自动刷新逻辑 - 每30秒自动重新验证数据
-	React.useEffect(() => {
-		const interval = setInterval(() => {
-			// 只有在页面可见且没有正在进行其他操作时才自动刷新
-			if (
-				document.visibilityState === "visible" &&
-				navigation.state === "idle" &&
-				revalidator.state === "idle"
-			) {
-				revalidator.revalidate();
-			}
-		}, 10000); // 10秒
-
-		// 页面重新获得焦点时也刷新一次
-		const handleFocus = () => {
-			if (navigation.state === "idle" && revalidator.state === "idle") {
-				revalidator.revalidate();
-			}
-		};
-
-		window.addEventListener("focus", handleFocus);
-
-		return () => {
-			clearInterval(interval);
-			window.removeEventListener("focus", handleFocus);
-		};
-	}, [navigation.state, revalidator]);
-
-	// 判断是否正在自动刷新
-	const isAutoRefreshing =
-		revalidator.state === "loading" && navigation.state === "idle";
+	useEffect(() => {
+		setLastInboxRefreshAt(loaderData.renderedAt);
+	}, [loaderData.renderedAt]);
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-50">
-			<main className="container mx-auto px-4 py-8">
-				<div className="max-w-6xl mx-auto">
-					{/* Hero Section */}
-					<div className="text-center mb-12">
-						<h2 className="text-4xl font-bold text-gray-800 mb-4">
-							保护您的隐私
-							<span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-								临时邮箱
-							</span>
-						</h2>
-						<p className="text-lg text-gray-600 max-w-2xl mx-auto">
-							无需注册，即时获取临时邮箱地址。24小时有效期，完全免费，保护您的真实邮箱免受垃圾邮件骚扰。
-						</p>
-					</div>
-
-					<div className="grid lg:grid-cols-2 gap-8">
-						{/* 左侧：邮箱地址 */}
-						<div className="space-y-6">
-							{/* 邮箱地址卡片 */}
-							<Card className="border-0 shadow-lg bg-white h-full">
-								<CardHeader className="pb-4">
-									<CardTitle className="flex items-center space-x-2 text-xl">
-										<div className="bg-blue-600 rounded-lg p-2">
-											<Mail className="h-5 w-5 text-white" />
-										</div>
-										<span className="text-gray-800">您的临时邮箱地址</span>
-									</CardTitle>
-									<div className="flex flex-wrap items-center gap-2 text-sm">
-										<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-											✓ 24小时有效
-										</span>
-										<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-											⚡ 自动刷新
-										</span>
-										<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-											🎁 完全免费
-										</span>
-									</div>
-								</CardHeader>
-								<CardContent>
-									{/* 邮箱地址显示区域 */}
-									<div className="bg-gray-50 rounded-lg p-4 border border-gray-200 mb-6">
-										<div className="text-center">
-											<p className="text-xs text-gray-500 mb-2 font-medium">
-												您的专属邮箱地址
-											</p>
-											<span className="font-mono text-base sm:text-lg font-bold text-gray-900 tracking-wide select-all break-all block">
-												{loaderData.email}
-											</span>
-										</div>
-									</div>
-
-									{/* Action Buttons */}
-									<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-										<CopyButton
-											text={loaderData.email}
-											size="default"
-											variant="default"
-											className="w-full h-10 bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg transition-all"
-										/>
-										<Form method="post" className="w-full">
-											<Button
-												variant="outline"
-												size="default"
-												type="submit"
-												name="action"
-												value="delete"
-												disabled={isDeleting}
-												className="w-full h-10 border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all"
-											>
-												{isDeleting ? (
-													<>
-														<Loader2Icon className="w-4 h-4 animate-spin mr-2" />
-														生成中...
-													</>
-												) : (
-													<>🔄 生成新邮箱</>
-												)}
-											</Button>
-										</Form>
-									</div>
-
-									{/* Tips */}
-									<div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-										<div className="flex items-start gap-3">
-											<div className="bg-blue-600 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
-												<span className="text-white text-sm">💡</span>
-											</div>
-											<div className="text-sm">
-												<p className="font-semibold text-blue-800 mb-1">
-													使用提示
-												</p>
-												<p className="text-blue-700 leading-relaxed">
-													发送邮件到此地址即可在右侧收件箱查看，邮箱24小时后自动过期。收件箱每10秒自动刷新检查新邮件。
-												</p>
-											</div>
-										</div>
-									</div>
-								</CardContent>
-							</Card>
-						</div>
-
-						{/* 右侧：收件箱 */}
-						<div>
-							<Card className="h-full">
-								<CardHeader>
-									<div className="flex items-center justify-between">
-										<div className="flex items-center gap-2">
-											<CardTitle className="flex items-center space-x-2">
-												<span>收件箱</span>
-											</CardTitle>
-											<span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
-												{loaderData.stats.unread} 未读
-											</span>
-											<span className="text-gray-500 text-xs">
-												共 {loaderData.stats.total} 封
-											</span>
-										</div>
-										<Form method="post">
-											<Button
-												variant="secondary"
-												size="sm"
-												name="action"
-												value="refresh"
-												disabled={isRefreshing || isAutoRefreshing}
-												className="text-xs"
-											>
-												{isRefreshing ? (
-													<>
-														<Loader2Icon className="w-3 h-3 animate-spin mr-1" />
-														刷新中...
-													</>
-												) : (
-													<>
-														<RefreshCcwIcon className="w-3 h-3 mr-1" />
-														手动刷新
-													</>
-												)}
-											</Button>
-										</Form>
-									</div>
-									{isAutoRefreshing && (
-										<div className="text-xs text-blue-600 flex items-center gap-1">
-											<Loader2Icon className="w-3 h-3 animate-spin" />
-											自动刷新中...
-										</div>
-									)}
-								</CardHeader>
-								<CardContent className="p-0">
-									<ScrollArea className="h-96">
-										{loaderData.mails.length > 0 ? (
-											<div className="divide-y">
-												{loaderData.mails.map((mail) => (
-													<MailItem key={mail.id} {...mail} />
-												))}
-											</div>
-										) : (
-											<div className="flex flex-col items-center justify-center py-12 text-gray-500 px-4">
-												<div className="text-4xl mb-3">📭</div>
-												<h3 className="text-lg font-semibold mb-2 text-center">
-													收件箱为空
-												</h3>
-												<p className="text-sm text-center">
-													您还没有收到任何邮件
-												</p>
-												<p className="text-xs text-gray-400 mt-2 text-center break-all">
-													发送邮件到 {loaderData.email} 来测试
-												</p>
-											</div>
-										)}
-									</ScrollArea>
-								</CardContent>
-							</Card>
-						</div>
-					</div>
-
-					{/* Features Section */}
-					<div className="mt-16">
-						<div className="text-center mb-8">
-							<h3 className="text-2xl font-bold text-gray-800 mb-2">
-								为什么选择 Smail？
-							</h3>
-							<p className="text-gray-600">
-								专业的临时邮箱服务，保护您的隐私安全
+		<div className="flex flex-1 py-3 sm:py-4">
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }}
+			/>
+			<div className="grid w-full gap-4">
+				<section className="glass-panel relative overflow-hidden px-4 py-4 sm:px-6 sm:py-5">
+					<div
+						className="absolute -left-20 -top-24 h-44 w-44 rounded-full opacity-80 blur-[88px]"
+						style={{ background: "var(--accent-a)" }}
+					/>
+					<div
+						className="absolute -right-14 top-20 h-36 w-36 rounded-full opacity-75 blur-[82px]"
+						style={{ background: "var(--accent-b)" }}
+					/>
+					<div className="relative space-y-3">
+						<header className="space-y-2.5">
+							<p className="soft-tag">{copy.heroTag}</p>
+							<h1 className="text-theme-primary font-display max-w-2xl text-xl leading-tight font-bold sm:text-3xl">
+								{copy.heroTitle}
+							</h1>
+							<p className="text-theme-secondary max-w-xl text-sm leading-relaxed">
+								{copy.heroDescription}
 							</p>
-						</div>
-						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-							<Card className="text-center">
-								<CardContent className="pt-6">
-									<div className="text-4xl mb-4">🔒</div>
-									<h4 className="text-lg font-semibold mb-2">隐私保护</h4>
-									<p className="text-gray-600 text-sm">
-										保护您的真实邮箱地址，避免垃圾邮件和隐私泄露
-									</p>
-								</CardContent>
-							</Card>
-							<Card className="text-center">
-								<CardContent className="pt-6">
-									<div className="text-4xl mb-4">⚡</div>
-									<h4 className="text-lg font-semibold mb-2">即时创建</h4>
-									<p className="text-gray-600 text-sm">
-										无需注册，一键生成临时邮箱地址，立即开始使用
-									</p>
-								</CardContent>
-							</Card>
-							<Card className="text-center">
-								<CardContent className="pt-6">
-									<div className="text-4xl mb-4">🌍</div>
-									<h4 className="text-lg font-semibold mb-2">完全免费</h4>
-									<p className="text-gray-600 text-sm">
-										永久免费使用，无隐藏费用，无广告干扰
-									</p>
-								</CardContent>
-							</Card>
+						</header>
+
+						<div className="theme-badge flex flex-wrap items-center gap-x-3 gap-y-1 px-3 py-1.5 text-[10px] sm:text-[11px]">
+							<span className="text-theme-faint">
+								<span className="text-theme-primary font-display font-semibold">
+									{copy.stats.lifetimeValue}
+								</span>{" "}
+								{copy.stats.lifetime}
+							</span>
+							<span className="text-theme-faint">
+								<span className="text-theme-primary font-display font-semibold">
+									{copy.stats.refreshValue}
+								</span>{" "}
+								{copy.stats.refresh}
+							</span>
+							<span className="text-theme-faint">
+								<span className="text-theme-primary font-display font-semibold">
+									{copy.stats.registrationValue}
+								</span>{" "}
+								{copy.stats.registration}
+							</span>
 						</div>
 					</div>
-				</div>
-			</main>
+				</section>
+
+				<section className="glass-panel px-4 py-4 sm:px-5 sm:py-4">
+					<div className="grid gap-4">
+						<div>
+							<div className="mb-3 space-y-1">
+								<p className="text-theme-faint text-[11px] font-semibold uppercase tracking-[0.16em]">
+									{copy.currentAddress}
+								</p>
+								<p className="text-theme-muted hidden text-xs sm:block">
+									{copy.noAddressDescription}
+								</p>
+							</div>
+							<div className="space-y-4">
+								{addresses.length > 0 ? (
+									<>
+										<div className="theme-card p-3">
+											<div className="border-theme-soft bg-theme-subtle flex items-center justify-between gap-3 rounded-xl border px-3 py-2.5">
+												<div className="text-theme-primary truncate text-sm font-semibold">
+													{addresses[0]}
+												</div>
+												<button
+													type="button"
+													className="neo-button-secondary min-w-20"
+													onClick={async () => {
+														if (
+															typeof navigator !== "undefined" &&
+															navigator.clipboard
+														) {
+															try {
+																await navigator.clipboard.writeText(
+																	addresses[0] ?? "",
+																);
+																setCopied(true);
+																setTimeout(() => setCopied(false), 1500);
+															} catch {
+																// ignore clipboard errors
+															}
+														}
+													}}
+												>
+													{copied ? copy.copied : copy.copy}
+												</button>
+											</div>
+										</div>
+
+										<div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+											<button
+												type="button"
+												name="intent"
+												value="generate"
+												className="neo-button w-full justify-center sm:min-w-[10.5rem] sm:w-auto"
+												onClick={() => {
+													fetcher.submit(
+														{ intent: "generate" },
+														{ method: "post" },
+													);
+												}}
+												disabled={isSubmitting}
+											>
+												{submittingIntent === "generate" && isSubmitting
+													? copy.generating
+													: copy.generateNew}
+											</button>
+											<button
+												type="button"
+												name="intent"
+												value="delete"
+												className="neo-button-secondary w-full justify-center sm:w-auto"
+												onClick={() => {
+													fetcher.submit(
+														{ intent: "delete" },
+														{ method: "post" },
+													);
+												}}
+												disabled={isSubmitting}
+											>
+												{submittingIntent === "delete" && isSubmitting
+													? copy.deleting
+													: copy.deleteAddress}
+											</button>
+										</div>
+
+										<p className="border-theme-soft bg-theme-subtle text-theme-faint rounded-lg border px-3 py-2 text-[11px] leading-relaxed">
+											{copy.safetyHint}
+										</p>
+									</>
+								) : (
+									<div className="theme-card p-3">
+										<div className="text-theme-primary text-sm font-semibold">
+											{copy.noAddressTitle}
+										</div>
+										<p className="text-theme-muted mt-1 text-xs leading-relaxed">
+											{copy.noAddressDescription}
+										</p>
+										<button
+											type="button"
+											name="intent"
+											value="generate"
+											className="neo-button mt-3 w-full justify-center sm:w-auto sm:min-w-[10.5rem]"
+											onClick={() => {
+												fetcher.submit(
+													{ intent: "generate" },
+													{ method: "post" },
+												);
+											}}
+											disabled={isSubmitting}
+										>
+											{submittingIntent === "generate" && isSubmitting
+												? copy.generating
+												: copy.generateAddress}
+										</button>
+										<p className="border-theme-soft bg-theme-subtle text-theme-faint mt-3 rounded-lg border px-3 py-2 text-[11px] leading-relaxed">
+											{copy.safetyHint}
+										</p>
+									</div>
+								)}
+							</div>
+						</div>
+
+						<div className="border-theme-soft border-t border-dashed pt-3">
+							<div className="mb-3 flex items-start justify-between gap-3">
+								<div>
+									<p className="text-theme-faint text-[11px] font-semibold uppercase tracking-[0.16em]">
+										{copy.inboxTag}
+									</p>
+									<p className="text-theme-primary font-display text-xl font-semibold">
+										{copy.inboxTitle}
+									</p>
+									<p className="text-theme-faint mt-1 text-[11px]">
+										{copy.lastRefresh}:{" "}
+										{formatRefreshTime(lastInboxRefreshAt, locale)}
+									</p>
+								</div>
+								<div className="flex flex-col items-end gap-2">
+									<span className="theme-badge hidden px-3 py-1 text-[11px] font-medium sm:inline-flex">
+										{copy.tapToOpen}
+									</span>
+									<button
+										type="button"
+										className="theme-badge px-3 py-1 text-[11px] font-semibold disabled:cursor-not-allowed disabled:opacity-60"
+										onClick={() => {
+											revalidator.revalidate();
+										}}
+										disabled={isRefreshingInbox}
+									>
+										{isRefreshingInbox
+											? copy.refreshingInbox
+											: copy.refreshInbox}
+									</button>
+								</div>
+							</div>
+
+							<div className="flex min-h-[360px] flex-col gap-2.5 overflow-y-auto py-1 pr-0.5">
+								{emails.length === 0 ? (
+									<div className="border-theme-strong bg-theme-subtle mt-6 rounded-2xl border border-dashed px-4 py-10 text-center">
+										<p className="text-theme-primary font-display text-lg font-semibold">
+											{copy.emptyInboxTitle}
+										</p>
+										<p className="text-theme-muted mt-1 text-sm">
+											{copy.emptyInboxDescription}
+										</p>
+									</div>
+								) : (
+									emails.map((email) => (
+										<button
+											key={email.id}
+											type="button"
+											className="email-item"
+											onClick={() => setSelectedEmail(email)}
+										>
+											<div className="min-w-0">
+												<div className="flex items-start justify-between gap-3">
+													<div className="text-theme-primary font-display truncate text-sm font-semibold">
+														{email.subject}
+													</div>
+													<div className="text-theme-faint whitespace-nowrap text-[11px]">
+														{formatTime(
+															email.time,
+															locale,
+															loaderData.renderedAt,
+														)}
+													</div>
+												</div>
+												<div className="text-theme-muted mt-1 truncate text-xs">
+													{email.from_name}
+													<span className="text-theme-faint">
+														{" "}
+														&lt;{email.from_address}&gt;
+													</span>
+												</div>
+											</div>
+										</button>
+									))
+								)}
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section className="glass-panel px-4 py-4 sm:px-5 sm:py-5">
+					<h2 className="text-theme-primary font-display mb-3 text-lg font-semibold sm:text-xl">
+						{seoNarrative.title}
+					</h2>
+					<div className="grid gap-3 lg:grid-cols-[0.92fr,1.08fr]">
+						<div className="theme-card space-y-3 p-4">
+							<p className="text-theme-faint text-[11px] font-semibold uppercase tracking-[0.16em]">
+								{seoGuides.title}
+							</p>
+							<div className="grid gap-2 sm:grid-cols-2">
+								{seoGuides.items.map((item) => (
+									<Link
+										key={item.path}
+										to={toLocalePath(item.path, locale)}
+										prefetch="viewport"
+										className="theme-badge flex items-center justify-between px-3 py-1.5 text-[11px] font-medium"
+									>
+										<span>{item.label}</span>
+										<span aria-hidden="true">{"->"}</span>
+									</Link>
+								))}
+							</div>
+						</div>
+
+						<div className="theme-card space-y-3 p-4">
+							<p className="text-theme-secondary text-xs leading-relaxed sm:text-sm">
+								{seoNarrative.description}
+							</p>
+							<ul className="text-theme-muted list-disc space-y-1 pl-5 text-[11px] leading-relaxed sm:text-xs">
+								{seoNarrative.points.map((point) => (
+									<li key={point}>{point}</li>
+								))}
+							</ul>
+						</div>
+					</div>
+				</section>
+			</div>
+
+			{selectedEmail && (
+				<EmailModal
+					email={selectedEmail}
+					onClose={() => setSelectedEmail(null)}
+					copy={copy.modal}
+				/>
+			)}
 		</div>
 	);
 }

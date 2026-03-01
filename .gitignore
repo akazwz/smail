@@ -1,4 +1,5 @@
 .DS_Store
+.env
 /node_modules/
 *.tsbuildinfo
 
@@ -9,6 +10,9 @@
 # Cloudflare
 .mf
 .wrangler
-.dev.vars
+.dev.vars*
+worker-configuration.d.ts
 
-wrangler.jsonc
+
+!.dev.vars.example
+!.env.example
