@@ -70,8 +70,8 @@
 	--prose-td-border: rgba(121, 164, 218, 0.34);
 }
 
-:root[data-theme="light"] {
-	color-scheme: light;
+	:root[data-theme="light"] {
+		color-scheme: light;
 	--bg-gradient:
 		radial-gradient(
 			880px 480px at -10% -12%,
@@ -139,7 +139,7 @@
 	--prose-td-border: rgba(128, 163, 211, 0.34);
 }
 
-@layer base {
+	@layer base {
 	* {
 		border-color: var(--line-soft);
 	}

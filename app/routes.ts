@@ -16,6 +16,18 @@ const mdPages = [
 ];
 
 export default [
+	route("/zh-CN", "routes/locale-zh-cn-redirect.tsx", {
+		id: "locale-zh-CN-root",
+	}),
+	route("/zh-CN/*", "routes/locale-zh-cn-redirect.tsx", {
+		id: "locale-zh-CN-splat",
+	}),
+	route("/zh-cn", "routes/locale-zh-cn-redirect.tsx", {
+		id: "locale-zh-cn-root",
+	}),
+	route("/zh-cn/*", "routes/locale-zh-cn-redirect.tsx", {
+		id: "locale-zh-cn-splat",
+	}),
 	route("/robots.txt", "routes/robots.txt.tsx"),
 	route("/sitemap.xml", "routes/sitemap.xml.tsx"),
 	route("/rss.xml", "routes/rss.xml.tsx", { id: "rss-default" }),

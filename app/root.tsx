@@ -1,4 +1,5 @@
 import {
+	Navigate,
 	isRouteErrorResponse,
 	Links,
 	Meta,
@@ -128,30 +129,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
 	const { theme } = useLoaderData<typeof loader>();
 	const locale = getLocaleFromPathname(location.pathname);
 	const resolvedTheme = theme ?? DEFAULT_THEME;
-	const initialBackground = resolvedTheme === "light" ? "#f4f8ff" : "#06111d";
-	const initialTextColor = resolvedTheme === "light" ? "#1f3451" : "#f2f9ff";
 
-	return (
-		<html
-			lang={locale}
-			dir={getLocaleDirection(locale)}
-			data-theme={resolvedTheme === "light" ? "light" : undefined}
-		>
+		return (
+			<html
+				lang={locale}
+				dir={getLocaleDirection(locale)}
+				data-theme={resolvedTheme === "light" ? "light" : undefined}
+			>
 				<head>
 					<meta charSet="utf-8" />
 					<meta name="viewport" content="width=device-width, initial-scale=1" />
 					<Meta />
-					<style
-						dangerouslySetInnerHTML={{
-							__html: `html,body{background:${initialBackground};color:${initialTextColor};}`,
-						}}
-					/>
 					<Links />
 				</head>
-			<body>
-				{children}
-				<ScrollRestoration />
-				<Scripts />
+				<body>
+					{children}
+					<ScrollRestoration />
+					<Scripts />
 			</body>
 		</html>
 	);
@@ -162,6 +156,15 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+	const location = useLocation();
+	const locale = getLocaleFromPathname(location.pathname);
+	const homePath = toLocalePath("/", locale);
+	const isNotFound = isRouteErrorResponse(error) && error.status === 404;
+
+	if (isNotFound) {
+		return <Navigate to={homePath} replace />;
+	}
+
 	let message = "Oops!";
 	let details = "An unexpected error occurred.";
 	let stack: string | undefined;

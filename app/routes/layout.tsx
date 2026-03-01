@@ -474,6 +474,14 @@ export default function Layout({ loaderData }: Route.ComponentProps) {
 							>
 								{contactLabel}
 							</Link>
+							<a
+								href="https://smail.now/"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="footer-link"
+							>
+								smail.now
+							</a>
 						</div>
 					</div>
 					<div className="mt-5 border-t border-theme-soft pt-4 text-[11px] text-theme-faint">
