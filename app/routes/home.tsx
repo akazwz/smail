@@ -769,16 +769,16 @@ export default function Home({ loaderData, actionData }: Route.ComponentProps) {
 								{addresses.length > 0 ? (
 									<>
 										<div className="theme-card p-3">
-											<div className="border-theme-soft bg-theme-subtle flex items-center justify-between gap-3 rounded-xl border px-3 py-2.5">
-												<div className="text-theme-primary truncate text-sm font-semibold">
-													{addresses[0]}
-												</div>
-												<button
-													type="button"
-													className="neo-button-secondary min-w-20"
-													onClick={async () => {
-														if (
-															typeof navigator !== "undefined" &&
+												<div className="border-theme-soft bg-theme-subtle flex flex-col gap-2 rounded-xl border px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+													<div className="text-theme-primary min-w-0 text-sm font-semibold break-all sm:truncate">
+														{addresses[0]}
+													</div>
+													<button
+														type="button"
+														className="neo-button-secondary w-full sm:w-auto sm:min-w-20"
+														onClick={async () => {
+															if (
+																typeof navigator !== "undefined" &&
 															navigator.clipboard
 														) {
 															try {
