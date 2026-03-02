@@ -1,6 +1,8 @@
 import randomName from "@scaleway/random-name";
 import { customAlphabet } from "nanoid";
 
+const nanoSuffix = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 6);
+
 export function generateEmailAddress() {
-	return `${randomName()}-${customAlphabet("1234567890", 6)()}@smail.pw`;
+	return `${randomName()}-${nanoSuffix()}@smail.pw`;
 }
