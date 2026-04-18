@@ -1,30 +1,47 @@
-import { createWorkersKVSessionStorage } from "@react-router/cloudflare";
-import { createCookie } from "react-router";
+import { createCookieSessionStorage } from "react-router";
+import { MAIL_RETENTION_HOURS } from "~/utils/mail-retention";
 
 type SessionData = {
 	addresses: string[];
 	addressIssuedAt?: number;
 };
 
-export const getCookie = () => {
-	return createCookie("__session", {
-		httpOnly: true,
-		sameSite: "lax",
-		secure: true,
-	});
-};
-
 let sessionStorage: ReturnType<
-	typeof createWorkersKVSessionStorage<SessionData>
+	typeof createCookieSessionStorage<SessionData>
 > | null = null;
+
+function getSessionSecrets(env: Pick<Env, "SESSION_SECRETS">): string[] {
+	const rotatedSecrets = (env.SESSION_SECRETS ?? "")
+		.split(",")
+		.map((secret) => secret.trim())
+		.filter(Boolean);
+	if (rotatedSecrets && rotatedSecrets.length > 0) {
+		return rotatedSecrets;
+	}
+
+	if (import.meta.env.DEV) {
+		return ["local-dev-session-secret-change-me"];
+	}
+
+	throw new Error(
+		"Missing session cookie secret. Set SESSION_SECRETS or SESSION_SECRET before starting the app.",
+	);
+}
 
 async function getSessionStorage() {
 	if (!sessionStorage) {
 		// 延迟到运行时才 import cloudflare:workers，避免 build 时报错
 		const { env } = await import("cloudflare:workers");
-		sessionStorage = createWorkersKVSessionStorage<SessionData>({
-			cookie: getCookie(),
-			kv: env.KV,
+		sessionStorage = createCookieSessionStorage<SessionData>({
+			cookie: {
+				name: "__session",
+				httpOnly: true,
+				maxAge: MAIL_RETENTION_HOURS * 60 * 60,
+				path: "/",
+				sameSite: "lax",
+				secrets: getSessionSecrets(env),
+				secure: !import.meta.env.DEV,
+			},
 		});
 	}
 	return sessionStorage;
@@ -32,7 +49,7 @@ async function getSessionStorage() {
 
 export async function getSession(
 	...args: Parameters<
-		ReturnType<typeof createWorkersKVSessionStorage<SessionData>>["getSession"]
+		ReturnType<typeof createCookieSessionStorage<SessionData>>["getSession"]
 	>
 ) {
 	const storage = await getSessionStorage();
@@ -41,9 +58,7 @@ export async function getSession(
 
 export async function commitSession(
 	...args: Parameters<
-		ReturnType<
-			typeof createWorkersKVSessionStorage<SessionData>
-		>["commitSession"]
+		ReturnType<typeof createCookieSessionStorage<SessionData>>["commitSession"]
 	>
 ) {
 	const storage = await getSessionStorage();
@@ -52,9 +67,7 @@ export async function commitSession(
 
 export async function destroySession(
 	...args: Parameters<
-		ReturnType<
-			typeof createWorkersKVSessionStorage<SessionData>
-		>["destroySession"]
+		ReturnType<typeof createCookieSessionStorage<SessionData>>["destroySession"]
 	>
 ) {
 	const storage = await getSessionStorage();

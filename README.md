@@ -11,7 +11,7 @@
 ## 一键部署（Deploy to Cloudflare）
 
 - 上方按钮可让其他开发者将本项目一键部署到他们自己的 Cloudflare 账号。
-- 部署流程会基于仓库中的 `wrangler.jsonc` 自动创建并绑定所需资源（KV / D1 / R2）。
+- 部署流程会基于仓库中的 `wrangler.jsonc` 自动创建并绑定所需资源（D1 / R2）。
 - 项目仓库需要保持公开（public）才能让他人正常使用该按钮。
 
 ## 项目简介
@@ -31,7 +31,7 @@
 - Cloudflare Workers（HTTP + Email Worker）
 - Cloudflare D1（存储邮件元数据）
 - Cloudflare R2（存储邮件原始内容）
-- Cloudflare KV（Session 存储）
+- Signed Cookie Session（React Router 内置 Session）
 - Tailwind CSS 4
 - Markdoc（渲染 Markdown 页面与博客）
 
@@ -56,7 +56,7 @@
    - 校验地址是否超过 24h
    - 从 R2 读取原始邮件并解析后返回
 
-说明：当前“24 小时”主要体现在会话可访问窗口与前端展示逻辑；`scheduled` 清理入口已预留，但未实现数据库物理清理逻辑。
+说明：当前“24 小时”主要体现在 Cookie Session 可访问窗口与前端展示逻辑；`scheduled` 清理入口已预留，但未实现数据库物理清理逻辑。
 
 ## 目录结构
 
@@ -66,7 +66,7 @@ app/
   md/                  # 多语言 SEO Markdown 页面
   blog/                # 多语言博客内容与元数据
   i18n/                # 语言配置与文案
-  .server/session.ts   # KV Session
+  .server/session.ts   # Signed Cookie Session
   utils/               # 公共工具（meta、theme、retention 等）
 workers/
   app.ts               # Cloudflare Worker 入口（fetch + email）
@@ -84,6 +84,12 @@ pnpm install
 ```
 
 ### 2. 启动开发
+
+先创建本地 secret：
+
+```bash
+cp .env.example .env
+```
 
 ```bash
 pnpm run dev
@@ -117,10 +123,21 @@ pnpm run preview
 
 `wrangler.jsonc` 当前使用以下绑定：
 
-- `KV`：Session 存储
 - `D1`：邮件元数据（数据库名 `smail-v3`）
 - `R2`：邮件内容对象存储（桶名 `smailv3`）
 - `triggers.crons`：`*/30 * * * *`（30 分钟触发一次，当前 `scheduled` 未实现清理）
+
+此外还需要配置一个 Worker Secret：
+
+- `SESSION_SECRETS`：Cookie Session 的签名密钥。支持逗号分隔多个值用于轮换，最左侧为当前生效密钥。
+
+本地开发可使用 `.env`，生产环境使用：
+
+注意：`.env` 和 `.dev.vars` 二选一即可；如果存在 `.dev.vars`，Wrangler 本地开发时不会再加载 `.env`。
+
+```bash
+pnpm wrangler secret put SESSION_SECRETS
+```
 
 ## 数据库迁移
 

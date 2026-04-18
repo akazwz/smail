@@ -3,18 +3,15 @@
 	"name": "smail-app",
 	"compatibility_date": "2025-11-26",
 	"main": "./workers/app.ts",
+	"secrets": {
+		"required": ["SESSION_SECRETS"]
+	},
 	"observability": {
 		"enabled": true
 	},
 	"triggers": {
 		"crons": ["*/30 * * * *"]
 	},
-	"kv_namespaces": [
-		{
-			"binding": "KV",
-			"id": "44a3224d537540c8bff321b8a8dbb71c"
-		}
-	],
 	"d1_databases": [
 		{
 			"binding": "D1",

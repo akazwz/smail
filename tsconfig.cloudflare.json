@@ -11,6 +11,7 @@
   "compilerOptions": {
     "composite": true,
     "strict": true,
+    "ignoreDeprecations": "6.0",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": ["vite/client"],
     "target": "ES2022",
