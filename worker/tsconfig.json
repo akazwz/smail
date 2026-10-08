@@ -1,6 +1,7 @@
 {
 	"include": [
 		"src",
+		"../site.config.ts",
 		"cloudflare.config.ts",
 		"vite.config.ts",
 		".cloudflare/types"

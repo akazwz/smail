@@ -9,6 +9,7 @@ import { prerender } from "prerender-crawler/vite";
 import { defineConfig } from "vite";
 
 import { SUPPORTED_LOCALES } from "./app/i18n/config.ts";
+import { site } from "./site.config.ts";
 import { markdownTree } from "./vite/markdown.ts";
 import { notFoundPage } from "./vite/not-found-page.ts";
 import { createPageDates } from "./vite/page-dates.ts";
@@ -55,10 +56,10 @@ export default defineConfig({
 			// /about 写成 about.html，和 /zh 写成 zh.html 一致。
 			autoSubfolderIndex: false,
 			integrations: [
-				notFoundPage(locales),
+				notFoundPage(locales, site.domain),
 				// 站点地图由预渲染器按实际渲染出来的页面生成；修改时间取自 git。
 				sitemap({
-					hostname: "https://smail.pw",
+					hostname: `https://${site.domain}`,
 					entry: (page) => ({ lastmod: lastModified(page.path) }),
 				}),
 				{

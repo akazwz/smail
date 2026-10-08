@@ -8,7 +8,7 @@ import { Mailbox } from "#/components/mailbox.tsx";
 import { Page, Row, Rows } from "#/components/page.tsx";
 import { type Locale, toLocalePath } from "#/i18n/config.ts";
 import { useDictionary } from "#/i18n/dictionary.ts";
-import { BASE_URL } from "#/seo.config.ts";
+import { BASE_URL, SITE_NAME } from "#/seo.config.ts";
 import { Badge } from "#/ui/Badge.tsx";
 import { Button } from "#/ui/Button.tsx";
 import { Dialog } from "#/ui/Dialog.tsx";
@@ -100,7 +100,7 @@ function getHomeJsonLd(locale: Locale, description: string) {
 		"@graph": [
 			{
 				"@type": "WebSite",
-				name: "smail.pw",
+				name: SITE_NAME,
 				url: localizedHomeUrl,
 				inLanguage: locale,
 				description,
@@ -111,7 +111,7 @@ function getHomeJsonLd(locale: Locale, description: string) {
 			},
 			{
 				"@type": "WebApplication",
-				name: "smail.pw",
+				name: SITE_NAME,
 				url: localizedHomeUrl,
 				applicationCategory: "UtilitiesApplication",
 				operatingSystem: "Web",

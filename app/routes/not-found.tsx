@@ -4,6 +4,7 @@ import { onSettled } from "solid-js";
 
 import { Page, PageIntro } from "#/components/page.tsx";
 import { toLocalePath } from "#/i18n/config.ts";
+import { SITE_NAME } from "#/seo.config.ts";
 import { ButtonLink } from "#/ui/Button.tsx";
 import { Icon } from "#/ui/Icon.tsx";
 import { usePageHead } from "#/utils/head.ts";
@@ -14,7 +15,10 @@ export default function NotFound() {
 	const navigate = useNavigate();
 
 	httpStatus(404);
-	usePageHead(() => ({ title: "404 | smail.pw", robots: "noindex, follow" }));
+	usePageHead(() => ({
+		title: `404 | ${SITE_NAME}`,
+		robots: "noindex, follow",
+	}));
 	// 找不到的页面在浏览器里直接回首页；服务端仍然返回 404 状态码。
 	onSettled(() => {
 		navigate(toLocalePath("/", locale()), { replace: true });
@@ -26,7 +30,7 @@ export default function NotFound() {
 				<div>
 					<ButtonLink href={toLocalePath("/", locale())}>
 						<Icon name="back" size={16} />
-						smail.pw
+						{SITE_NAME}
 					</ButtonLink>
 				</div>
 			</PageIntro>

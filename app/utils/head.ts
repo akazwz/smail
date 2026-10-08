@@ -10,7 +10,7 @@ import {
 	toIntlLocale,
 	toLocalePath,
 } from "#/i18n/config.ts";
-import { BASE_URL } from "#/seo.config.ts";
+import { BASE_URL, SITE_NAME } from "#/seo.config.ts";
 
 const OG_IMAGE_URL = `${BASE_URL}/og.png`;
 
@@ -73,19 +73,19 @@ function getSiteHead(rawPathname: string): HeadTag[] {
 			props: {
 				rel: "alternate",
 				type: "application/rss+xml",
-				title: "smail.pw Blog RSS",
+				title: `${SITE_NAME} Blog RSS`,
 				href: `${BASE_URL}${toLocalePath("/rss.xml", locale)}`,
 			},
 		},
 		meta("property", "og:type", "website"),
-		meta("property", "og:site_name", "smail.pw"),
+		meta("property", "og:site_name", SITE_NAME),
 		meta("property", "og:url", canonicalUrl),
 		meta("property", "og:locale", toIntlLocale(locale).replace("-", "_")),
-		// 分享图是一张品牌图：只有标志和 smail.pw，不带任何语言的文字，也不带邮箱地址。所有页面、所有语言共用。
+		// 分享图是一张品牌图（public/og.png）：只有标志和站名，不带任何语言的文字，也不带邮箱地址。所有页面、所有语言共用。
 		meta("property", "og:image", OG_IMAGE_URL),
 		meta("property", "og:image:width", "1200"),
 		meta("property", "og:image:height", "630"),
-		meta("property", "og:image:alt", "smail.pw"),
+		meta("property", "og:image:alt", SITE_NAME),
 		meta("name", "twitter:card", "summary_large_image"),
 		meta("name", "twitter:image", OG_IMAGE_URL),
 	];

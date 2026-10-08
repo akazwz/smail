@@ -9,7 +9,7 @@ import { Aside, Columns, Page } from "#/components/page.tsx";
 import { getMarkdownPage } from "#/data.ts";
 import { type Locale, toLocalePath } from "#/i18n/config.ts";
 import { useDictionary } from "#/i18n/dictionary.ts";
-import { BASE_URL, type MarkdownPageSlug } from "#/seo.config.ts";
+import { BASE_URL, SITE_NAME, type MarkdownPageSlug } from "#/seo.config.ts";
 import type { MarkdownNode } from "#/types/markdown.ts";
 import { ButtonLink } from "#/ui/Button.tsx";
 import { Card } from "#/ui/Card.tsx";
@@ -100,11 +100,11 @@ function getArticleJsonLd(
 		dateModified: "2026-10-07",
 		author: {
 			"@type": "Organization",
-			name: "smail.pw",
+			name: SITE_NAME,
 		},
 		publisher: {
 			"@type": "Organization",
-			name: "smail.pw",
+			name: SITE_NAME,
 			url: BASE_URL,
 		},
 	};

@@ -6,7 +6,10 @@ import type { PrerenderIntegration } from "prerender-crawler";
  * 它是一个不带应用脚本的独立小页面。浏览器里会立刻回到对应语言的首页——从地址的第一段
  * 判断语言，所以需要知道有哪些语言；没开脚本的访客看到的是一个回首页的链接。
  */
-export function notFoundPage(locales: string[]): PrerenderIntegration {
+export function notFoundPage(
+	locales: string[],
+	siteName: string,
+): PrerenderIntegration {
 	const prefixes = locales.filter((locale) => locale !== "en");
 	const html = `<!doctype html>
 <html lang="en">
@@ -14,7 +17,7 @@ export function notFoundPage(locales: string[]): PrerenderIntegration {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>404 | smail.pw</title>
+<title>404 | ${siteName}</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script>(function(){var m=/^\\/(${prefixes.join("|")})(?:\\/|$)/.exec(location.pathname);location.replace(m?"/"+m[1]:"/")})()</script>
 <style>
@@ -27,7 +30,7 @@ a{color:inherit}
 </head>
 <body>
 <h1>404</h1>
-<a href="/">smail.pw</a>
+<a href="/">${siteName}</a>
 </body>
 </html>
 `;

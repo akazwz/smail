@@ -10,7 +10,7 @@ import { JsonLd } from "#/components/json-ld.tsx";
 import { Page, PageIntro } from "#/components/page.tsx";
 import { type Locale, toIntlLocale, toLocalePath } from "#/i18n/config.ts";
 import { useDictionary } from "#/i18n/dictionary.ts";
-import { BASE_URL } from "#/seo.config.ts";
+import { BASE_URL, SITE_NAME } from "#/seo.config.ts";
 import { ButtonLink } from "#/ui/Button.tsx";
 import { CardLink } from "#/ui/CardLink.tsx";
 import { color, space, text } from "#/ui/tokens.stylex.ts";
@@ -52,7 +52,7 @@ export function getBlogPostMetaTitle(
 		return titleWithLocalizedSuffix;
 	}
 
-	const fallbackSuffix = " | smail.pw";
+	const fallbackSuffix = ` | ${SITE_NAME}`;
 	const titleWithFallbackSuffix = `${postTitle}${fallbackSuffix}`;
 	if (titleWithFallbackSuffix.length <= maxTitleLength) {
 		return titleWithFallbackSuffix;

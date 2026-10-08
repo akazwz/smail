@@ -9,7 +9,7 @@ import { Aside, Columns, Page, Section } from "#/components/page.tsx";
 import { getBlogPost } from "#/data.ts";
 import { toLocalePath } from "#/i18n/config.ts";
 import { useDictionary } from "#/i18n/dictionary.ts";
-import { BASE_URL } from "#/seo.config.ts";
+import { BASE_URL, SITE_NAME } from "#/seo.config.ts";
 import { Icon } from "#/ui/Icon.tsx";
 import { LinkList } from "#/ui/LinkList.tsx";
 import { TextLink } from "#/ui/TextLink.tsx";
@@ -74,11 +74,11 @@ function BlogPost(props: { post: BlogPostMeta }) {
 			},
 			author: {
 				"@type": "Organization",
-				name: "smail.pw",
+				name: SITE_NAME,
 			},
 			publisher: {
 				"@type": "Organization",
-				name: "smail.pw",
+				name: SITE_NAME,
 				logo: {
 					"@type": "ImageObject",
 					url: `${BASE_URL}/favicon.ico`,

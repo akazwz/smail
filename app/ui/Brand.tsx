@@ -1,4 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
+import { Show } from "solid-js";
 
 import { color, space, text } from "./tokens.stylex.ts";
 
@@ -21,7 +22,9 @@ const styles = stylex.create({
 });
 
 // 站点标志和字标。图形和 public/favicon.svg 是同一个：一只信封，右上角一个橙色的未读点。
-export function Brand() {
+// `name` 是站名，通常就是域名；里面的第一个点会用强调色显示。
+export function Brand(props: { name: string }) {
+	const dot = () => props.name.indexOf(".");
 	return (
 		<span {...stylex.attrs(styles.brand)}>
 			<svg
@@ -57,7 +60,11 @@ export function Brand() {
 				/>
 			</svg>
 			<span {...stylex.attrs(styles.wordmark)}>
-				smail<span {...stylex.attrs(styles.wordmarkDot)}>.</span>pw
+				<Show when={dot() > 0} fallback={props.name}>
+					{props.name.slice(0, dot())}
+					<span {...stylex.attrs(styles.wordmarkDot)}>.</span>
+					{props.name.slice(dot() + 1)}
+				</Show>
 			</span>
 		</span>
 	);

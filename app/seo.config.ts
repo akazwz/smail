@@ -1,4 +1,8 @@
-export const BASE_URL = "https://smail.pw";
+import { site } from "#site";
+
+// 网站的地址和名字都来自仓库根目录的 site.config.ts。名字就是域名本身。
+export const BASE_URL = `https://${site.domain}`;
+export const SITE_NAME = site.domain;
 
 export const MARKDOWN_BASE_PATHS = [
 	"/about",

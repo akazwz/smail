@@ -5,7 +5,7 @@ import { MessageForm } from "#/components/message-form.tsx";
 import { Page, PageIntro } from "#/components/page.tsx";
 import { toLocalePath } from "#/i18n/config.ts";
 import { useDictionary } from "#/i18n/dictionary.ts";
-import { BASE_URL } from "#/seo.config.ts";
+import { BASE_URL, SITE_NAME } from "#/seo.config.ts";
 import { ButtonLink } from "#/ui/Button.tsx";
 import { color, space } from "#/ui/tokens.stylex.ts";
 import { usePageHead } from "#/utils/head.ts";
@@ -67,7 +67,7 @@ export default function ContactPage() {
 		description: copy.description,
 		mainEntity: {
 			"@type": "Organization",
-			name: "smail.pw",
+			name: SITE_NAME,
 			url: BASE_URL,
 		},
 	});

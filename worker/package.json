@@ -8,10 +8,11 @@
 		"preview": "vite build && vite preview --port 8788",
 		"cf-typegen": "cf workers types",
 		"typecheck": "pnpm run cf-typegen && tsc -p tsconfig.json",
-		"migrate": "cf d1 migrations apply 8a38551f-5eab-4095-b69b-2f4a87e9d8d1",
-		"migrate:local": "cf d1 migrations apply 8a38551f-5eab-4095-b69b-2f4a87e9d8d1 --local --persist-to .wrangler/state",
-		"messages": "cf d1 query 8a38551f-5eab-4095-b69b-2f4a87e9d8d1 --sql \"SELECT datetime(time / 1000, 'unixepoch') AS received, locale, contact, body FROM messages ORDER BY time DESC LIMIT 50\"",
+		"migrate": "node d1.mjs migrate",
+		"migrate:local": "node d1.mjs migrate --local --persist-to .wrangler/state",
+		"messages": "node d1.mjs messages",
 		"deploy": "vite build && pnpm run migrate && cf deploy --prebuilt",
+		"deploy:first": "vite build && pnpm run migrate && cf deploy --prebuilt --secrets-file .env.production",
 		"deploy:dry-run": "vite build && cf deploy --prebuilt --dry-run",
 		"deploy:staging": "vite build --mode staging && cf deploy --prebuilt --mode staging",
 		"postinstall": "pnpm run cf-typegen"
@@ -29,7 +30,7 @@
 		"wrangler": "^4.147.0"
 	},
 	"engines": {
-		"node": ">=22.12"
+		"node": ">=22.18"
 	},
 	"packageManager": "pnpm@12.10.1"
 }

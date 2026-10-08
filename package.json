@@ -4,7 +4,8 @@
 	"type": "module",
 	"imports": {
 		"#/*": "./app/*",
-		"#contract": "./worker/src/contract.ts"
+		"#contract": "./worker/src/contract.ts",
+		"#site": "./site.config.ts"
 	},
 	"scripts": {
 		"dev": "pnpm run \"/^dev:.*/\"",
@@ -18,6 +19,7 @@
 		"format:check": "oxfmt --check",
 		"check": "pnpm run typecheck && pnpm run lint && pnpm run format:check",
 		"deploy": "pnpm run build && pnpm --filter smail-worker run deploy",
+		"deploy:first": "pnpm run build && pnpm --filter smail-worker run deploy:first",
 		"deploy:dry-run": "pnpm run build && pnpm --filter smail-worker run deploy:dry-run",
 		"deploy:staging": "pnpm run build && pnpm --filter smail-worker run deploy:staging"
 	},
@@ -41,7 +43,7 @@
 		"vite": "^8.3.3"
 	},
 	"engines": {
-		"node": ">=22.12"
+		"node": ">=22.18"
 	},
 	"packageManager": "pnpm@12.10.1"
 }

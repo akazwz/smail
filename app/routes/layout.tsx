@@ -9,6 +9,7 @@ import {
 	toLocalePath,
 } from "#/i18n/config.ts";
 import { useDictionary } from "#/i18n/dictionary.ts";
+import { SITE_NAME } from "#/seo.config.ts";
 import { base } from "#/ui/base.ts";
 import { Brand } from "#/ui/Brand.tsx";
 import { Select } from "#/ui/Select.tsx";
@@ -134,7 +135,7 @@ export default function Layout(props: ParentProps) {
 					href={localizeLink("/")}
 					{...stylex.attrs(styles.home, base.focusRing)}
 				>
-					<Brand />
+					<Brand name={SITE_NAME} />
 				</a>
 				<nav aria-label={copy.siteSubtitle} {...stylex.attrs(styles.nav)}>
 					<For each={navItems} keyed={(item) => item.path}>
@@ -168,7 +169,7 @@ export default function Layout(props: ParentProps) {
 			<footer {...stylex.attrs(styles.footer)}>
 				<div {...stylex.attrs(styles.footerInner)}>
 					<p {...stylex.attrs(styles.copyright)}>
-						© {new Date().getUTCFullYear()} smail.pw · {copy.copyright}
+						© {new Date().getUTCFullYear()} {SITE_NAME} · {copy.copyright}
 					</p>
 					<nav {...stylex.attrs(styles.footerLinks)}>
 						<For each={footerItems} keyed={(item) => item.path}>
