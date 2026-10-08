@@ -1,0 +1,9 @@
+{
+	"$schema": "./node_modules/oxfmt/configuration_schema.json",
+	"useTabs": true,
+	"printWidth": 80,
+	"sortImports": true,
+	"sortPackageJson": true,
+	// Markdown 都是文案和文档，不让格式化工具改动它们的换行和标点。
+	"ignorePatterns": ["**/*.md", "pnpm-lock.yaml"]
+}

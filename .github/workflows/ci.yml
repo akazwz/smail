@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 版本取自 package.json 的 packageManager 字段。
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # 类型检查、代码检查、格式检查。
+      - run: pnpm run check
+
+      # 构建前端（含全部页面的预渲染）和 Worker。不上传，也不需要 Cloudflare 的凭据。
+      - run: pnpm run build
+      - run: pnpm --filter smail-worker run build

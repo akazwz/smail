@@ -1,0 +1,16 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["typescript", "unicorn", "oxc", "import", "promise"],
+	"categories": {
+		"correctness": "error",
+		"suspicious": "error",
+		"perf": "error"
+	},
+	"rules": {
+		// 样式表就是为了副作用而引入的。
+		"import/no-unassigned-import": ["error", { "allow": ["**/*.css"] }],
+		// 有些包的默认导出是一个带方法的对象（stylex.vite），类型里并没有对应的具名导出。
+		"import/no-named-as-default-member": "off"
+	},
+	"ignorePatterns": ["dist", "**/.cloudflare", "**/.wrangler"]
+}
