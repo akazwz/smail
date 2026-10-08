@@ -1,44 +1,44 @@
 ## Bonnes pratiques d'email temporaire pour des inscriptions plus sûres
 
-L'email temporaire est pratique, mais sans méthode il peut aussi causer des problèmes de compte. Si vous l'utilisez pour valider des inscriptions, ces bonnes pratiques réduisent les risques et protègent votre boîte principale.
+L'email temporaire est pratique, mais l'utiliser sans méthode peut tout de même causer des problèmes de compte. Si vous comptez sur des boîtes jetables pour valider vos inscriptions, ces bonnes pratiques vous aident à réduire les risques et à garder votre boîte principale plus propre.
 
-### 1) Utilisez-le seulement pour les comptes à faible risque
+### 1) Réservez l'email temporaire aux comptes à faible risque
 
 Une boîte temporaire est idéale pour :
 
-- Essais de produit
-- Téléchargements ponctuels
-- Codes promo
-- Inscriptions communautaires sans données sensibles
+- Les essais de produits
+- Les téléchargements ponctuels
+- L'accès à des coupons ou à des codes promo
+- Les inscriptions à des communautés qui ne gèrent pas de données sensibles
 
-Évitez la banque, l'identité professionnelle, les impôts, le juridique et les comptes de récupération critiques.
+Évitez l'email temporaire pour la banque, l'identité professionnelle, les impôts, le juridique ou les comptes essentiels à la récupération.
 
-### 2) Considérez chaque boîte temporaire comme éphémère
+### 2) Partez du principe qu'une boîte temporaire peut disparaître
 
-Sur smail.pw, les emails sont conservés jusqu'à 24 heures. Voyez cela comme une fenêtre d'expiration, pas comme un stockage durable.
+Sur smail.pw, les adresses et les emails sont conservés à long terme par défaut, mais sans garantie : ils peuvent être supprimés à tout moment, par exemple lors d'une maintenance, après une panne du système ou lors d'un nettoyage du stockage. Ne vous en servez pas comme d'un stockage à long terme.
 
-Si un message est important, sauvegardez les informations immédiatement.
+Si un message est important, copiez immédiatement les informations essentielles.
 
-### 3) Séparez identité jetable et identité principale
+### 3) Séparez vos identités d'inscription
 
-Utilisez l'email temporaire pour le jetable, et votre boîte principale pour les services importants. Cette séparation réduit le spam et facilite la gestion des comptes.
+Utilisez l'email temporaire pour les interactions jetables, et votre boîte principale pour les services importants. Cette séparation réduit le spam et facilite la gestion de vos comptes.
 
-### 4) Sauvegardez l'essentiel avant de quitter
+### 4) Enregistrez tout de suite ce dont vous avez besoin
 
-Avant de fermer l'onglet :
+Ne laissez pas des informations importantes uniquement dans une boîte temporaire. Dès que l'email arrive :
 
-- Enregistrez les liens d'activation
-- Copiez les identifiants de référence
-- Notez le service et la date d'inscription
+- Enregistrez les liens d'activation si nécessaire
+- Copiez les numéros de référence et les numéros de ticket d'assistance
+- Notez le nom du service et la date d'inscription
 
-### 5) Préparez une solution de secours
+### 5) Prévoyez une solution de repli
 
-Certains sites bloquent les domaines temporaires. Si la vérification échoue plusieurs fois, passez à un alias ou à votre boîte permanente.
+Certains sites bloquent les domaines temporaires. Si la vérification échoue à plusieurs reprises, passez à un alias ou à votre compte permanent pour ce service.
 
-### 6) Rafraîchissez avant de régénérer
+### 6) Actualisez avant de générer une nouvelle adresse
 
-Si le code n'arrive pas, rafraîchissez d'abord et attendez un peu. Beaucoup d'expéditeurs ont un délai. Changer trop vite d'adresse peut relancer inutilement le processus.
+Quand un code n'apparaît pas, patientez d'abord un instant et cliquez sur Actualiser. Beaucoup d'expéditeurs ont du retard. Remplacer l'adresse trop tôt peut faire repartir le processus de zéro et vous faire perdre du temps.
 
-### Conclusion
+### À retenir
 
-L'email temporaire est le plus efficace avec des règles simples : faible risque, capture rapide des infos importantes et migration vers une boîte durable dès que l'enjeu augmente.
+L'email temporaire donne le meilleur de lui-même avec quelques règles simples : un usage à faible risque, la récupération rapide des informations importantes et le passage immédiat à un compte permanent dès que l'enjeu augmente.

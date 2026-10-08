@@ -1,39 +1,39 @@
 ## Email OTP non reçu ? 8 solutions rapides qui marchent
 
-Si votre email de code de vérification tarde, ne recommencez pas tout immédiatement. Suivez cette checklist dans l'ordre.
+Si l'email contenant votre code de vérification tarde, ne recommencez pas tout immédiatement. Suivez cette checklist dans l'ordre.
 
 ### 1) Attendez d'abord 1 à 3 minutes
 
-De nombreux fournisseurs mettent ces emails en file d'attente. Les petits retards sont fréquents.
+De nombreux services mettent les emails de vérification en file d'attente. Les petits retards sont fréquents.
 
-### 2) Vérifiez l'adresse saisie
+### 2) Vérifiez que l'adresse est exacte
 
-Une petite faute dans le nom de boîte suffit pour perdre le message.
+Une petite faute de frappe dans le nom de la boîte suffit pour perdre le message.
 
-### 3) Rafraîchissez la boîte manuellement
+### 3) Actualisez la boîte manuellement
 
-Utilisez le bouton d'actualisation avant de générer une nouvelle adresse. Cela récupère les arrivées tardives.
+Les nouveaux emails apparaissent normalement d'eux-mêmes, mais utilisez le bouton Actualiser de la boîte de réception avant de générer une nouvelle adresse. Vous récupérerez ainsi les arrivées tardives.
 
-### 4) Renvoyez depuis le site d'origine
+### 4) Demandez un renvoi depuis le site d'origine
 
-La plupart des plateformes proposent un lien de renvoi. Utilisez-le une fois puis attendez à nouveau.
+La plupart des plateformes proposent un lien de renvoi. Utilisez-le une fois, puis attendez de nouveau.
 
-### 5) Vérifiez la politique de domaine expéditeur
+### 5) Vérifiez si l'expéditeur accepte votre domaine
 
 Certains services bloquent les domaines temporaires. Si plusieurs renvois échouent, c'est peut-être la raison.
 
 ### 6) Évitez de changer d'adresse trop vite
 
-Si vous changez de boîte avant la nouvelle tentative d'envoi, le prochain code peut encore partir vers l'ancienne adresse.
+Si vous changez de boîte avant que l'expéditeur ne réessaie, le prochain code risque encore de partir vers la première adresse.
 
-### 7) Préparez un fallback stable
+### 7) Prévoyez une solution de repli stable
 
-Pour les comptes de valeur moyenne ou élevée, passez à un alias ou à votre boîte personnelle pour finaliser l'inscription.
+Pour les comptes d'importance moyenne ou élevée, passez à un alias email ou à votre boîte personnelle pour terminer l'inscription.
 
 ### 8) Notez les horaires pour le support
 
-Conservez l'heure de demande du code et l'usage du renvoi. Le support pourra tracer les journaux plus vite.
+Notez l'heure à laquelle vous avez demandé le code et si vous avez utilisé le renvoi. Les équipes du support retrouveront ainsi plus vite la trace de l'envoi dans leurs journaux.
 
-### Conclusion
+### À retenir
 
-La majorité des problèmes OTP vient du timing, d'une faute de saisie ou de la politique expéditeur. Une séquence de vérification structurée est plus efficace qu'un changement d'adresse aléatoire.
+La plupart des problèmes d'OTP tiennent au délai, à une faute de frappe ou à la politique de l'expéditeur. Une série de tentatives méthodique les règle plus vite que des changements d'adresse au hasard.

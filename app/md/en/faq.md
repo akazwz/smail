@@ -13,7 +13,7 @@ Immediately. Open the homepage and generate an address in one tap.
 No. smail.pw works without account registration.
 
 ### How long are messages stored?
-Messages are kept for up to 24 hours, then automatically removed.
+Your address and the emails it receives are kept long-term by default. We do not guarantee how long: they may be removed at any time, for example during maintenance, after a system fault, or when storage is cleaned up. Do not rely on smail.pw to keep anything you need.
 
 ### Can I use it for OTP or verification links?
 Yes. That is one of the most common use cases.
@@ -25,22 +25,28 @@ Common reasons:
 - Provider blocks temporary domains
 - Typo in the address
 
-Try refreshing the inbox and resending from the source website.
+New emails appear in the inbox automatically. If nothing arrives, press Refresh and resend from the source website.
 
 ### Can I send emails from smail.pw?
-The service is primarily for receiving messages. Sending or replying may be unavailable.
+No. smail.pw is receive-only: you cannot send or reply from a temporary address.
+
+### Can I receive attachments?
+Only the message body is shown. Attachments are not displayed and cannot be downloaded.
 
 ### Is this inbox private?
-Temporary inboxes are not equivalent to personal authenticated mailboxes. Do not store sensitive data here.
+Your inbox is tied to the browser where you created the address, not to an account, and it has no password. Anyone who can use that browser can read it. Do not store sensitive data here.
 
-### Can I keep one address forever?
-No. Addresses are disposable by design and may expire.
+### Can I open my inbox on another device or browser?
+No. The address is remembered by a cookie in the browser where you created it. Another browser or device starts without an address, and if you clear your cookies the address and its inbox cannot be recovered.
+
+### Can I keep using the same address?
+Your address never changes by itself; it only changes when you replace or delete it. But it lives in this browser's cookies, and we do not guarantee how long it or its emails are kept, so do not rely on it for anything important.
 
 ### Is smail.pw suitable for important accounts?
 No. Use a long-term secure provider for financial, legal, work, and recovery-critical accounts.
 
 ### What if emails disappear?
-This is expected in temporary systems when retention expires or cleanup rules run.
+Emails may be removed at any time, for example during maintenance, after a system fault, or when storage is cleaned up. We do not guarantee retention.
 
 ### Is smail.pw free?
 Yes, smail.pw is designed as a free temporary mailbox utility.

@@ -4,7 +4,7 @@ Temporary inboxes and email aliases both protect your primary address, but they 
 
 ### Quick difference
 
-- **Temporary email**: short-term disposable inbox, usually no signup
+- **Temporary email**: disposable inbox, usually no signup
 - **Email alias**: stable forwarding address tied to your permanent mailbox
 
 ### Choose temporary email when

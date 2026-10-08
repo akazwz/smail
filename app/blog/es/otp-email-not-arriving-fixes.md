@@ -1,39 +1,39 @@
-## ¿No llega el correo OTP? 8 soluciones rápidas que funcionan
+## ¿No llega el correo OTP? 8 soluciones rápidas que suelen funcionar
 
-Si tu correo de código de verificación se retrasa, no reinicies todo de inmediato. Sigue esta lista en orden.
+Si el correo con tu código de verificación se retrasa, no empieces todo de nuevo de inmediato. Sigue esta lista en orden.
 
-### 1) Espera primero 1–3 minutos
+### 1) Espera primero de 1 a 3 minutos
 
-Muchos proveedores ponen los correos de verificación en cola. Los retrasos cortos son normales.
+Muchos proveedores ponen en cola los correos de verificación. Los retrasos cortos son habituales.
 
-### 2) Confirma que la dirección esté bien escrita
+### 2) Confirma que la dirección sea correcta
 
-Un solo error en el nombre del buzón basta para perder el mensaje.
+Un pequeño error al escribir el nombre de la dirección basta para perder el mensaje.
 
-### 3) Refresca la bandeja manualmente
+### 3) Actualiza la bandeja de entrada manualmente
 
-Usa el botón de actualizar antes de generar una dirección nueva. Así capturas correos que llegan tarde.
+Los correos nuevos normalmente aparecen solos, pero usa el botón de actualizar de la bandeja de entrada antes de generar una dirección nueva. Así detectas los correos que llegan tarde.
 
-### 4) Reenvía desde el sitio de origen
+### 4) Solicita el reenvío en el sitio web de origen
 
-La mayoría de plataformas ofrece un enlace de reenvío. Úsalo una vez y vuelve a esperar.
+La mayoría de las plataformas ofrece un enlace de reenvío. Úsalo una vez y vuelve a esperar.
 
-### 5) Revisa la política del dominio del remitente
+### 5) Revisa la política del remitente sobre dominios
 
-Algunos servicios bloquean dominios temporales. Si varios reintentos fallan, puede ser esta la causa.
+Algunos servicios bloquean los dominios temporales. Si varios reenvíos fallan, esta puede ser la causa.
 
 ### 6) No cambies de dirección demasiado rápido
 
-Si cambias de buzón antes de que el emisor reintente, el próximo código puede seguir yendo a la dirección anterior.
+Si cambias de dirección antes de que el remitente reintente el envío, tu próximo código puede seguir yendo a la primera dirección.
 
-### 7) Usa una ruta de respaldo estable
+### 7) Prueba una alternativa estable
 
-Para cuentas de valor medio o alto, cambia a un alias o a tu correo personal para terminar el registro.
+Para cuentas de valor medio o alto, cambia a un alias de correo o a tu correo personal para completar el registro.
 
-### 8) Guarda tiempos para soporte
+### 8) Anota los horarios para el soporte
 
-Anota la hora en que pediste el código y si usaste reenvío. Eso ayuda al soporte a revisar logs más rápido.
+Registra la hora en que solicitaste el código y si usaste el reenvío. Eso ayuda a los equipos de soporte a rastrear más rápido los registros de entrega.
 
 ### Conclusión
 
-La mayoría de problemas OTP se debe a tiempos, errores de escritura o políticas del remitente. Un flujo ordenado funciona mejor que cambiar direcciones al azar.
+La mayoría de los problemas con el OTP se deben a tiempos de espera, errores de escritura o políticas del remitente. Una secuencia ordenada de reintentos los resuelve más rápido que cambiar de dirección al azar.

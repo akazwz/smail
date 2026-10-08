@@ -1,6 +1,6 @@
 ## About smail.pw Temporary Email
 
-smail.pw is a lightweight **temporary email generator** for short-term inbox use. You can create a disposable address in seconds, receive verification emails, and keep your real inbox cleaner.
+smail.pw is a lightweight **temporary email generator** for disposable inbox use. You can create a disposable address in seconds, receive verification emails, and keep your real inbox cleaner.
 
 ### Why smail.pw exists
 
@@ -22,7 +22,7 @@ smail.pw gives you a simple alternative: use a temporary mailbox first, then swi
 ### What makes smail.pw different
 
 - Fast inbox creation, no onboarding friction
-- 24-hour retention window for delayed emails
+- Addresses and emails are kept long-term by default, with no guarantee
 - Clean, focused interface for receiving and reading messages
 
 ### Important boundaries
@@ -37,4 +37,4 @@ If an account matters long-term, use a permanent secure mailbox.
 
 ### Contact
 
-For support or feedback, use the contact channel provided on the site.
+For support or feedback, leave us a message on the [Contact](/contact) page.

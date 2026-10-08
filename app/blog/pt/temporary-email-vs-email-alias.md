@@ -1,39 +1,41 @@
 ## Email temporário vs alias de email: qual usar?
 
-Caixas temporárias e aliases ajudam a proteger seu endereço principal, mas resolvem problemas diferentes.
+Caixas de entrada temporárias e aliases de email protegem seu endereço principal, mas resolvem problemas diferentes.
 
 ### Diferença rápida
 
-- **Email temporário**: caixa descartável de curto prazo, normalmente sem cadastro
-- **Alias de email**: endereço estável que encaminha para sua caixa permanente
+- **Email temporário**: caixa de entrada descartável, normalmente sem cadastro
+- **Alias de email**: endereço estável de encaminhamento vinculado ao seu email permanente
 
-### Escolha email temporário quando
+### Escolha o email temporário quando
 
-- Você precisa de acesso imediato sem criar conta
+- Você precisa de acesso imediato, sem cadastro
 - Está testando serviços rapidamente
-- Não espera relação de longo prazo com aquela conta
-- Quer separação rígida da sua caixa pessoal
+- Não espera ter uma relação de longo prazo com aquela conta
+- Quer uma separação rígida da sua caixa de entrada pessoal
 
-### Escolha alias quando
+### Escolha um alias de email quando
 
-- Você pode precisar recuperar senha depois
-- Quer continuidade de longo prazo para contas de login
-- Precisa de melhor consistência de entrega e recuperação
-- Quer ocultar seu endereço real mantendo uma caixa única
+- Você pode precisar redefinir a senha mais tarde
+- Quer continuidade de longo prazo nas contas em que faz login
+- Precisa de recuperação e entrega mais consistentes
+- Quer uma única caixa de entrada sem revelar seu endereço real
 
 ### Segurança e recuperação
 
-Email temporário é forte para privacidade com baixo atrito, mas fraco para recuperação de longo prazo. Alias é mais forte para continuidade porque os emails de recuperação chegam na sua caixa real.
+O email temporário é forte para ter privacidade sem complicação, mas fraco para recuperação de longo prazo. Os aliases são mais sólidos para a continuidade da conta porque os emails de recuperação continuam chegando à sua caixa de entrada real.
 
 ### Controle de spam
 
-Ambas as opções reduzem exposição a spam. Email temporário é mais agressivo para uso pontual. Alias é melhor para serviços contínuos, pois você pode desativar um alias específico sem alterar a conta principal.
+As duas opções ajudam a reduzir a exposição ao spam. O email temporário é mais radical para interações pontuais. Os aliases são melhores para serviços contínuos porque você pode desativar um único alias sem mudar sua conta principal.
 
 ### Regra prática de decisão
 
+Use esta regra simples:
+
 - **Uso pontual / baixo risco** → email temporário
-- **Longo prazo / conta importante** → alias ou caixa principal
+- **Longo prazo / importante** → alias de email ou email principal
 
 ### Conclusão
 
-Não existe vencedor universal. A escolha certa depende da importância da conta, da necessidade de recuperação e do tempo de acesso necessário.
+Não existe um vencedor universal. A escolha certa depende da importância da conta, das exigências de recuperação e de por quanto tempo você precisa de acesso.

@@ -12,7 +12,7 @@ A small typo in the mailbox name is enough to lose the message.
 
 ### 3) Refresh inbox manually
 
-Use the inbox refresh button before generating a new address. This catches late arrivals.
+New mail normally appears on its own, but use the inbox refresh button before generating a new address. This catches late arrivals.
 
 ### 4) Resend from the source website
 

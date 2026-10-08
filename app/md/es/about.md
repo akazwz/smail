@@ -1,17 +1,40 @@
-## Sobre smail.pw (Correo temporal)
+## Acerca del correo temporal de smail.pw
 
-smail.pw es un servicio de **correo temporal** para registros de bajo riesgo, códigos OTP y verificaciones rápidas.
+smail.pw es un **generador de correo temporal** ligero para usar bandejas de entrada desechables. Puedes crear una dirección desechable en segundos, recibir correos de verificación y mantener más limpia tu bandeja de entrada real.
 
-### Para qué sirve
+### Por qué existe smail.pw
 
-- Probar servicios sin exponer tu correo principal
-- Recibir enlaces de confirmación de uso único
-- Reducir spam y ruido en tu bandeja personal
+Hoy en día, la mayoría de los sitios web te pide un correo antes de dejarte continuar. En acciones de bajo riesgo, eso suele generar costos innecesarios:
 
-### Lo que debes saber
+- Más correos de marketing en tu bandeja personal
+- Mayor exposición del correo que te identifica a largo plazo
+- Más ruido de cuentas que tendrás que gestionar después
 
-Los buzones son temporales y no deben usarse para cuentas críticas (banca, trabajo, gobierno o recuperación importante).
+smail.pw te ofrece una alternativa sencilla: usa primero un correo temporal y pasa a tu correo permanente solo cuando haga falta.
+
+### Usos habituales
+
+- Verificación de registro en cuentas de prueba
+- Confirmaciones puntuales de cupones o descargas
+- Flujos de QA y pruebas que requieren la entrega de correos
+- Registros de bajo riesgo en los que no necesitas un historial de correos a largo plazo
+
+### Qué hace diferente a smail.pw
+
+- Creación rápida de la bandeja, sin pasos previos
+- Las direcciones y los correos se conservan a largo plazo por defecto, sin garantía
+- Interfaz limpia y centrada en recibir y leer mensajes
+
+### Límites importantes
+
+smail.pw no está diseñado para gestiones críticas ligadas a tu identidad. No uses un correo temporal para:
+
+- Cuentas bancarias o de pagos
+- Sistemas del trabajo o del gobierno
+- Asuntos legales o fiscales, ni la recuperación de cuentas de alto valor
+
+Si una cuenta te importa a largo plazo, usa un correo permanente y seguro.
 
 ### Contacto
 
-Si tienes sugerencias, usa el canal de contacto disponible en el sitio.
+Para soporte o comentarios, déjanos un mensaje en la página de [Contacto](/contact).

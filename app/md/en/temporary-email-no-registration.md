@@ -1,38 +1,56 @@
 ## Temporary Email No Registration
 
-If you want a mailbox without onboarding, **temporary email no registration** is the fastest route. smail.pw lets you receive emails without creating an account or password, which is ideal for temp mail sign-up flows.
+A **temporary email with no registration** means you get a working inbox without creating an account, choosing a password, or giving any personal details. On smail.pw the whole setup is one button.
 
-### When this is useful
+### What "no registration" means on smail.pw
 
-- Quick product trials
-- One-off downloads behind email forms
-- Temporary community sign-ups
-- Promo code collection without inbox clutter
+- No account, no password, no phone number, no recovery email.
+- Nothing to install. It runs in the browser, on a phone or a computer.
+- Free, with no ads and no third-party tracking scripts.
 
-### Why users choose no-signup temp mail
+### How it works, step by step
 
-- Less personal data exposure
-- Zero account setup time
-- Cleaner separation between throwaway and permanent email usage
+1. Open the smail.pw homepage and press **Generate address**.
+2. An address ending in @smail.pw appears. Press **Copy**.
+3. Paste it wherever an email address is asked for.
+4. Keep the page open. New emails show up in the inbox on their own, usually within a few seconds. A green dot next to the inbox title, "Latest emails", shows that the live connection is on.
+5. Click an email to read it. Links inside the email open in a new tab.
 
-### Best fit for registration workflows
+### How the site remembers you without an account
 
-Use this page when you need a disposable inbox for:
+Your address is stored in a cookie in the browser where you created it. That is why the same address is still there when you come back tomorrow or next month: it never changes by itself.
 
-- Trial account registration
-- Coupon or campaign sign-up forms
-- Low-risk app onboarding where long-term email history is unnecessary
+It also means three things:
 
-### Important reminder
+- Another browser or another device starts without an address.
+- Clearing your cookies loses the address, and it cannot be recovered.
+- Anyone who can use this browser can read the inbox, because there is no password.
 
-No-registration inboxes are temporary. They are not built for long-term identity, recovery, or sensitive workflows.
+### What people use it for
+
+- Trying a product before deciding whether to give it a real address
+- Downloading a file, report, or template that sits behind an email form
+- Joining a forum or community you only need once
+- Collecting a coupon or promo code
+- Getting past a "confirm your email" step on a site you do not plan to return to
+- Testing your own sign-up flow as a developer or QA tester
+
+### What you give up
+
+No registration is convenient, but it removes the things an account gives you:
+
+- No way to sign in from another device
+- No password reset, and no recovery if the cookie is lost
+- No sending: smail.pw is receive-only
+- No guarantee of storage: addresses and emails are kept long-term by default, but they may be removed during periodic cleanup, maintenance, or after a system fault
+
+### When to use a real mailbox instead
+
+Use a permanent mailbox for banking, work, government services, anything involving money, and any account you would be upset to lose. Those accounts need password resets to keep working for years, and a no-registration inbox cannot promise that.
 
 ### Related pages
 
-- [24 Hour Temporary Email](/temporary-email-24-hours)
 - [Disposable Email for Verification Codes](/disposable-email-for-verification)
-- [Privacy Policy](/privacy)
-
-### Next-step guides
-
-If your goal is account creation, continue with [Temporary Email for Registration](/temporary-email-for-registration) and [Online Temporary Email](/online-temporary-email).
+- [Temporary Email for Registration](/temporary-email-for-registration)
+- [Online Temporary Email](/online-temporary-email)
+- [smail.pw FAQ](/faq)
