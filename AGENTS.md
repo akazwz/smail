@@ -37,7 +37,7 @@
 - `public/_headers`：静态文件的缓存和安全响应头。
 
 Worker（`worker/`）：
-- `src/index.ts`：入口。`fetch` 只处理 `/api/*`，`email` 收信，并导出 Durable Object 类。没有定时任务。配置里不写 `triggers.scheduled(...)` 并不会删掉线上已有的定时触发器（部署时只在有配置时才更新），`cf` 也没有管理它的命令。要清空线上残留的触发器：在一个临时目录里写一份只有 `name`、`compatibility_date`、`workers_dev: true`、`preview_urls: true`、`triggers: { crons: [] }` 的 `wrangler.jsonc`，对它跑 `wrangler triggers deploy -c <那份文件>`（空列表会清空；不写路由就不会动域名）。2026-10-08 上线后就是这样清掉旧版每 30 分钟那个触发器的。
+- `src/index.ts`：入口。`fetch` 只处理 `/api/*`，`email` 收信，并导出 Durable Object 类。没有定时任务。配置里不写 `triggers.scheduled(...)` 并不会删掉线上已有的定时触发器（部署时只在有配置时才更新），`cf` 也没有管理它的命令。2026-10-08 上线后试过用命令行清掉旧版每 30 分钟的那个触发器，没有成功：用一份只含 `triggers: { crons: [] }` 的临时 `wrangler.jsonc` 跑 `wrangler triggers deploy`，接口返回的定时列表确实变成空的了，但之后的整点和半点它仍然照常触发（先加一条再清空也一样）。接口的状态和实际调度对不上，这种情况要到 Cloudflare 控制台里看和删。
 - `src/session.ts` 会话、`src/inbox.ts` 收件箱查询、`src/mail.ts` 收信、`src/inbox-hub.ts` 新邮件推送、`src/address.ts` 生成地址、`src/messages.ts` 保存联系页的留言。
 - `cloudflare.config.ts`：Worker 的配置（绑定、静态资源的处理方式、Durable Object）。名字和资源来自 `../site.config.ts`。
 - `d1.mjs`：`cf` 的 D1 命令只认数据库 ID 不认名字，这个小脚本从 `site.config.ts` 取出 ID 再转交给 `cf`（`pnpm run migrate` / `messages` 用它）。
