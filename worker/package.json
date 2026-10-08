@@ -1,0 +1,35 @@
+{
+	"name": "smail-worker",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite build && vite preview --port 8788",
+		"cf-typegen": "cf workers types",
+		"typecheck": "pnpm run cf-typegen && tsc -p tsconfig.json",
+		"migrate": "cf d1 migrations apply 8a38551f-5eab-4095-b69b-2f4a87e9d8d1",
+		"migrate:local": "cf d1 migrations apply 8a38551f-5eab-4095-b69b-2f4a87e9d8d1 --local --persist-to .wrangler/state",
+		"messages": "cf d1 query 8a38551f-5eab-4095-b69b-2f4a87e9d8d1 --sql \"SELECT datetime(time / 1000, 'unixepoch') AS received, locale, contact, body FROM messages ORDER BY time DESC LIMIT 50\"",
+		"deploy": "vite build && pnpm run migrate && cf deploy --prebuilt",
+		"deploy:dry-run": "vite build && cf deploy --prebuilt --dry-run",
+		"deploy:staging": "vite build --mode staging && cf deploy --prebuilt --mode staging",
+		"postinstall": "pnpm run cf-typegen"
+	},
+	"dependencies": {
+		"@scaleway/random-name": "^5.1.4",
+		"postal-mime": "^2.7.4"
+	},
+	"devDependencies": {
+		"@cloudflare/vite-plugin": "^1.62.5",
+		"@types/node": "^25.6.0",
+		"cf": "1.0.0-beta.13",
+		"typescript": "^6.0.3",
+		"vite": "^8.3.3",
+		"wrangler": "^4.147.0"
+	},
+	"engines": {
+		"node": ">=22.12"
+	},
+	"packageManager": "pnpm@12.10.1"
+}
