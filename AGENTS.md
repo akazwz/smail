@@ -11,7 +11,7 @@
 - **前端（仓库根目录）**：Solid 2 + StyleX，构建产物是纯静态网站 `dist/client`。线上没有任何前端代码在服务器上运行。
 - **Worker（`worker/` 目录）**：一个普通的 Cloudflare Worker，只做收件箱接口、新邮件推送和收信。部署时把前端的 `dist/client` 当静态文件带上。
 
-域名、Worker 名、数据库和存储桶只写在一处：仓库根目录的 `site.config.ts`。前端（`#site`）、构建配置、Worker 的配置和地址生成都从它读；自己部署这个项目的人只改这一个文件（步骤在 README 的“自己部署”，英文版在 `docs/deploy.en.md`）。代码里不要再写死 `smail.pw` 或资源 ID：站名用 `app/seo.config.ts` 的 `SITE_NAME`，网站地址用 `BASE_URL`。正文内容（`app/md`、`app/blog`、各语言文案）里的 `smail.pw` 是内容的一部分，不在此列。
+域名、Worker 名、数据库和存储桶只写在一处：仓库根目录的 `site.config.ts`。前端（`#site`）、构建配置、Worker 的配置和地址生成都从它读；自己部署这个项目的人只改这一个文件（步骤在 `README.md` 的“Deploy your own”和 `README.zh-CN.md` 的“自己部署”）。代码里不要再写死 `smail.pw` 或资源 ID：站名用 `app/seo.config.ts` 的 `SITE_NAME`，网站地址用 `BASE_URL`。正文内容（`app/md`、`app/blog`、各语言文案）里的 `smail.pw` 是内容的一部分，不在此列。
 
 两边只通过 `/api/*` 这几个接口打交道。接口返回的数据结构和共用的 cookie 名字只写一份，在 `worker/src/contract.ts`（不依赖任何模块）；前端用 `#contract` 引入它，除此之外不引用 Worker 的代码。
 
@@ -37,7 +37,7 @@
 - `public/_headers`：静态文件的缓存和安全响应头。
 
 Worker（`worker/`）：
-- `src/index.ts`：入口。`fetch` 只处理 `/api/*`，`email` 收信，并导出 Durable Object 类。没有定时任务。配置里不写 `triggers.scheduled(...)` 并不会删掉线上已有的定时触发器（部署时只在有配置时才更新），`cf` 也没有管理它的命令。2026-10-08 上线后试过用命令行清掉旧版每 30 分钟的那个触发器，没有成功：用一份只含 `triggers: { crons: [] }` 的临时 `wrangler.jsonc` 跑 `wrangler triggers deploy`，接口返回的定时列表确实变成空的了，但之后的整点和半点它仍然照常触发（先加一条再清空也一样）。接口的状态和实际调度对不上，这种情况要到 Cloudflare 控制台里看和删。
+- `src/index.ts`：入口。`fetch` 只处理 `/api/*`，`email` 收信，并导出 Durable Object 类。没有定时任务。配置里不写 `triggers.scheduled(...)` 并不会删掉线上已有的定时触发器（部署时只在有配置时才更新），`cf` 也没有管理它的命令。线上残留的触发器要到 Cloudflare 控制台里看和删：用命令行把定时列表清空后，接口显示为空，实际仍可能照常触发。
 - `src/session.ts` 会话、`src/inbox.ts` 收件箱查询、`src/mail.ts` 收信、`src/inbox-hub.ts` 新邮件推送、`src/address.ts` 生成地址、`src/messages.ts` 保存联系页的留言。
 - `cloudflare.config.ts`：Worker 的配置（绑定、静态资源的处理方式、Durable Object）。名字和资源来自 `../site.config.ts`。
 - `d1.mjs`：`cf` 的 D1 命令只认数据库 ID 不认名字，这个小脚本从 `site.config.ts` 取出 ID 再转交给 `cf`（`pnpm run migrate` / `messages` 用它）。
@@ -55,11 +55,11 @@ Worker（`worker/`）：
 - 连接状态：收件箱标题旁有一个小圆点（绿色＝连着，灰色＝断了正在重连，悬停有文字），状态来自 `app/utils/live-inbox.ts` 的 `useLiveInbox`。这条连接只在地址变了时才重建——收件箱刷新不能让它重连，否则重连空档里到的信收不到通知。连不上时会重新取一次收件箱对账（一轮断线只对一次）：地址要是已经不在会话里了，页面跟着变成没有地址，也就不再空连。重连的间隔带随机量。
 - 接口都在 `/api/` 下：`GET /api/inbox`、`POST /api/address`（生成）、`DELETE /api/address`（这两个直接返回最新的收件箱，页面不用再取一次）、`GET /api/email/:id`、`GET /api/inbox/live`（WebSocket）、`POST /api/messages`（留言）。所有非 GET 的请求只接受同源（校验 `Origin`）。
 - `POST /api/address` 生成新地址、原来的作废。带 `?keep=1` 时，会话里已经有地址就什么都不改，原样返回现有的收件箱；页面在“没有地址、点生成”时带这个参数，用户确认更换时不带。这样页面不知道会话里有地址时（收件箱还没取回、取失败了、别的标签页生成的）点“生成”不会把原地址悄悄顶掉。不要把这层保护挪回前端。
-- 改接口时要想到开着旧页面的访客：他们用的还是旧脚本，刷新之前不会变。新增的行为用新参数表达，不带参数的老请求保持原来的意思（2026-10-08 曾把“更换”改成必须带新参数，旧页面上的“更换地址”因此失效了几分钟）。
+- 改接口时要想到开着旧页面的访客：他们用的还是旧脚本，刷新之前不会变。新增的行为用新参数表达，不带参数的老请求保持原来的意思。
 - 和会话有关的请求在页面上是排队发的（`app/api.ts`），不并发：每个响应都可能重写会话 cookie，后到的会盖掉先到的。
 - 一次刷新失败不等于没有地址：之前取到过的收件箱接着显示（`app/utils/inbox.ts`），只有一次都没取到时才是“取失败”的界面。操作或手动刷新没成功时，在收件箱顶上浮一句提示，几秒后消失；它是浮层，不占位置。
 - 邮件正文（`GET /api/email/:id`）必须校验邮件地址属于当前会话。纯文本邮件要转义后再显示。响应带 `Content-Security-Policy: sandbox …`：就算有人直接在地址栏打开，邮件里的脚本也不会以本站身份运行。
-- 联系方式只有留言表单这一种：站内不公开任何邮箱地址（页面、文案、结构化数据里都不要出现 `support@…`）。`support@smail.pw` 的转发规则仍留在 Cloudflare 上，只是不再对外写出来。
+- 联系方式只有留言表单这一种：站内不公开任何邮箱地址，页面、文案、结构化数据和仓库里的文档都不要出现。
 - 留言（联系页的表单，`worker/src/messages.ts`）：只存进 D1 的 `messages` 表，**不发任何通知**，由站长自己定期去看——在 `worker/` 里跑 `pnpm run messages`（列出最近 50 条，读的是线上的库）。留言必填，联系方式选填，长度上限写在 `worker/src/contract.ts`，前后端共用。防刷只靠三样，都不花钱：一个真人看不见的诱饵输入框（填了就假装成功、不入库；字段名故意起得不像常见表单项，免得被浏览器自动填充）、同一来源每小时 5 条、全站每天 500 条。来源只存网络地址加密钥算出的单向指纹，不存地址本身。不要给它加邮件或推送通知：留言一多就成了轰炸。
 - 邮件正文显示在沙箱 iframe 里：不能运行脚本、不能提交表单。邮件里的链接由 Worker 统一改成在新标签页打开（`target="_blank" rel="noopener noreferrer"`），iframe 只额外放开“开新标签页”这一项。不要再放开别的权限。邮件自带的 `<base href>` 要保留（相对链接和图片靠它指向发件方），只去掉它的 `target`。
 - 所有页面（包括首页）都是构建时生成的静态文件，不经过 Worker；站内跳转取的也是静态分块。不存在的地址由静态资源服务返回 `404.html`，旧地址跳转走 `_redirects`，也都不经过 Worker。Worker 只处理 `/api/*` 和收信。
@@ -87,7 +87,7 @@ Worker（`worker/`）：
 TypeScript 配置：根目录的 `tsconfig.json` 只是入口，引用 `tsconfig.app.json`（前端代码）和 `tsconfig.node.json`（构建配置），用 `tsc -b` 检查；`worker/` 有自己独立的一份。三份都开了 `noUncheckedIndexedAccess`、`noUnusedLocals`、`erasableSyntaxOnly` 等严格检查，不要为了省事关掉。
 - `pnpm run deploy`：构建前端 → 构建 Worker → 远端迁移 → `cf deploy --prebuilt`。
 - `pnpm run deploy:dry-run`：同上，但不上传，只检查构建产物和绑定。
-- `pnpm run deploy:first`：全新部署的第一次用，多带一个 `--secrets-file worker/.env.production`（Worker 还不存在时没法先设密钥）。README 里的部署教程是在一个全新的拷贝上照着走通过的（临时建库建桶、部署到 workers.dev、验证、删除）；改了部署流程后要重新走一遍，不要只改文字。
+- `pnpm run deploy:first`：全新部署的第一次用，多带一个 `--secrets-file worker/.env.production`（Worker 还不存在时没法先设密钥）。两份 README 里的部署教程是在一个全新的拷贝上照着走通过的（临时建库建桶、部署到 workers.dev、验证、删除）；改了部署流程后要重新走一遍，不要只改文字。
 
 在 `worker/` 目录：
 - `pnpm run cf-typegen`：按 `cloudflare.config.ts` 重新生成 `.cloudflare/types/index.d.ts`（`Env`、`ctx.exports` 的类型都来自它，不进 git）。
@@ -126,6 +126,11 @@ Solid 系列包固定在精确版本上，升级前先看 `npm view <包名> dis
   - StyleX 自己解析 `*.stylex.ts` 的导入，不读 `package.json` 的 `imports`，所以 `#/` 这个别名要在 `vite.config.ts` 的 `stylex.vite({ aliases })` 里再配一遍。
 - 改完样式至少跑一次 `pnpm run build`，或打开页面看一眼。
 
+## 文档
+- 这个仓库是公开的，`README`、`AGENTS.md`、代码注释、提交信息、PR 和 issue 的回复所有人都看得到。不要写运营数据（访问量、收信量、存储用量、地区和来源）、没有公开的联系方式、线上出过的问题和内部的取舍过程。讲优点可以，用产品本身的事实来讲（怎么工作、页面多大、支持哪些语言）。
+- `README.md` 是英文，`README.zh-CN.md` 是中文，两份内容要一致：改一份就同步改另一份。它们是写给仓库访客看的，只讲这是什么、怎么部署、怎么在本地跑；内部约定写在这份 AGENTS.md 里。
+- README 里写的命令和步骤都要是实际跑过的。
+
 ## 代码风格与命名规范
 - 使用 TypeScript/TSX + ESM。
 - 遵循现有代码风格：
@@ -158,7 +163,7 @@ Solid 系列包固定在精确版本上，升级前先看 `npm view <包名> dis
 内容里必须和产品实际一致的事实：
 - 只能收信，不能发信或回复；只显示正文，附件不显示也不能下载。
 - 地址记在创建它的那个浏览器的 cookie 里，没有账号和密码；换浏览器或设备是空的，清了 cookie 地址和邮件就找不回来。
-- 没有广告，只有两个必需的 cookie。统计用的是 Cloudflare Web Analytics：脚本（`static.cloudflareinsights.com/beacon.min.js`）由 Cloudflare 自动注入到每个页面，仓库里没有它的代码，它不设 cookie。只对真实浏览器注入，用 curl 看不到。站内文案现在写的是“不加载第三方统计或跟踪脚本”，站长 2026-10-08 决定保持现状不改。
+- 没有广告，只有两个必需的 cookie。统计用的是 Cloudflare Web Analytics：脚本（`static.cloudflareinsights.com/beacon.min.js`）由 Cloudflare 自动注入到每个页面，仓库里没有它的代码，它不设 cookie。只对真实浏览器注入，用 curl 看不到。
 - 收件箱只能在创建地址的那个浏览器里打开，没有“输入地址看邮件”的入口；地址随机生成，不能自选，都以 @smail.pw 结尾（只有这一个域名）。
 - 邮件里的图片会正常加载（发件方因此能知道邮件被打开过）；脚本不运行，表单不能提交。
 - “删除地址”只是让这个浏览器不再记得它，服务器上的邮件不会因此立刻删除——文案里不要写成“删除地址会清除邮件”。
@@ -189,4 +194,4 @@ GitHub Actions（`.github/workflows/ci.yml`）在推送到 main 和提 PR 时跑
 - 禁止提交任何密钥、Token、私密凭证。
 - `worker/cloudflare.config.ts` 中的资源 ID/名称可公开，但不要提交可直接鉴权的敏感信息。
 - 仓库已经从 `wrangler.jsonc` 换成 `cloudflare.config.ts`。README 里原来的“一键部署”按钮已经撤下：按 Cloudflare 的文档，它读的是 Wrangler 的配置文件，并要求被部署的目录能独立构建，这个仓库两条都不满足。
-- 线上的自定义域和 Email Routing 规则（Catch-all → Worker，`support@` → 转发）是在控制台里手动配的，没有写进配置。`cf` 支持把它们写进配置（`domains`、`triggers.email`），但对线上现有的 Catch-all 规则预演的结果是“冲突”，接管需要一次人工确认，所以暂时没有采用。
+- 线上的自定义域和 Email Routing 规则是在控制台里手动配的，没有写进配置。`cf` 支持把它们写进配置（`domains`、`triggers.email`），但接管已有的手动规则需要一次人工确认，所以暂时没有采用。
