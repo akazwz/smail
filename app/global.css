@@ -1,0 +1,55 @@
+:root {
+	color-scheme: light dark;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	-webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+}
+
+/* 选中文字的底色：和 tokens.stylex.ts 里的 accent 是同一个橙色。 */
+::selection {
+	background-color: rgb(255 90 31 / 0.28);
+}
+
+/*
+ * 首页是同一份静态 HTML，里面同时有“还没有地址”的内容（data-guest）和占位块（data-pending）。
+ * document.tsx 里的脚本发现访客已有地址时，会在首帧前给 <html> 打上 data-inbox="1"：
+ * 这时只显示占位块，直到脚本取回收件箱；其他时候只显示“还没有地址”的内容。
+ * 两者尺寸相同，切换时页面不会跳。这里不在 @layer 里，优先于组件样式。
+ */
+:root[data-inbox="1"] [data-guest],
+:root:not([data-inbox="1"]) [data-pending] {
+	display: none;
+}
+
+/*
+ * 日语没有空格，组件里给标题用的 word-break: keep-all 会把整句当成一个词，
+ * 放不下时只能在溢出的地方硬断（句号单独掉到下一行）。日语页面改回正常断行，
+ * 浏览器支持的话再按词组断（auto-phrase）。这里不在 @layer 里，优先于组件样式。
+ */
+:lang(ja) {
+	word-break: normal;
+	word-break: auto-phrase;
+}
+
+/*
+ * 标题上收紧的字距是给拉丁字母和汉字用的。这几种文字的字母是连写或带上下附标的，
+ * 收紧会让笔画挤在一起甚至重叠，所以一律用默认字距。
+ */
+:lang(ar),
+:lang(ur),
+:lang(hi),
+:lang(bn),
+:lang(th) {
+	letter-spacing: normal;
+}

@@ -1,0 +1,12 @@
+/en / 301
+/en/* /:splat 301
+/zh-CN /zh 301
+/zh-CN/* /zh/:splat 301
+/zh-cn /zh 301
+/zh-cn/* /zh/:splat 301
+/temporary-email-24-hours / 301
+/:lang/temporary-email-24-hours /:lang 301
+/blog/page/1 /blog 301
+/:lang/blog/page/1 /:lang/blog 301
+/domestic-temporary-email /online-temporary-email 301
+/:lang/domestic-temporary-email /:lang/online-temporary-email 301
