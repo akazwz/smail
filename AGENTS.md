@@ -11,6 +11,8 @@
 - **前端（仓库根目录）**：Solid 2 + StyleX，构建产物是纯静态网站 `dist/client`。线上没有任何前端代码在服务器上运行。
 - **Worker（`worker/` 目录）**：一个普通的 Cloudflare Worker，只做收件箱接口、新邮件推送和收信。部署时把前端的 `dist/client` 当静态文件带上。
 
+域名、Worker 名、数据库和存储桶只写在一处：仓库根目录的 `site.config.ts`。前端（`#site`）、构建配置、Worker 的配置和地址生成都从它读；自己部署这个项目的人只改这一个文件（步骤在 README 的“自己部署”，英文版在 `docs/deploy.en.md`）。代码里不要再写死 `smail.pw` 或资源 ID：站名用 `app/seo.config.ts` 的 `SITE_NAME`，网站地址用 `BASE_URL`。正文内容（`app/md`、`app/blog`、各语言文案）里的 `smail.pw` 是内容的一部分，不在此列。
+
 两边只通过 `/api/*` 这几个接口打交道。接口返回的数据结构和共用的 cookie 名字只写一份，在 `worker/src/contract.ts`（不依赖任何模块）；前端用 `#contract` 引入它，除此之外不引用 Worker 的代码。
 
 前端：
@@ -37,7 +39,8 @@
 Worker（`worker/`）：
 - `src/index.ts`：入口。`fetch` 只处理 `/api/*`，`email` 收信，并导出 Durable Object 类。没有定时任务。配置里不写 `triggers.scheduled(...)` 并不会删掉线上已有的定时触发器（部署时只在有配置时才更新），`cf` 也没有管理它的命令。要清空线上残留的触发器：在一个临时目录里写一份只有 `name`、`compatibility_date`、`workers_dev: true`、`preview_urls: true`、`triggers: { crons: [] }` 的 `wrangler.jsonc`，对它跑 `wrangler triggers deploy -c <那份文件>`（空列表会清空；不写路由就不会动域名）。2026-10-08 上线后就是这样清掉旧版每 30 分钟那个触发器的。
 - `src/session.ts` 会话、`src/inbox.ts` 收件箱查询、`src/mail.ts` 收信、`src/inbox-hub.ts` 新邮件推送、`src/address.ts` 生成地址、`src/messages.ts` 保存联系页的留言。
-- `cloudflare.config.ts`：Worker 的配置（绑定、静态资源的处理方式、Durable Object）。
+- `cloudflare.config.ts`：Worker 的配置（绑定、静态资源的处理方式、Durable Object）。名字和资源来自 `../site.config.ts`。
+- `d1.mjs`：`cf` 的 D1 命令只认数据库 ID 不认名字，这个小脚本从 `site.config.ts` 取出 ID 再转交给 `cf`（`pnpm run migrate` / `messages` 用它）。
 - `vite.config.ts`：用 Cloudflare 的 Vite 插件构建 Worker，`publicDir` 指向 `../dist/client`，把前端产物当静态文件带进部署包。
 - `migrations/*.sql`：D1 SQL 迁移文件（不使用 ORM）。
 
@@ -84,6 +87,7 @@ Worker（`worker/`）：
 TypeScript 配置：根目录的 `tsconfig.json` 只是入口，引用 `tsconfig.app.json`（前端代码）和 `tsconfig.node.json`（构建配置），用 `tsc -b` 检查；`worker/` 有自己独立的一份。三份都开了 `noUncheckedIndexedAccess`、`noUnusedLocals`、`erasableSyntaxOnly` 等严格检查，不要为了省事关掉。
 - `pnpm run deploy`：构建前端 → 构建 Worker → 远端迁移 → `cf deploy --prebuilt`。
 - `pnpm run deploy:dry-run`：同上，但不上传，只检查构建产物和绑定。
+- `pnpm run deploy:first`：全新部署的第一次用，多带一个 `--secrets-file worker/.env.production`（Worker 还不存在时没法先设密钥）。README 里的部署教程是在一个全新的拷贝上照着走通过的（临时建库建桶、部署到 workers.dev、验证、删除）；改了部署流程后要重新走一遍，不要只改文字。
 
 在 `worker/` 目录：
 - `pnpm run cf-typegen`：按 `cloudflare.config.ts` 重新生成 `.cloudflare/types/index.d.ts`（`Env`、`ctx.exports` 的类型都来自它，不进 git）。
@@ -184,4 +188,5 @@ GitHub Actions（`.github/workflows/ci.yml`）在推送到 main 和提 PR 时跑
 ## 安全与配置
 - 禁止提交任何密钥、Token、私密凭证。
 - `worker/cloudflare.config.ts` 中的资源 ID/名称可公开，但不要提交可直接鉴权的敏感信息。
-- 仓库已经从 `wrangler.jsonc` 换成 `cloudflare.config.ts`。README 里的“一键部署”按钮原先依赖 `wrangler.jsonc`，换配置后是否还能用尚未验证。
+- 仓库已经从 `wrangler.jsonc` 换成 `cloudflare.config.ts`。README 里原来的“一键部署”按钮已经撤下：按 Cloudflare 的文档，它读的是 Wrangler 的配置文件，并要求被部署的目录能独立构建，这个仓库两条都不满足。
+- 线上的自定义域和 Email Routing 规则（Catch-all → Worker，`support@` → 转发）是在控制台里手动配的，没有写进配置。`cf` 支持把它们写进配置（`domains`、`triggers.email`），但对线上现有的 Catch-all 规则预演的结果是“冲突”，接管需要一次人工确认，所以暂时没有采用。

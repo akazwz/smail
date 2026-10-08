@@ -2,17 +2,10 @@
 
 基于 Solid 2 + StyleX + Cloudflare Workers 的临时邮箱服务。
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/akazwz/smail)
-
 - 线上域名：`https://smail.pw`
-- Worker 名称：`smail-app`
 - 默认语言：`en`（同时支持 19 种语言）
-
-## 一键部署（Deploy to Cloudflare）
-
-- 上方按钮可让其他开发者将本项目一键部署到他们自己的 Cloudflare 账号。
-- 这个按钮原先依赖仓库中的 `wrangler.jsonc`。仓库现在用 `cloudflare.config.ts`，按钮是否仍然可用尚未验证；不可用时请按下面的“部署说明”手动部署。
-- 项目仓库需要保持公开（public）才能让他人正常使用该按钮。
+- 想部署一份自己的：见下面的[自己部署](#自己部署)（English: [docs/deploy.en.md](docs/deploy.en.md)）
+- 旧版（React Router + `wrangler.jsonc`）归档在 [`v3`](https://github.com/akazwz/smail/releases/tag/v3) 标签
 
 ## 项目简介
 
@@ -85,6 +78,8 @@ vite/                    # 构建用的小插件（Markdown 解析、404 页）
 vite.config.ts           # 前端构建：Solid 插件 + 官方预渲染插件
 dist/client/             # 前端的构建产物：整个静态网站
 
+site.config.ts           # 站点配置：域名、Worker 名、数据库、存储桶。自己部署只改它
+
 worker/                  # Cloudflare Worker：一个独立的项目
   src/index.ts           # 入口：/api/* 接口、收信，并导出 Durable Object
   src/contract.ts        # 前端和 Worker 之间的约定（接口的数据结构），两边共用这一份
@@ -96,6 +91,7 @@ worker/                  # Cloudflare Worker：一个独立的项目
   src/messages.ts        # 保存联系页的留言
   migrations/*.sql       # D1 迁移
   cloudflare.config.ts   # Worker 配置：绑定、静态资源、Durable Object
+  d1.mjs                 # 把 site.config.ts 里的数据库 ID 交给 cf 的 D1 命令
   vite.config.ts         # Worker 的构建；publicDir 指向 ../dist/client
 ```
 
@@ -146,51 +142,137 @@ pnpm run preview   # 构建前端和 Worker，在 http://localhost:8788 预览�
 - `pnpm run lint` / `pnpm run format`：Oxlint 代码检查 / Oxfmt 格式化
 - `pnpm run check`：类型检查 + 代码检查 + 格式检查
 - `pnpm run deploy`：构建前端和 Worker、执行远端迁移，然后 `cf deploy --prebuilt`
+- `pnpm run deploy:first`：第一次部署用，多上传一份密钥（见“自己部署”）
 - `pnpm run deploy:dry-run`：同上，但不上传
 
 在 `worker/` 目录：
 
-- `pnpm run migrate`：对远端 D1（`smail-v3`）执行迁移
+- `pnpm run migrate`：对远端 D1 执行迁移
 - `pnpm run migrate:local`：对本地开发用的 D1 执行迁移
 - `pnpm run messages`：列出最近 50 条留言（读的是线上的库）
 
 配置和命令行用的是 Cloudflare 新的 `cloudflare.config.ts` 与 `cf` CLI（目前是 beta）。`wrangler` 的命令读不到这份配置。
 
-## Cloudflare 资源绑定
+## 自己部署
 
-`worker/cloudflare.config.ts` 当前声明了以下绑定：
+需要改的只有仓库根目录的 `site.config.ts` 一个文件。下面第 1–5 步是在一个全新的拷贝上实际走通过的（2026-10-08）；第 6 步在 Cloudflare 控制台里点，菜单名称以控制台为准。
 
-- `D1`：邮件元数据和留言（数据库名 `smail-v3`）
-- `R2`：邮件内容对象存储（桶名 `smailv3`）
-- `InboxHub`：新邮件推送用的 Durable Object（在 `exports` 里声明）
+### 准备
 
-此外还需要配置一个 Worker Secret：
+- 一个 Cloudflare 账号，以及一个已经接入 Cloudflare 的域名（网站和邮箱地址都用它）。
+- Node.js 22.18 或更新，pnpm。
+- 用到的 Cloudflare 产品：Workers（含静态资源和 Durable Objects）、D1、R2、Email Routing。R2 第一次使用要在控制台里开通。
 
-- `SESSION_SECRETS`：Cookie Session 的签名密钥。支持逗号分隔多个值用于轮换，最左侧为当前生效密钥。
-
-本地开发可使用 `worker/.env`，生产环境使用：
-
-注意：`.env` 和 `.dev.vars` 二选一即可；如果存在 `.dev.vars`，本地开发时不会再加载 `.env`。
-
-密钥按 Worker 名字设置（这条命令不依赖配置文件）；也可以在部署时用 `cf deploy --prebuilt --secrets-file <文件>` 一并上传。
+### 1. 取代码、装依赖、登录
 
 ```bash
-cd worker && pnpm exec wrangler secret put SESSION_SECRETS --name smail-app
+git clone https://github.com/akazwz/smail.git
+cd smail
+pnpm install
+cd worker
+pnpm exec cf auth login
 ```
 
-## 数据库迁移
+命令行用的是 Cloudflare 新的 `cf`（目前是 beta），已经作为依赖装好了。下面的 `cf` 命令都在 `worker/` 目录里执行。
 
-当前迁移文件：
-
-- `worker/migrations/20260211_create_emails.sql`
-- `worker/migrations/20260212_email_indexes.sql`
-- `worker/migrations/20261008_create_messages.sql`（联系页的留言）
-
-首次部署或表结构变更后，在 `worker/` 目录执行：
+### 2. 创建数据库和存储桶
 
 ```bash
-pnpm run migrate
+pnpm exec cf d1 create --name my-smail
+pnpm exec cf r2 buckets create --name my-smail
 ```
+
+名字随意。记下第一条命令返回的 `uuid`。
+
+### 3. 填 `site.config.ts`
+
+```ts
+export const site = {
+	domain: "example.com", // 你的域名
+	worker: "my-smail", // Worker 的名字
+	database: { name: "my-smail", id: "第 2 步返回的 uuid" },
+	bucket: "my-smail",
+};
+```
+
+页面上的站名、sitemap 里的地址、生成的邮箱地址（`xxx@example.com`）都从这里来。
+
+### 4. 准备密钥
+
+```bash
+cp .env.example .env.production
+```
+
+把 `.env.production` 里的 `SESSION_SECRETS` 换成一段足够长的随机字符串（例如 `openssl rand -base64 32` 的输出）。它用来给会话 cookie 签名：访客的地址就记在这个 cookie 里，密钥丢了或换了，所有访客的地址都会失效。这个文件不会进 git。
+
+以后要轮换密钥，写成逗号分隔的多个值，最左边的是当前生效的，其余的只用来验证旧 cookie。
+
+### 5. 第一次部署
+
+回到仓库根目录：
+
+```bash
+cd ..
+pnpm run deploy:first
+```
+
+它依次做四件事：构建前端（预渲染全部页面）、构建 Worker、在数据库里建表、上传 Worker 和密钥。完成后会打印一个 `https://<Worker 名>.<你的子域>.workers.dev` 的地址，这时已经可以打开页面、生成地址了。
+
+### 6. 绑定域名、接上收信
+
+在 Cloudflare 控制台里：
+
+1. **绑定域名**：Workers 和 Pages → 你的 Worker → 设置 → 域和路由 → 添加 → 自定义域，填 `site.config.ts` 里的域名。
+2. **打开 Email Routing**：进入这个域名 → 电子邮件 → 电子邮件路由，按提示启用（它会自动添加收信需要的 DNS 记录）。
+3. **把所有来信交给 Worker**：路由规则 → Catch-all 地址 → 操作选“发送到 Worker”，目标选你的 Worker，启用。
+
+### 7. 验证
+
+- 打开你的域名，点“生成地址”。
+- 用任意邮箱给这个地址发一封信，几秒内应该出现在页面上，不用刷新。
+- 收不到时，先检查第 6 步的 Catch-all 规则有没有启用、目标是不是你的 Worker，再到控制台里这个 Worker 的日志看有没有报错。
+
+### 以后更新
+
+```bash
+git pull
+pnpm install
+pnpm run deploy
+```
+
+`pnpm run deploy` 和第一次的区别只是不再上传密钥。有新的数据库迁移时它会自动执行。
+
+### 换成你自己的品牌
+
+- 页面上的站名、页脚、分享卡片的站名取自 `site.config.ts` 的域名，不用另外改。
+- 正文内容（`app/md`、`app/blog`、`app/i18n/locales`）里写的是 `smail.pw`，包括隐私政策和使用条款。在仓库根目录执行下面这条命令可以整体替换，替换后请自己读一遍隐私政策和条款，它们描述的是 smail.pw 的做法：
+
+  ```bash
+  git grep -lz "smail\.pw" -- app/md app/blog app/i18n/locales | xargs -0 perl -pi -e 's/smail\.pw/example.com/g'
+  ```
+
+- 图标和分享图在 `public/`（`favicon.svg`、`favicon.ico`、`apple-touch-icon.png`、`og.png`）。
+- `public/_redirects` 里是 smail.pw 自己的旧地址跳转，可以删掉不需要的。
+
+### 没有“一键部署”按钮
+
+Cloudflare 的 Deploy 按钮按官方文档读取的是 Wrangler 的配置文件，并且要求被部署的目录能独立构建。这个仓库用的是 `cloudflare.config.ts`，Worker 的部署包又依赖根目录前端的构建产物，所以没有再放按钮，请按上面的步骤部署。
+
+## 数据和资源
+
+`site.config.ts` 里的资源在 `worker/cloudflare.config.ts` 里绑定给 Worker：
+
+- `D1`：邮件元数据（`emails` 表）和联系页的留言（`messages` 表）。迁移文件在 `worker/migrations/`，`pnpm run deploy` 会自动执行还没执行过的。
+- `R2`：邮件原文，对象 key 是邮件 id。
+- `InboxHub`：新邮件推送用的 Durable Object，在配置的 `exports` 里声明，部署时自动创建。
+- `SESSION_SECRETS`：会话 cookie 的签名密钥，见上面第 4 步。
+
+在 `worker/` 目录里：
+
+- `pnpm run migrate`：对线上的数据库执行迁移；`pnpm run migrate:local` 对本地开发用的数据库执行。
+- `pnpm run messages`：列出最近 50 条留言。
+
+本地开发用 `worker/.env`（从 `worker/.env.example` 复制）。
 
 ## 多语言与 SEO
 
@@ -198,19 +280,6 @@ pnpm run migrate
 - 默认语言为 `en`，默认语言不带前缀
 - Markdown 页面与博客均支持多语言
 - 自动生成 sitemap（包含首页、Markdown 页、博客列表/分页/文章）
-
-## 部署说明
-
-```bash
-pnpm run deploy
-```
-
-发布前建议至少执行：
-
-```bash
-pnpm run check
-pnpm run build
-```
 
 ## 重要边界
 
