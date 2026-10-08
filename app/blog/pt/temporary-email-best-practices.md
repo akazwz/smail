@@ -1,44 +1,44 @@
 ## Boas práticas de email temporário para cadastros mais seguros
 
-Email temporário é prático, mas sem estratégia também pode causar problemas de conta. Se você usa caixa descartável para verificação de cadastro, estas práticas reduzem risco e protegem sua caixa principal.
+O email temporário é prático, mas usá-lo sem estratégia também pode causar problemas com suas contas. Se você depende de caixas de entrada descartáveis para verificar cadastros, estas boas práticas ajudam a reduzir riscos e a manter seu email principal mais limpo.
 
-### 1) Use apenas em contas de baixo risco
+### 1) Use email temporário apenas em contas de baixo risco
 
-Uma caixa temporária é ideal para:
+Uma caixa de entrada temporária é ideal para:
 
-- Testes de produto
-- Downloads únicos
-- Cupons e promoções
-- Cadastros em comunidade sem dados sensíveis
+- Testes de produtos
+- Downloads pontuais
+- Acesso a cupons ou promoções
+- Cadastros em comunidades que não envolvem dados sensíveis
 
-Evite usar para banco, identidade de trabalho, impostos, assuntos legais ou contas centrais de recuperação.
+Evite usar email temporário para banco, identidade profissional, impostos, questões jurídicas ou contas centrais de recuperação.
 
-### 2) Considere a caixa temporária como curta
+### 2) Parta do princípio de que qualquer caixa temporária pode desaparecer
 
-No smail.pw, o conteúdo é retido por até 24 horas. Trate isso como janela de expiração, não armazenamento permanente.
+No smail.pw, endereços e emails são mantidos a longo prazo por padrão, mas sem garantia: eles podem ser removidos a qualquer momento, por exemplo durante uma manutenção, após uma falha do sistema ou na limpeza do armazenamento. Não trate o serviço como armazenamento de longo prazo.
 
-Se a mensagem for importante, salve os dados na hora.
+Se uma mensagem for importante, copie os dados essenciais imediatamente.
 
-### 3) Separe identidade de cadastro
+### 3) Mantenha separada a identidade de cadastro
 
-Use email temporário para interações descartáveis e sua caixa principal para serviços importantes. Essa separação reduz spam e facilita a gestão de contas.
+Use email temporário para interações descartáveis e seu email principal para serviços importantes. Essa separação reduz o spam e facilita a gestão das contas.
 
-### 4) Salve o que precisa antes de sair
+### 4) Salve logo o que você precisa
 
-Antes de fechar a aba:
+Não deixe informações importantes apenas em uma caixa de entrada temporária. Assim que o email chegar:
 
-- Salve links de ativação
-- Copie IDs de referência e números de suporte
-- Registre o nome do serviço e a data do cadastro
+- Salve os links de ativação, se necessário
+- Copie os IDs de referência e os números de chamado do suporte
+- Anote o nome do serviço e a data do cadastro
 
-### 5) Tenha um caminho de fallback
+### 5) Tenha um plano alternativo
 
-Alguns sites bloqueiam domínios temporários. Se a verificação falhar repetidamente, troque para um alias ou email permanente.
+Alguns sites bloqueiam domínios temporários. Se a verificação falhar várias vezes, mude para um alias ou para a sua conta permanente nesse serviço.
 
 ### 6) Atualize antes de gerar outro endereço
 
-Se o código não aparece, primeiro atualize e aguarde um pouco. Muitos remetentes atrasam. Trocar de endereço cedo demais pode reiniciar o processo.
+Quando um código não aparecer, primeiro aguarde um pouco e clique em Atualizar. Muitos remetentes atrasam. Substituir o endereço cedo demais pode reiniciar o processo e fazer você perder tempo.
 
 ### Conclusão
 
-Email temporário funciona melhor com regras simples: uso de baixo risco, captura rápida das informações importantes e migração para conta permanente quando o nível de risco aumenta.
+O email temporário funciona melhor com regras simples: uso de baixo risco, extração rápida das informações importantes e migração imediata para uma conta permanente quando há mais em jogo.

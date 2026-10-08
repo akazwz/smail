@@ -10,11 +10,20 @@ export const SUPPORTED_LOCALES = [
 	"ru",
 	"pt",
 	"ar",
+	"id",
+	"vi",
+	"hi",
+	"bn",
+	"ur",
+	"tr",
+	"th",
+	"it",
+	"pl",
 ] as const;
 
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 
-const RTL_LOCALES = new Set<Locale>(["ar"]);
+const RTL_LOCALES = new Set<Locale>(["ar", "ur"]);
 
 export const LOCALE_LABELS: Record<Locale, string> = {
 	en: "English",
@@ -27,6 +36,15 @@ export const LOCALE_LABELS: Record<Locale, string> = {
 	ru: "Русский",
 	pt: "Português",
 	ar: "العربية",
+	id: "Bahasa Indonesia",
+	vi: "Tiếng Việt",
+	hi: "हिन्दी",
+	bn: "বাংলা",
+	ur: "اردو",
+	tr: "Türkçe",
+	th: "ไทย",
+	it: "Italiano",
+	pl: "Polski",
 };
 
 export function normalizePathname(pathname: string): string {
@@ -37,27 +55,6 @@ export function normalizePathname(pathname: string): string {
 		return pathname.slice(0, -1);
 	}
 	return pathname;
-}
-
-function escapeRegExp(value: string): string {
-	return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function stripLeadingLocalePrefix(pathname: string, locale: Locale): string {
-	const normalized = normalizePathname(pathname);
-	const pattern = new RegExp(`^/${escapeRegExp(locale)}(?:/|$)`);
-	if (!pattern.test(normalized)) {
-		return normalized;
-	}
-	const stripped = normalized.slice(locale.length + 1);
-	if (!stripped) {
-		return "/";
-	}
-	return stripped.startsWith("/") ? stripped : `/${stripped}`;
-}
-
-export function stripDefaultLocalePrefix(pathname: string): string {
-	return stripLeadingLocalePrefix(pathname, DEFAULT_LOCALE);
 }
 
 export function getLocaleFromPathname(pathname: string): Locale {
@@ -107,42 +104,6 @@ export function toIntlLocale(locale: Locale): string {
 		default:
 			return locale;
 	}
-}
-
-export function resolveLocaleParam(lang: string | undefined): {
-	locale: Locale;
-	shouldRedirectToDefault: boolean;
-	isInvalid: boolean;
-} {
-	if (!lang) {
-		return {
-			locale: DEFAULT_LOCALE,
-			shouldRedirectToDefault: false,
-			isInvalid: false,
-		};
-	}
-
-	if (!isKnownLocale(lang)) {
-		return {
-			locale: DEFAULT_LOCALE,
-			shouldRedirectToDefault: false,
-			isInvalid: true,
-		};
-	}
-
-	if (lang === DEFAULT_LOCALE) {
-		return {
-			locale: DEFAULT_LOCALE,
-			shouldRedirectToDefault: true,
-			isInvalid: false,
-		};
-	}
-
-	return {
-		locale: lang,
-		shouldRedirectToDefault: false,
-		isInvalid: false,
-	};
 }
 
 export function isKnownLocale(value: string | undefined): value is Locale {

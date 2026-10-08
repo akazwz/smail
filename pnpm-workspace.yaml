@@ -1,0 +1,14 @@
+packages:
+  - .
+  - worker
+allowBuilds:
+  esbuild: true
+  workerd: true
+  sharp: false
+minimumReleaseAgeExclude:
+  - "@cloudflare/build-output-utils@0.8.6"
+  - "@cloudflare/codemods@0.4.1"
+  - "@cloudflare/config@0.24.0"
+  - "@cloudflare/runtime-types@0.1.8"
+  - cf@1.0.0-beta.13
+  - miniflare@5.20261006.0-alpha

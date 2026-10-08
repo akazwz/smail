@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+	<style>
+		.tile { fill: #16150f }
+		.envelope { fill: #faf9f6 }
+		.flap { stroke: #16150f }
+		.ring { stroke: #16150f }
+		@media (prefers-color-scheme: dark) {
+			.tile { fill: #f2f1ec }
+			.envelope { fill: #16150f }
+			.flap { stroke: #f2f1ec }
+			.ring { stroke: #f2f1ec }
+		}
+	</style>
+	<rect class="tile" width="32" height="32" rx="9" />
+	<rect class="envelope" x="6.5" y="9.5" width="19" height="14" rx="3.2" />
+	<path class="flap" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9.6 13 6.4 4.6 6.4-4.6" />
+	<circle class="ring" cx="25" cy="9.4" r="3.6" fill="#ff5a1f" stroke-width="1.6" />
+</svg>

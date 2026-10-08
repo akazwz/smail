@@ -1,17 +1,16 @@
 .DS_Store
 .env*
-/node_modules/
+node_modules/
 *.tsbuildinfo
 
-# React Router
-/.react-router/
-/build/
+# Build output
+/dist/
 
 # Cloudflare
 .mf
 .wrangler
+.cloudflare
 .dev.vars*
-worker-configuration.d.ts
 
 
 !.dev.vars.example

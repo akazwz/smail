@@ -1,0 +1,36 @@
+{
+	"name": "smail-worker",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite build && vite preview --port 8788",
+		"cf-typegen": "cf workers types",
+		"typecheck": "pnpm run cf-typegen && tsc -p tsconfig.json",
+		"migrate": "node d1.mjs migrate",
+		"migrate:local": "node d1.mjs migrate --local --persist-to .wrangler/state",
+		"messages": "node d1.mjs messages",
+		"deploy": "vite build && pnpm run migrate && cf deploy --prebuilt",
+		"deploy:first": "vite build && pnpm run migrate && cf deploy --prebuilt --secrets-file .env.production",
+		"deploy:dry-run": "vite build && cf deploy --prebuilt --dry-run",
+		"deploy:staging": "vite build --mode staging && cf deploy --prebuilt --mode staging",
+		"postinstall": "pnpm run cf-typegen"
+	},
+	"dependencies": {
+		"@scaleway/random-name": "^5.1.4",
+		"postal-mime": "^2.7.4"
+	},
+	"devDependencies": {
+		"@cloudflare/vite-plugin": "^1.62.5",
+		"@types/node": "^25.6.0",
+		"cf": "1.0.0-beta.13",
+		"typescript": "^6.0.3",
+		"vite": "^8.3.3",
+		"wrangler": "^4.147.0"
+	},
+	"engines": {
+		"node": ">=22.18"
+	},
+	"packageManager": "pnpm@12.10.1"
+}

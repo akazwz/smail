@@ -1,6 +1,6 @@
 ## Terms of Use
 
-_Last updated: 2026-02-12_
+_Last updated: 2026-10-08_
 
 ### 1. Agreement to terms
 
@@ -8,16 +8,16 @@ By accessing or using smail.pw (the "Service"), you agree to be bound by these T
 
 ### 2. Nature of the service
 
-smail.pw provides **temporary email addresses** designed for short‑term and disposable use.
+smail.pw provides **temporary email addresses** designed for disposable, low‑risk use.
 
-- Email content is retained for up to 24 hours and then automatically deleted.
+- Addresses and email content are kept long-term by default, but we do not guarantee how long. They may be removed at any time, for example during maintenance, after a system fault, or when storage is cleaned up.
 - The Service is provided on an **"as is" and "as available"** basis, without guarantees of uptime, delivery, or long‑term storage.
 
 ### 3. Acceptable use
 
 You agree **not** to use smail.pw for any of the following:
 
-- Sending or facilitating spam, scams, or phishing
+- Spam, scams, or phishing, or helping others carry them out
 - Harassment, threats, or abuse of others
 - Distributing malware or other harmful content
 - Violating intellectual property rights or other legal rights
@@ -27,7 +27,7 @@ We may suspend or block access, addresses, or emails that are suspected of viola
 
 ### 4. No important or critical accounts
 
-Because addresses are temporary and may be accessible to others who know the same address, you should **not** use smail.pw for:
+Because addresses have no password, cannot be recovered once the browser cookie is lost, and are not guaranteed to be kept, you should **not** use smail.pw for:
 
 - Banking, financial, or investment accounts
 - Work, government, or legal communications
@@ -40,8 +40,8 @@ Use a stable, secure, personal email account for important services.
 We do not guarantee that:
 
 - Any email will be successfully delivered to your temporary address
-- Emails will remain available beyond the 24-hour retention window
-- Emails will be retrievable once deleted
+- Addresses or emails will be kept for any particular length of time
+- Emails will be retrievable once removed
 
 The Service is intended for convenience and low‑risk use only.
 
@@ -79,4 +79,4 @@ These Terms are governed by the laws that apply in the jurisdiction where the Se
 
 ### 12. Contact us
 
-If you have questions about these Terms, please use the contact link or feedback form on smail.pw and describe your request clearly.
+If you have questions about these Terms, please leave us a message on the [Contact](/contact) page and describe your request clearly. Add a way to reach you if you want a reply.

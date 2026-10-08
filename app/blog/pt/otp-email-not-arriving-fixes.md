@@ -1,39 +1,39 @@
-## Email OTP não chega? 8 correções rápidas
+## Email OTP não chega? 8 soluções rápidas que costumam funcionar
 
-Se o email de código de verificação atrasar, não reinicie tudo imediatamente. Siga este checklist na ordem.
+Se o email com o seu código de verificação atrasar, não recomece tudo imediatamente. Siga esta lista na ordem.
 
-### 1) Espere 1–3 minutos primeiro
+### 1) Primeiro, espere de 1 a 3 minutos
 
-Muitos provedores colocam emails de verificação em fila. Pequenos atrasos são comuns.
+Muitos provedores colocam os emails de verificação em fila. Pequenos atrasos são comuns.
 
 ### 2) Confirme se o endereço está correto
 
-Um pequeno erro no nome da caixa já basta para perder a mensagem.
+Um pequeno erro de digitação no nome do endereço já basta para perder a mensagem.
 
-### 3) Atualize a caixa manualmente
+### 3) Atualize a caixa de entrada manualmente
 
-Use o botão de atualização antes de gerar um novo endereço. Isso captura mensagens que chegam atrasadas.
+Os novos emails normalmente aparecem sozinhos, mas use o botão de atualizar da caixa de entrada antes de gerar um novo endereço. Assim você pega as mensagens que chegam atrasadas.
 
-### 4) Reenvie pelo site de origem
+### 4) Peça o reenvio no site de origem
 
-A maioria das plataformas oferece link de reenvio. Reenvie uma vez e aguarde novamente.
+A maioria das plataformas oferece um link de reenvio. Use-o uma vez e aguarde de novo.
 
-### 5) Verifique a política do domínio do remetente
+### 5) Verifique a política do remetente para domínios
 
-Alguns serviços bloqueiam domínios temporários. Se várias tentativas falharem, este pode ser o motivo.
+Alguns serviços bloqueiam domínios temporários. Se várias tentativas de reenvio falharem, esse pode ser o motivo.
 
 ### 6) Evite trocar de endereço rápido demais
 
-Se você trocar de caixa antes da nova tentativa do remetente, o próximo código pode ir para o endereço antigo.
+Se você trocar de endereço antes de o remetente tentar de novo, seu próximo código ainda pode ir para o primeiro endereço.
 
-### 7) Use um fallback estável
+### 7) Tenha uma alternativa estável
 
-Para contas de valor médio ou alto, troque para um alias ou caixa pessoal para concluir o cadastro.
+Para contas de valor médio ou alto, mude para um alias de email ou para o seu email pessoal para concluir o cadastro.
 
-### 8) Registre horários para o suporte
+### 8) Anote os horários para o suporte
 
-Anote quando pediu o código e se houve reenvio. Isso ajuda o suporte a rastrear logs de entrega mais rápido.
+Registre a hora em que você pediu o código e se usou o reenvio. Isso ajuda as equipes de suporte a rastrear os registros de entrega mais rápido.
 
 ### Conclusão
 
-A maioria dos problemas de OTP envolve timing, erro de digitação ou política do remetente. Uma sequência estruturada resolve mais rápido do que trocar endereços aleatoriamente.
+A maioria dos problemas com OTP é questão de tempo de espera, erro de digitação ou política do remetente. Uma sequência organizada de tentativas resolve mais rápido do que trocar de endereço aleatoriamente.

@@ -1,0 +1,28 @@
+{
+	"include": [
+		"src",
+		"../site.config.ts",
+		"cloudflare.config.ts",
+		"vite.config.ts",
+		".cloudflare/types"
+	],
+	"compilerOptions": {
+		"target": "ESNext",
+		"lib": ["ESNext"],
+		"module": "preserve",
+		"moduleDetection": "force",
+		"types": ["vite/client"],
+		"allowImportingTsExtensions": true,
+		"verbatimModuleSyntax": true,
+		"erasableSyntaxOnly": true,
+		"noEmit": true,
+		"skipLibCheck": true,
+
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedSideEffectImports": true
+	}
+}

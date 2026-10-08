@@ -13,9 +13,9 @@ A temporary inbox is ideal for:
 
 Avoid using temporary email for banking, work identity, tax, legal, or core recovery accounts.
 
-### 2) Assume every temporary inbox is short-lived
+### 2) Assume any temporary inbox can disappear
 
-On smail.pw, email content is retained for up to 24 hours. Treat that as an expiration window, not long-term storage.
+On smail.pw, addresses and emails are kept long-term by default, but there is no guarantee: they may be removed at any time, for example during maintenance, after a system fault, or when storage is cleaned up. Do not treat it as long-term storage.
 
 If a message matters, copy critical details immediately.
 
@@ -23,12 +23,12 @@ If a message matters, copy critical details immediately.
 
 Use temporary email for throwaway interactions, and your primary mailbox for important services. This separation reduces spam and makes account management easier.
 
-### 4) Save what you need before you leave
+### 4) Save what you need right away
 
-Before closing the tab:
+Do not leave important details only in a temporary inbox. As soon as the email arrives:
 
 - Save activation links if needed
-- Copy reference IDs and support numbers
+- Copy reference IDs and support ticket numbers
 - Record the service name and signup date
 
 ### 5) Have a fallback path
@@ -37,7 +37,7 @@ Some websites block temporary domains. If verification fails repeatedly, switch 
 
 ### 6) Refresh before regenerating
 
-When a code does not appear, first refresh and wait briefly. Many senders are delayed. Replacing the address too early can restart the process and waste time.
+When a code does not appear, first wait briefly and press Refresh. Many senders are delayed. Replacing the address too early can restart the process and waste time.
 
 ### Final takeaway
 

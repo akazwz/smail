@@ -2,39 +2,48 @@
 	"name": "smailpw",
 	"private": true,
 	"type": "module",
+	"imports": {
+		"#/*": "./app/*",
+		"#contract": "./worker/src/contract.ts",
+		"#site": "./site.config.ts"
+	},
 	"scripts": {
-		"build": "react-router build",
-		"cf-typegen": "wrangler types",
-		"deploy": "pnpm run build && pnpm run migrate && wrangler deploy",
-		"dev": "react-router dev",
-		"postinstall": "pnpm run cf-typegen",
-		"preview": "pnpm run build && vite preview",
-		"typecheck": "pnpm run cf-typegen && react-router typegen && tsc -b",
-		"migrate": "wrangler d1 migrations apply D1 --remote"
+		"dev": "pnpm run \"/^dev:.*/\"",
+		"dev:web": "vite",
+		"dev:worker": "pnpm --filter smail-worker run dev",
+		"build": "vite build",
+		"preview": "pnpm run build && pnpm --filter smail-worker run preview",
+		"typecheck": "tsc -b && pnpm --filter smail-worker run typecheck",
+		"lint": "oxlint --deny-warnings",
+		"format": "oxfmt",
+		"format:check": "oxfmt --check",
+		"check": "pnpm run typecheck && pnpm run lint && pnpm run format:check",
+		"deploy": "pnpm run build && pnpm --filter smail-worker run deploy",
+		"deploy:first": "pnpm run build && pnpm --filter smail-worker run deploy:first",
+		"deploy:dry-run": "pnpm run build && pnpm --filter smail-worker run deploy:dry-run",
+		"deploy:staging": "pnpm run build && pnpm --filter smail-worker run deploy:staging"
 	},
 	"dependencies": {
-		"@markdoc/markdoc": "^0.5.7",
-		"@react-router/cloudflare": "^7.14.1",
-		"@scaleway/random-name": "^5.1.4",
-		"isbot": "^5.1.39",
-		"nanoid": "^5.1.9",
-		"postal-mime": "^2.7.4",
-		"react": "^19.2.5",
-		"react-dom": "^19.2.5",
-		"react-router": "^7.14.1"
+		"@solidjs/router": "2.0.0-next.35",
+		"@solidjs/web": "2.0.0-rc.13",
+		"@stylexjs/stylex": "0.19.1",
+		"solid-js": "2.0.0-rc.13"
 	},
 	"devDependencies": {
-		"@cloudflare/vite-plugin": "^1.32.3",
-		"@cloudflare/workers-types": "^4.20260418.1",
-		"@react-router/dev": "^7.14.1",
-		"@tailwindcss/typography": "^0.5.19",
-		"@tailwindcss/vite": "^4.2.2",
+		"@markdoc/markdoc": "^0.5.10",
+		"@solidjs/diagnostics": "2.0.0-rc.13",
+		"@solidjs/vite-plugin": "3.0.0-next.47",
+		"@stylexjs/unplugin": "0.19.1",
 		"@types/node": "^25.6.0",
-		"@types/react": "^19.2.14",
-		"@types/react-dom": "^19.2.3",
-		"tailwindcss": "^4.2.2",
+		"oxfmt": "0.72.0",
+		"oxlint": "1.87.0",
+		"prerender-crawler": "0.2.0",
 		"typescript": "^6.0.3",
-		"vite": "^8.0.8",
-		"wrangler": "^4.83.0"
-	}
+		"unplugin": "^2.3.11",
+		"vite": "^8.3.3"
+	},
+	"engines": {
+		"node": ">=22.18"
+	},
+	"packageManager": "pnpm@12.10.1"
 }

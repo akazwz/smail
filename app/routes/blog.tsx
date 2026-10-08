@@ -1,255 +1,58 @@
-import { Link, redirect } from "react-router";
+import * as stylex from "@stylexjs/stylex";
+import { For, Show } from "solid-js";
+
 import {
 	BLOG_PAGE_SIZE,
 	getBlogPageCount,
 	getBlogPostsByPage,
-	listBlogPosts,
-} from "~/blog/data";
-import {
-	DEFAULT_LOCALE,
-	type Locale,
-	resolveLocaleParam,
-	stripDefaultLocalePrefix,
-	toIntlLocale,
-	toLocalePath,
-} from "~/i18n/config";
-import { BASE_URL, isBlogLocaleIndexable } from "~/seo.config";
-import { mergeRouteMeta } from "~/utils/meta";
-import type { Route } from "./+types/blog";
+} from "#/blog/data.ts";
+import { JsonLd } from "#/components/json-ld.tsx";
+import { Page, PageIntro } from "#/components/page.tsx";
+import { type Locale, toIntlLocale, toLocalePath } from "#/i18n/config.ts";
+import { useDictionary } from "#/i18n/dictionary.ts";
+import { BASE_URL, SITE_NAME } from "#/seo.config.ts";
+import { ButtonLink } from "#/ui/Button.tsx";
+import { CardLink } from "#/ui/CardLink.tsx";
+import { color, space, text } from "#/ui/tokens.stylex.ts";
+import { usePageHead } from "#/utils/head.ts";
+import { useLocale } from "#/utils/locale.ts";
+import { fillTemplate } from "#/utils/template.ts";
 
-function getLocaleFromParams(lang: string | undefined): Locale {
-	const { locale } = resolveLocaleParam(lang);
-	return locale;
-}
-
-type BlogCopy = {
-	title: string;
-	description: string;
-	header: string;
-	subheader: string;
-	tag: string;
-	readArticle: string;
-	prevPage: string;
-	nextPage: string;
-	backToBlog: string;
-	relatedPosts: string;
-	currentArticle: string;
-	postTitleSuffix: string;
-};
-
-const BLOG_COPY: Record<Locale, BlogCopy> = {
-	en: {
-		title: "Temporary Email Guides, Tips & Fixes | smail.pw",
-		description:
-			"Temporary email guides, best practices, and troubleshooting tips for verification and disposable inbox workflows.",
-		header: "smail.pw Blog",
-		subheader: "Guides and troubleshooting for temporary email users",
-		tag: "Blog",
-		readArticle: "Read article",
-		prevPage: "Prev",
-		nextPage: "Next",
-		backToBlog: "Back to blog",
-		relatedPosts: "Related posts",
-		currentArticle: "Current article",
-		postTitleSuffix: " | smail.pw Blog",
+const styles = stylex.create({
+	body: {
+		display: "grid",
+		gridTemplateColumns: "minmax(0, 1fr)",
+		gap: space.xl,
 	},
-	zh: {
-		title:
-			"临时邮箱博客：注册、验证码、隐私保护与收信排障实用完整指南 | smail.pw",
-		description:
-			"临时邮箱使用指南：最佳实践、收信排障、临时邮箱与邮箱别名对比。",
-		header: "smail.pw 博客",
-		subheader: "临时邮箱使用指南与实用排障手册",
-		tag: "博客",
-		readArticle: "阅读全文",
-		prevPage: "上一页",
-		nextPage: "下一页",
-		backToBlog: "返回博客",
-		relatedPosts: "相关文章",
-		currentArticle: "当前文章",
-		postTitleSuffix: " | smail.pw 临时邮箱博客实用指南",
+	// 一行能放几张放几张。
+	posts: {
+		display: "grid",
+		gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 19rem), 1fr))",
+		gap: space.xl,
+		margin: 0,
+		padding: 0,
+		listStyleType: "none",
 	},
-	es: {
-		title: "Blog de correo temporal: guías y soluciones | smail.pw",
-		description:
-			"Guías de correo temporal, buenas prácticas y pasos de solución para registros, verificación y bandejas desechables.",
-		header: "Blog de smail.pw",
-		subheader:
-			"Guías y resolución de problemas para usuarios de correo temporal",
-		tag: "Blog",
-		readArticle: "Leer artículo",
-		prevPage: "Anterior",
-		nextPage: "Siguiente",
-		backToBlog: "Volver al blog",
-		relatedPosts: "Artículos relacionados",
-		currentArticle: "Artículo actual",
-		postTitleSuffix: " | Blog de smail.pw",
+	pagination: {
+		display: "flex",
+		flexWrap: "wrap",
+		alignItems: "center",
+		gap: space.sm,
 	},
-	fr: {
-		title: "Blog email temporaire: guides et dépannage | smail.pw",
-		description:
-			"Guides d'email temporaire, bonnes pratiques et dépannage pour l'inscription, la vérification et les boîtes jetables.",
-		header: "Blog smail.pw",
-		subheader: "Guides et dépannage pour les utilisateurs d'email temporaire",
-		tag: "Blog",
-		readArticle: "Lire l'article",
-		prevPage: "Précédent",
-		nextPage: "Suivant",
-		backToBlog: "Retour au blog",
-		relatedPosts: "Articles liés",
-		currentArticle: "Article actuel",
-		postTitleSuffix: " | Blog smail.pw",
-	},
-	de: {
-		title: "Temporäre E-Mail Blog: Ratgeber und Hilfe | smail.pw",
-		description:
-			"Ratgeber, Best Practices und Fehlerbehebung für temporäre E-Mails bei Registrierung und Verifizierung.",
-		header: "smail.pw Blog",
-		subheader: "Leitfäden und Fehlerbehebung für Nutzer temporärer E-Mails",
-		tag: "Blog",
-		readArticle: "Artikel lesen",
-		prevPage: "Zurück",
-		nextPage: "Weiter",
-		backToBlog: "Zurück zum Blog",
-		relatedPosts: "Ähnliche Artikel",
-		currentArticle: "Aktueller Artikel",
-		postTitleSuffix: " | smail.pw Blog",
-	},
-	ja: {
-		title:
-			"一時メールブログ：登録・認証・受信トラブルの実用解決ガイド | smail.pw",
-		description:
-			"一時メールの使い方、ベストプラクティス、認証や受信トラブルの解決手順をまとめたガイドです。",
-		header: "smail.pw ブログ",
-		subheader: "一時メール利用者向けガイドとトラブル解決",
-		tag: "ブログ",
-		readArticle: "記事を読む",
-		prevPage: "前へ",
-		nextPage: "次へ",
-		backToBlog: "ブログに戻る",
-		relatedPosts: "関連記事",
-		currentArticle: "現在の記事",
-		postTitleSuffix: " | smail.pw 一時メールブログ",
-	},
-	ko: {
-		title: "임시 이메일 블로그: 가입·인증·수신 문제 해결 가이드 | smail.pw",
-		description:
-			"임시 이메일 사용 가이드, 모범 사례, 가입·인증·수신 문제 해결 방법을 제공합니다.",
-		header: "smail.pw 블로그",
-		subheader: "임시 이메일 사용자를 위한 가이드와 문제 해결",
-		tag: "블로그",
-		readArticle: "기사 읽기",
-		prevPage: "이전",
-		nextPage: "다음",
-		backToBlog: "블로그로 돌아가기",
-		relatedPosts: "관련 글",
-		currentArticle: "현재 글",
-		postTitleSuffix: " | smail.pw 임시 이메일 블로그",
-	},
-	ru: {
-		title: "Блог временной почты: руководства и решения | smail.pw",
-		description:
-			"Руководства по временной почте, лучшие практики и устранение проблем для регистрации и подтверждений.",
-		header: "Блог smail.pw",
-		subheader: "Гайды и устранение проблем для пользователей временной почты",
-		tag: "Блог",
-		readArticle: "Читать статью",
-		prevPage: "Назад",
-		nextPage: "Далее",
-		backToBlog: "Назад в блог",
-		relatedPosts: "Похожие статьи",
-		currentArticle: "Текущая статья",
-		postTitleSuffix: " | Блог smail.pw",
-	},
-	pt: {
-		title: "Blog de email temporário: guias e soluções | smail.pw",
-		description:
-			"Guias de email temporário, boas práticas e resolução de problemas para cadastro, verificação e caixas descartáveis.",
-		header: "Blog smail.pw",
-		subheader: "Guias e solução de problemas para usuários de email temporário",
-		tag: "Blog",
-		readArticle: "Ler artigo",
-		prevPage: "Anterior",
-		nextPage: "Próxima",
-		backToBlog: "Voltar ao blog",
-		relatedPosts: "Artigos relacionados",
-		currentArticle: "Artigo atual",
-		postTitleSuffix: " | Blog smail.pw",
-	},
-	ar: {
-		title: "مدونة البريد المؤقت: أدلة وحلول للمشكلات | smail.pw",
-		description:
-			"أدلة البريد المؤقت، أفضل الممارسات، وحلول مشكلات التسجيل والتحقق واستقبال الرسائل.",
-		header: "مدونة smail.pw",
-		subheader: "أدلة وحلول لمستخدمي البريد المؤقت",
-		tag: "مدونة",
-		readArticle: "اقرأ المقال",
-		prevPage: "السابق",
-		nextPage: "التالي",
-		backToBlog: "العودة إلى المدونة",
-		relatedPosts: "مقالات ذات صلة",
-		currentArticle: "المقال الحالي",
-		postTitleSuffix: " | مدونة smail.pw",
-	},
-};
-
-function getBlogCopy(locale: Locale): BlogCopy {
-	return BLOG_COPY[locale];
-}
-
-export function getBlogListCopy(locale: Locale): {
-	title: string;
-	description: string;
-	header: string;
-	subheader: string;
-} {
-	const copy = getBlogCopy(locale);
-	return {
-		title: copy.title,
-		description: copy.description,
-		header: copy.header,
-		subheader: copy.subheader,
-	};
-}
-
-export function getBlogUiCopy(
-	locale: Locale,
-): Omit<
-	BlogCopy,
-	"title" | "description" | "header" | "subheader" | "postTitleSuffix"
-> {
-	const {
-		tag,
-		readArticle,
-		prevPage,
-		nextPage,
-		backToBlog,
-		relatedPosts,
-		currentArticle,
-	} = getBlogCopy(locale);
-	return {
-		tag,
-		readArticle,
-		prevPage,
-		nextPage,
-		backToBlog,
-		relatedPosts,
-		currentArticle,
-	};
-}
+	summary: { margin: 0, color: color.subtle, fontSize: text.sm },
+});
 
 export function getBlogPostMetaTitle(
-	locale: Locale,
 	postTitle: string,
+	localizedSuffix: string,
 ): string {
 	const maxTitleLength = 60;
-	const localizedSuffix = getBlogCopy(locale).postTitleSuffix;
 	const titleWithLocalizedSuffix = `${postTitle}${localizedSuffix}`;
 	if (titleWithLocalizedSuffix.length <= maxTitleLength) {
 		return titleWithLocalizedSuffix;
 	}
 
-	const fallbackSuffix = " | smail.pw";
+	const fallbackSuffix = ` | ${SITE_NAME}`;
 	const titleWithFallbackSuffix = `${postTitle}${fallbackSuffix}`;
 	if (titleWithFallbackSuffix.length <= maxTitleLength) {
 		return titleWithFallbackSuffix;
@@ -260,47 +63,6 @@ export function getBlogPostMetaTitle(
 	}
 
 	return `${postTitle.slice(0, maxTitleLength - 1)}…`;
-}
-
-export function getBlogNotFoundMetaTitle(locale: Locale): string {
-	return getBlogCopy(locale).title;
-}
-
-export function formatBlogPageTitle(
-	_locale: Locale,
-	baseTitle: string,
-	page: number,
-): string {
-	return `${baseTitle} · ${page}`;
-}
-
-export function formatBlogPaginationSummary(
-	locale: Locale,
-	page: number,
-	totalPages: number,
-): string {
-	switch (locale) {
-		case "zh":
-			return `第 ${page} / ${totalPages} 页 · 每页 ${BLOG_PAGE_SIZE} 篇`;
-		case "es":
-			return `Página ${page} de ${totalPages} · ${BLOG_PAGE_SIZE} artículos por página`;
-		case "fr":
-			return `Page ${page} sur ${totalPages} · ${BLOG_PAGE_SIZE} articles par page`;
-		case "de":
-			return `Seite ${page} von ${totalPages} · ${BLOG_PAGE_SIZE} Artikel pro Seite`;
-		case "ja":
-			return `${page}/${totalPages}ページ · 1ページあたり${BLOG_PAGE_SIZE}件`;
-		case "ko":
-			return `${page} / ${totalPages}페이지 · 페이지당 ${BLOG_PAGE_SIZE}개`;
-		case "ru":
-			return `Страница ${page} из ${totalPages} · ${BLOG_PAGE_SIZE} статей на странице`;
-		case "pt":
-			return `Página ${page} de ${totalPages} · ${BLOG_PAGE_SIZE} artigos por página`;
-		case "ar":
-			return `الصفحة ${page} من ${totalPages} · ${BLOG_PAGE_SIZE} مقالات لكل صفحة`;
-		default:
-			return `Page ${page} of ${totalPages} · ${BLOG_PAGE_SIZE} posts per page`;
-	}
 }
 
 export function toLanguageTag(locale: Locale): string {
@@ -316,160 +78,109 @@ export function formatBlogPublishedDate(
 	});
 }
 
-export function getBlogPagePath(page: number): string {
+function getBlogPagePath(page: number): string {
 	return page <= 1 ? "/blog" : `/blog/page/${page}`;
 }
 
-export function meta({ params, matches }: Route.MetaArgs) {
-	const locale = getLocaleFromParams(params.lang);
-	const copy = getBlogListCopy(locale);
-	const metaItems = [
-		{ title: copy.title },
-		{ name: "description", content: copy.description },
-		{
-			name: "robots",
-			content: isBlogLocaleIndexable(locale)
-				? "index, follow"
-				: "noindex, follow",
-		},
-	];
-
-	return mergeRouteMeta(matches, metaItems);
-}
-
-export async function loader({ params, request }: Route.LoaderArgs) {
-	const { locale, shouldRedirectToDefault, isInvalid } = resolveLocaleParam(
-		params.lang,
+export function BlogListView(props: { page: number }) {
+	const locale = useLocale();
+	const { blog } = useDictionary();
+	const totalPages = getBlogPageCount(blog.posts);
+	const posts = () => getBlogPostsByPage(blog.posts, props.page);
+	const pageNumbers = Array.from(
+		{ length: totalPages },
+		(_, index) => index + 1,
 	);
-	if (isInvalid) {
-		throw new Response("Not Found", { status: 404 });
-	}
+	const isCurrentPage = (pageNumber: number) => pageNumber === props.page;
 
-	if (shouldRedirectToDefault) {
-		const url = new URL(request.url);
-		const normalizedPath = stripDefaultLocalePrefix(url.pathname);
-		throw redirect(`${normalizedPath}${url.search}`, 301);
-	}
+	usePageHead(() => ({
+		title: props.page > 1 ? `${blog.title} · ${props.page}` : blog.title,
+		description: blog.description,
+		robots: "index, follow",
+	}));
 
-	const totalPosts = listBlogPosts(locale).length;
-	const totalPages = getBlogPageCount(locale);
-
-	return {
-		locale,
-		page: 1,
-		totalPosts,
-		totalPages,
-		posts: getBlogPostsByPage(locale, 1),
-	};
-}
-
-export default function BlogListPage({ loaderData }: Route.ComponentProps) {
-	const locale = loaderData.locale || DEFAULT_LOCALE;
-	const copy = getBlogListCopy(locale);
-	const uiCopy = getBlogUiCopy(locale);
-	const blogUrl = `${BASE_URL}${toLocalePath(getBlogPagePath(loaderData.page), locale)}`;
-	const itemListJsonLd = {
+	const itemListJsonLd = () => ({
 		"@context": "https://schema.org",
 		"@type": "ItemList",
-		name: copy.header,
-		description: copy.description,
-		inLanguage: toLanguageTag(locale),
-		url: blogUrl,
-		numberOfItems: loaderData.totalPosts,
-		itemListElement: loaderData.posts.map((post, index) => ({
+		name: blog.header,
+		description: blog.description,
+		inLanguage: toLanguageTag(locale()),
+		url: `${BASE_URL}${toLocalePath(getBlogPagePath(props.page), locale())}`,
+		numberOfItems: blog.posts.length,
+		itemListElement: posts().map((post, index) => ({
 			"@type": "ListItem",
-			position: index + 1,
-			url: `${BASE_URL}${toLocalePath(`/blog/${post.slug}`, locale)}`,
+			position: (props.page - 1) * BLOG_PAGE_SIZE + index + 1,
+			url: `${BASE_URL}${toLocalePath(`/blog/${post.slug}`, locale())}`,
 			name: post.title,
 		})),
-	};
+	});
 
 	return (
-		<div className="flex flex-1 py-3 sm:py-4">
-			<script
-				type="application/ld+json"
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
-			/>
-			<div className="glass-panel w-full px-4 py-5 sm:px-6 sm:py-6">
-				<header className="mb-6 space-y-2">
-					<p className="soft-tag">{uiCopy.tag}</p>
-					<h1 className="text-theme-primary font-display text-2xl font-bold sm:text-3xl">
-						{copy.header}
-					</h1>
-					<p className="text-theme-secondary text-sm">{copy.subheader}</p>
-				</header>
+		<Page>
+			<JsonLd data={itemListJsonLd()} />
+			<PageIntro title={blog.header} lead={blog.subheader} />
 
-				<div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-					{loaderData.posts.map((post) => (
-						<article
-							key={post.slug}
-							className="theme-card flex h-full flex-col p-4"
-						>
-							<p className="text-theme-faint text-[11px]">
-								{formatBlogPublishedDate(post.publishedAt, locale)}{" "}
-								· {post.readingMinutes} min
-							</p>
-							<h2 className="text-theme-primary font-display mt-2 line-clamp-2 text-base font-semibold">
-								{post.title}
-							</h2>
-							<p className="text-theme-muted mt-2 line-clamp-4 text-sm">
-								{post.description}
-							</p>
-							<div className="mt-4">
-								<Link
-									to={toLocalePath(`/blog/${post.slug}`, locale)}
-									prefetch="viewport"
-									className="theme-badge inline-flex px-3 py-1.5 text-[11px] font-semibold"
-								>
-									{uiCopy.readArticle}
-								</Link>
-							</div>
-						</article>
-					))}
-				</div>
+			<div {...stylex.attrs(styles.body)}>
+				<ul {...stylex.attrs(styles.posts)}>
+					<For each={posts()} keyed={(post) => post.slug}>
+						{(post) => (
+							<li>
+								<CardLink
+									href={toLocalePath(`/blog/${post().slug}`, locale())}
+									meta={`${formatBlogPublishedDate(post().publishedAt, locale())} · ${fillTemplate(blog.readingTime, { minutes: post().readingMinutes })}`}
+									title={post().title}
+									note={post().description}
+									action={blog.readArticle}
+								/>
+							</li>
+						)}
+					</For>
+				</ul>
 
-				{loaderData.totalPages > 1 && (
-					<nav
-						className="mt-6 flex flex-wrap items-center gap-2"
-						aria-label="Blog pagination"
-					>
-						{Array.from(
-							{ length: loaderData.totalPages },
-							(_, index) => index + 1,
-						).map((pageNumber) => {
-							const isCurrent = pageNumber === loaderData.page;
-							return (
-								<Link
-									key={pageNumber}
-									to={toLocalePath(getBlogPagePath(pageNumber), locale)}
-									prefetch="viewport"
-									aria-current={isCurrent ? "page" : undefined}
-									className={`theme-badge px-3 py-1.5 text-[11px] font-semibold ${isCurrent ? "brightness-95" : "hover:brightness-95"}`}
+				<Show when={totalPages > 1}>
+					<nav aria-label={blog.header} {...stylex.attrs(styles.pagination)}>
+						<Show when={props.page > 1}>
+							<ButtonLink
+								size="sm"
+								href={toLocalePath(getBlogPagePath(props.page - 1), locale())}
+							>
+								{blog.prevPage}
+							</ButtonLink>
+						</Show>
+						<For each={pageNumbers}>
+							{(pageNumber) => (
+								<ButtonLink
+									size="sm"
+									variant={isCurrentPage(pageNumber) ? "solid" : "outline"}
+									href={toLocalePath(getBlogPagePath(pageNumber), locale())}
+									aria-current={isCurrentPage(pageNumber) ? "page" : undefined}
 								>
 									{pageNumber}
-								</Link>
-							);
-						})}
-						<Link
-							to={toLocalePath(getBlogPagePath(2), locale)}
-							prefetch="viewport"
-							className="theme-badge ml-1 px-3 py-1.5 text-[11px] font-semibold hover:brightness-95"
-						>
-							{uiCopy.nextPage}
-						</Link>
+								</ButtonLink>
+							)}
+						</For>
+						<Show when={props.page < totalPages}>
+							<ButtonLink
+								size="sm"
+								href={toLocalePath(getBlogPagePath(props.page + 1), locale())}
+							>
+								{blog.nextPage}
+							</ButtonLink>
+						</Show>
 					</nav>
-				)}
-
-				{loaderData.totalPages > 1 && (
-					<p className="text-theme-faint mt-3 text-[11px]">
-						{formatBlogPaginationSummary(
-							locale,
-							loaderData.page,
-							loaderData.totalPages,
-						)}
+					<p {...stylex.attrs(styles.summary)}>
+						{fillTemplate(blog.pageSummary, {
+							page: props.page,
+							total: totalPages,
+							size: BLOG_PAGE_SIZE,
+						})}
 					</p>
-				)}
+				</Show>
 			</div>
-		</div>
+		</Page>
 	);
+}
+
+export default function BlogListPage() {
+	return <BlogListView page={1} />;
 }
