@@ -18,7 +18,11 @@ export default defineConfig({
 			notFoundHandling: "404-page",
 			runWorkerFirst: ["/api/*"],
 		},
-		observability: { enabled: true },
+		observability: {
+			logs: { enabled: false },
+			traces: { enabled: false },
+			issues: { enabled: true },
+		},
 		env: {
 			// 邮件元数据。迁移文件在 migrations/，用 `pnpm run migrate` 执行。
 			D1: bindings.d1({ id: site.database.id, name: site.database.name }),
