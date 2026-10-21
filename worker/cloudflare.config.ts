@@ -19,7 +19,8 @@ export default defineConfig({
 			runWorkerFirst: ["/api/*"],
 		},
 		observability: {
-			logs: { enabled: false },
+			// 只写 enabled: false 时，每次调用仍会记一条调用日志（invocationLogs 默认开），要单独关。
+			logs: { enabled: false, invocationLogs: false },
 			traces: { enabled: false },
 			issues: { enabled: true },
 		},
