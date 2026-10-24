@@ -1,6 +1,7 @@
 {
 	"name": "smailpw",
 	"private": true,
+	"license": "MIT",
 	"type": "module",
 	"imports": {
 		"#/*": "./app/*",

@@ -122,6 +122,7 @@ pnpm run deploy
 
 - 图标和分享图在 `public/`（`favicon.svg`、`favicon.ico`、`apple-touch-icon.png`、`og.png`）。
 - `public/_redirects` 里是 smail.pw 自己的旧地址跳转，可以删掉不需要的。
+- 以上都可以换掉或删掉。愿意的话留一个链接，链回 [smail.pw](https://smail.pw) 或本仓库都行，不强求（见[许可证](#许可证)）。
 
 ## 它是怎么工作的
 
@@ -211,3 +212,11 @@ worker/                  Cloudflare Worker，一个独立的项目
 ## 适合用来做什么
 
 临时地址适合低风险的注册、验证码和一次性下载。地址和邮件默认长期保留，但不做保证；地址只记在创建它的那个浏览器的 cookie 里。不要用在银行、工作、政务、法律事务上，也不要用在以后需要找回的账号上。
+
+## 许可证
+
+MIT。你可以随便用：自己部署、随意修改、换成自己的名字、拿去商用都行，只要代码里留着 [`LICENSE`](LICENSE) 文件。
+
+如果它对你有帮助，欢迎在 GitHub 上点个 star，或者在你的网站上放一个链接，链回 [smail.pw](https://smail.pw) 或本仓库。这两件事都不强求。
+
+提交的贡献同样按 MIT 许可证接收。
