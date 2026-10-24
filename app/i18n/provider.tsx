@@ -1,5 +1,9 @@
-import { Dynamic } from "@solidjs/web";
-import { type Component, lazy, type ParentProps } from "solid-js";
+import {
+	type Component,
+	dynamicComponent,
+	lazy,
+	type ParentProps,
+} from "solid-js";
 
 import { useLocale } from "#/utils/locale.ts";
 
@@ -33,5 +37,6 @@ const providers: Record<Locale, Component<ParentProps>> = {
 /** 按 URL 里的语言加载文案，并提供给它下面的所有组件。 */
 export function I18n(props: ParentProps) {
 	const locale = useLocale();
-	return <Dynamic component={providers[locale()]}>{props.children}</Dynamic>;
+	const Provider = dynamicComponent(() => providers[locale()]);
+	return <Provider>{props.children}</Provider>;
 }
