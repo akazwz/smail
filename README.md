@@ -122,6 +122,7 @@ pnpm run deploy
 
 - Icons and the share image are in `public/` (`favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `og.png`).
 - `public/_redirects` holds redirects for smail.pw's own old URLs. Remove the ones you do not need.
+- All of the above may be replaced or removed. A link back to [smail.pw](https://smail.pw) or this repository is welcome but not required (see [License](#license)).
 
 ## How it works
 
@@ -211,3 +212,11 @@ worker/                  The Cloudflare Worker, a separate project
 ## What it is for
 
 Temporary addresses suit low-risk sign-ups, verification codes and one-off downloads. Addresses and emails are kept long-term by default, but with no guarantee, and an address lives only in the cookie of the browser that created it. Do not use it for banking, work, government, legal matters, or any account you need to recover later.
+
+## License
+
+MIT. Use it however you like: run your own copy, change it, rename it, use it commercially. Just keep the [`LICENSE`](LICENSE) file with the code.
+
+If smail is useful to you, we would love a star on GitHub, or a link back to [smail.pw](https://smail.pw) or this repository from your site. Neither is required.
+
+Contributions are accepted under the same license.

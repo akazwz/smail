@@ -1,6 +1,7 @@
 {
 	"name": "smail-worker",
 	"private": true,
+	"license": "MIT",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
@@ -18,16 +19,16 @@
 		"postinstall": "pnpm run cf-typegen"
 	},
 	"dependencies": {
-		"@scaleway/random-name": "^5.1.4",
-		"postal-mime": "^2.7.4"
+		"@scaleway/random-name": "^6.0.2",
+		"postal-mime": "^4.1.4"
 	},
 	"devDependencies": {
-		"@cloudflare/vite-plugin": "^1.62.5",
-		"@types/node": "^25.6.0",
-		"cf": "1.0.0-beta.13",
-		"typescript": "^6.0.3",
-		"vite": "^8.3.3",
-		"wrangler": "^4.147.0"
+		"@cloudflare/vite-plugin": "^1.64.0",
+		"@types/node": "^26.6.5",
+		"cf": "1.0.0-beta.20",
+		"typescript": "^7.0.2",
+		"vite": "^8.3.5",
+		"wrangler": "^4.152.0"
 	},
 	"engines": {
 		"node": ">=22.18"

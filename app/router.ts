@@ -1,4 +1,4 @@
-import { createRouter } from "@solidjs/router";
+import { createRouter, intentPreload } from "@solidjs/router";
 import { lazy } from "solid-js";
 
 import { getBlogPost, getMarkdownPage } from "#/data.ts";
@@ -23,6 +23,8 @@ function toLocale(value: string | undefined): Locale {
 }
 
 export const Router = createRouter({
+	// 鼠标停在链接上（或聚焦、开始触摸）时先取下一页的分块和正文，点下去就不用等。
+	preloadLinks: intentPreload(),
 	routes: [
 		{
 			path: "/:lang?",

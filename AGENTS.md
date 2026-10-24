@@ -106,7 +106,9 @@ Solid 2 还是候选版本，它不是 React，也不是 Solid 1.x。写前端�
 
 Solid 系列包固定在精确版本上，升级前先看 `npm view <包名> dist-tags`：`@solidjs/vite-plugin` 的最新版在 `latest` 标签下，`next` 是旧的。
 
-- **不要开 `start.renderMode: "async"`。** 在 2.0.0-rc.13 上实测，这个模式下并发渲染会互相串内容；官方仓库 solidjs/prerender-crawler#10 记录了同一个问题（预渲染时一个页面的内容写进另一个页面的文件）。默认的流式模式没有这个问题。
+- **不要开 `start.renderMode: "async"`。** 这个模式下并发渲染会互相串内容（预渲染时一个页面的内容写进另一个页面的文件）。rc.13 上实测过；升到 rc.18 + `prerender-crawler` 0.3.0 后再测，正文不串了，但仍有几个页面的 `<head>`（标题、canonical、hreflang）变成别的页面的或者丢掉。官方仓库 solidjs/prerender-crawler#10 记录的是同一个问题，已经按“已修复”关闭，在这里没修好。默认的流式模式没有这个问题。
+- **不要给路由开 `links: pendingLinks`。** 它会给正在跳转的链接加 `data-pending` 属性，而 `global.css` 用 `[data-pending]` 隐藏首页的占位块，链接会跟着消失。真要开，先把占位块的属性改名。
+- `useAction`（`app/utils/inbox.ts`）在 router next.42 里已标为弃用，下个大版本前还能用，但没有直接的替代：不经过它直接调用 action 会报错（action 要从 `this` 读路由）。到时要改成 solid-js 自己的 `action`，提交中和失败的状态自己管。
 - 样式用 `{...stylex.attrs(styles.name)}`，不是 `stylex.props`；Solid 2 没有 `className`。
 - 设计变量在 `app/ui/tokens.stylex.ts`，组件里不写死颜色、间距、圆角。
 - 字体全站统一：只有 `font.body` 这一套系统字体，不给个别元素（邮箱地址、代码、数字）另配等宽或其他字体。字体栈里不点名中日韩字体，靠页面的 `lang` 让浏览器挑对应语言的字体。

@@ -1,4 +1,4 @@
-import { action, query, revalidate } from "@solidjs/router";
+import { formAction, query, revalidate } from "@solidjs/router";
 import { reload } from "@solidjs/web";
 
 import {
@@ -30,12 +30,12 @@ function adoptInbox(inbox: Inbox): Response {
 
 // 不是服务端函数的 action 要起一个固定的名字。
 // `replace`：用户确认过更换地址。不带它时，已经有地址的会话拿回来的还是原来那个。
-export const generateAddressAction = action(
+export const generateAddressAction = formAction(
 	async (replace: boolean) => adoptInbox(await generateAddress(replace)),
 	"generate-address",
 );
 
-export const deleteAddressAction = action(
+export const deleteAddressAction = formAction(
 	async () => adoptInbox(await deleteAddress()),
 	"delete-address",
 );

@@ -6,9 +6,11 @@ allowBuilds:
   workerd: true
   sharp: false
 minimumReleaseAgeExclude:
-  - "@cloudflare/build-output-utils@0.8.6"
-  - "@cloudflare/codemods@0.4.1"
-  - "@cloudflare/config@0.24.0"
-  - "@cloudflare/runtime-types@0.1.8"
-  - cf@1.0.0-beta.13
-  - miniflare@5.20261006.0-alpha
+  - "@solidjs/signals@2.0.0-rc.18"
+  - "@solidjs/web@2.0.0-rc.18"
+  - solid-js@2.0.0-rc.18
+  - "@solidjs/diagnostics@2.0.0-rc.18"
+peerDependencyRules:
+  allowedVersions:
+    # @stylexjs/unplugin 声明的 peer 依赖还是 unplugin ^2，实测换成 3 生成的样式完全相同。
+    "@stylexjs/unplugin>unplugin": "3"

@@ -45,8 +45,9 @@ export default defineConfig({
 				document: "app/document.tsx",
 				// 只在构建和本地开发时运行，见文件里的说明。
 				middleware: "./app/middleware.ts",
-				// 不要开 renderMode: "async"：这个模式下并发渲染会把一个页面的内容写进另一个页面
-				// （Solid 2.0.0-rc.13 实测，官方仓库 solidjs/prerender-crawler#10 也有记录）。
+				// 不要开 renderMode: "async"：这个模式下并发渲染会把一个页面的内容写进另一个页面。
+				// rc.18 + prerender-crawler 0.3.0 上实测仍会串 <head>（标题、canonical）；
+				// solidjs/prerender-crawler#10 记录的是同一个问题，已关闭，但在这里没修好。
 			},
 		}),
 		// Solid 官方的构建时预渲染：构建完成后在 Node 里把每个页面渲染成 HTML 写进 dist/client。
