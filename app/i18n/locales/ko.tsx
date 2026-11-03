@@ -118,6 +118,21 @@ export const dictionary: Dictionary = {
 		faqCta: "자주 묻는 질문 보기",
 		homeCta: "홈으로 돌아가기",
 	},
+	recover: {
+		metaTitle: "주소 복구 | smail.pw",
+		title: "주소 복구하기",
+		description:
+			"주소가 회원님의 것임을 확인한 뒤 이 링크를 보내드렸습니다. 아래에서 확인하면 주소와 받은편지함이 이 브라우저로 돌아옵니다. 링크는 한 번만 사용할 수 있습니다.",
+		action: "주소 복구",
+		working: "복구 중...",
+		replaceConfirmTitle: "이 브라우저의 주소를 바꿀까요?",
+		replaceConfirmBody:
+			"이 브라우저에는 이미 주소가 있습니다. 복구하면 기존 주소가 대체되며, 이 브라우저는 더 이상 현재 주소를 기억하지 않습니다.",
+		invalid:
+			"이 링크는 사용할 수 없습니다. 불완전하거나 만료되었거나 이미 사용되었을 수 있습니다. 답장에 있는 전체 링크를 다시 열거나 메시지를 남겨 주세요.",
+		failed: "주소를 복구하지 못했습니다. 잠시 후 다시 시도해 주세요.",
+		contactCta: "고객 지원 문의",
+	},
 	blog: {
 		title: "임시 이메일 가이드, 팁, 문제 해결 | smail.pw",
 		description:

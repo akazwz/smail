@@ -40,6 +40,16 @@ export type MessagePayload = {
 	extra: string;
 };
 
+/**
+ * POST /api/recover 的请求内容：兑换一条地址恢复链接。
+ * 成功时返回 Inbox（和生成地址一样，会话里换成恢复的地址）；链接无效、过期、用过或被作废时返回 410。
+ */
+export type RecoverPayload = { token: string };
+
+// 恢复链接里的 token：32 字节随机数的 base64url，43 个字符。放在链接的 # 后面，
+// 浏览器不会把它发给服务器，也不会出现在 Referer 里。
+export const RECOVERY_TOKEN_PATTERN = /^[A-Za-z0-9_-]{43}$/;
+
 /** 留言和联系方式的长度上限。页面上的输入框和 Worker 的校验用同一组数。 */
 export const MESSAGE_MAX_LENGTH = 2000;
 export const CONTACT_MAX_LENGTH = 200;

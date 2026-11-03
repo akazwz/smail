@@ -6,6 +6,7 @@ import {
 	fetchEmailBody,
 	fetchInbox,
 	generateAddress,
+	redeemRecovery,
 } from "#/api.ts";
 import { loadBlogPost, loadMarkdownPage } from "#/content.ts";
 import type { Locale } from "#/i18n/config.ts";
@@ -39,6 +40,19 @@ export const deleteAddressAction = formAction(
 	async () => adoptInbox(await deleteAddress()),
 	"delete-address",
 );
+
+/**
+ * 兑换地址恢复链接。成功时把返回的收件箱放进缓存，接着打开首页就不用再取一次。
+ * 返回是否成功。
+ */
+export async function recoverAddress(token: string): Promise<boolean> {
+	const inbox = await redeemRecovery(token);
+	if (!inbox) {
+		return false;
+	}
+	query.set(getInbox.keyFor(), inbox);
+	return true;
+}
 
 export const getMarkdownPage = query(
 	(locale: Locale, slug: string) => loadMarkdownPage(locale, slug),

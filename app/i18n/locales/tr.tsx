@@ -117,6 +117,21 @@ export const dictionary: Dictionary = {
 		faqCta: "SSS sayfasını aç",
 		homeCta: "Ana sayfaya dön",
 	},
+	recover: {
+		metaTitle: "Adresinizi kurtarın | smail.pw",
+		title: "Adresinizi kurtarın",
+		description:
+			"Adresin size ait olduğunu doğruladıktan sonra bu bağlantıyı size gönderdik. Adresi ve gelen kutusunu bu tarayıcıya geri getirmek için aşağıdan onaylayın. Bağlantı yalnızca bir kez çalışır.",
+		action: "Adresi geri yükle",
+		working: "Geri yükleniyor...",
+		replaceConfirmTitle: "Bu tarayıcıdaki adres değiştirilsin mi?",
+		replaceConfirmBody:
+			"Bu tarayıcıda zaten bir adres var. Geri yükleme onun yerini alacak ve bu tarayıcı mevcut adresi artık hatırlamayacak.",
+		invalid:
+			"Bu bağlantı kullanılamıyor. Eksik, süresi dolmuş veya daha önce kullanılmış olabilir. Yanıtımızdaki bağlantının tamamını yeniden açın ya da bize mesaj bırakın.",
+		failed: "Adres geri yüklenemedi. Lütfen biraz sonra tekrar deneyin.",
+		contactCta: "Destekle iletişime geç",
+	},
 	blog: {
 		title: "Geçici Mail Rehberleri, İpuçları ve Çözümler | smail.pw",
 		description:

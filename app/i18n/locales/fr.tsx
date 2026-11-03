@@ -118,6 +118,22 @@ export const dictionary: Dictionary = {
 		faqCta: "Ouvrir la FAQ",
 		homeCta: "Retour à l'accueil",
 	},
+	recover: {
+		metaTitle: "Récupérer votre adresse | smail.pw",
+		title: "Récupérer votre adresse",
+		description:
+			"Nous vous avons envoyé ce lien après avoir vérifié que l'adresse vous appartient. Confirmez ci-dessous pour retrouver l'adresse et sa boîte de réception dans ce navigateur. Le lien ne fonctionne qu'une seule fois.",
+		action: "Restaurer l'adresse",
+		working: "Restauration...",
+		replaceConfirmTitle: "Remplacer l'adresse de ce navigateur ?",
+		replaceConfirmBody:
+			"Ce navigateur a déjà une adresse. La restauration la remplacera et ce navigateur ne se souviendra plus de l'adresse actuelle.",
+		invalid:
+			"Ce lien ne peut pas être utilisé. Il est peut-être incomplet, expiré ou déjà utilisé. Rouvrez le lien complet de notre réponse ou laissez-nous un message.",
+		failed:
+			"L'adresse n'a pas pu être restaurée. Veuillez réessayer dans un instant.",
+		contactCta: "Contacter le support",
+	},
 	blog: {
 		title: "Email temporaire : guides, conseils et dépannage | smail.pw",
 		description:

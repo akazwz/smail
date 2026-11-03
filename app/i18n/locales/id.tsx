@@ -117,6 +117,21 @@ export const dictionary: Dictionary = {
 		faqCta: "Buka FAQ",
 		homeCta: "Kembali ke beranda",
 	},
+	recover: {
+		metaTitle: "Pulihkan alamat Anda | smail.pw",
+		title: "Pulihkan alamat Anda",
+		description:
+			"Kami mengirim tautan ini setelah memastikan alamat tersebut milik Anda. Konfirmasi di bawah untuk mengembalikan alamat dan kotak masuknya ke browser ini. Tautan hanya bisa dipakai sekali.",
+		action: "Pulihkan alamat",
+		working: "Memulihkan...",
+		replaceConfirmTitle: "Ganti alamat di browser ini?",
+		replaceConfirmBody:
+			"Browser ini sudah punya alamat. Memulihkan akan menggantinya, dan browser ini tidak akan mengingat alamat yang sekarang lagi.",
+		invalid:
+			"Tautan ini tidak bisa dipakai. Mungkin tidak lengkap, kedaluwarsa, atau sudah digunakan. Buka lagi tautan lengkap dari balasan kami, atau tinggalkan pesan.",
+		failed: "Alamat gagal dipulihkan. Coba lagi sebentar lagi.",
+		contactCta: "Hubungi dukungan",
+	},
 	blog: {
 		title: "Panduan, Tips & Solusi Email Sementara | smail.pw",
 		description:

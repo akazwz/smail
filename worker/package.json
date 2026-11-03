@@ -12,6 +12,8 @@
 		"migrate": "node d1.mjs migrate",
 		"migrate:local": "node d1.mjs migrate --local --persist-to .wrangler/state",
 		"messages": "node d1.mjs messages",
+		"recover": "node d1.mjs recover",
+		"revoke": "node d1.mjs revoke",
 		"deploy": "vite build && pnpm run migrate && cf deploy --prebuilt",
 		"deploy:first": "vite build && pnpm run migrate && cf deploy --prebuilt --secrets-file .env.production",
 		"deploy:dry-run": "vite build && cf deploy --prebuilt --dry-run",

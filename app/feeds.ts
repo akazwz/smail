@@ -28,7 +28,9 @@ function listBlogPosts(locale: Locale): BlogPostMeta[] {
 	return getDictionary(locale).blog.posts;
 }
 
-const STATIC_PATHS = ["/", "/contact"] as const;
+// /recover 是地址恢复页，只有站长发出的链接会打开它。页面标了 noindex，
+// 站点地图会自动跳过它，但仍要在这里列出，预渲染才会生成它。
+const STATIC_PATHS = ["/", "/contact", "/recover"] as const;
 
 /** 站点内所有页面的路径：预渲染的爬虫靠它知道有哪些页面。 */
 export function listPagePaths(): string[] {

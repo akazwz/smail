@@ -118,6 +118,22 @@ export const dictionary: Dictionary = {
 		faqCta: "FAQ öffnen",
 		homeCta: "Zur Startseite",
 	},
+	recover: {
+		metaTitle: "Adresse wiederherstellen | smail.pw",
+		title: "Adresse wiederherstellen",
+		description:
+			"Wir haben dir diesen Link geschickt, nachdem wir geprüft haben, dass die Adresse dir gehört. Bestätige unten, um die Adresse und ihren Posteingang in diesen Browser zurückzuholen. Der Link funktioniert nur einmal.",
+		action: "Adresse wiederherstellen",
+		working: "Wird wiederhergestellt...",
+		replaceConfirmTitle: "Adresse in diesem Browser ersetzen?",
+		replaceConfirmBody:
+			"Dieser Browser hat bereits eine Adresse. Beim Wiederherstellen wird sie ersetzt, und dieser Browser merkt sich die aktuelle Adresse nicht mehr.",
+		invalid:
+			"Dieser Link kann nicht verwendet werden. Er ist vielleicht unvollständig, abgelaufen oder bereits benutzt. Öffne den vollständigen Link aus unserer Antwort erneut oder hinterlasse uns eine Nachricht.",
+		failed:
+			"Die Adresse konnte nicht wiederhergestellt werden. Bitte versuche es gleich noch einmal.",
+		contactCta: "Kontakt",
+	},
 	blog: {
 		title: "Temporäre E-Mail: Ratgeber, Tipps und Hilfe | smail.pw",
 		description:
