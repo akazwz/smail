@@ -18,7 +18,7 @@
 前端：
 - `app/app.tsx`、`app/document.tsx`：应用根组件与文档外壳。没有 `index.html` 和手写入口，`@solidjs/vite-plugin` 的 start 模式围绕这两个文件生成入口。
 - `app/router.ts`：路由表（`@solidjs/router` 的 `createRouter`）。
-- `app/routes/`：页面组件（首页、Markdown 页、博客、联系页、404、布局）。
+- `app/routes/`：页面组件（首页、Markdown 页、博客、联系页、地址恢复页、404、布局）。
 - `app/components/`：业务组件（页面骨架、首页的邮箱窗口 `mailbox.tsx`、邮件列表、邮件正文、联系页的留言表单 `message-form.tsx`、Markdown 渲染、指南链接）。
 - `app/ui/`：组件库。`tokens.stylex.ts` 是设计变量，其余是通用的基础组件。
 - `app/data.ts`：`query` / `action`，页面读写数据的唯一入口。
@@ -38,14 +38,14 @@
 
 Worker（`worker/`）：
 - `src/index.ts`：入口。`fetch` 只处理 `/api/*`，`email` 收信，并导出 Durable Object 类。没有定时任务。配置里不写 `triggers.scheduled(...)` 并不会删掉线上已有的定时触发器（部署时只在有配置时才更新），`cf` 也没有管理它的命令。线上残留的触发器要到 Cloudflare 控制台里看和删：用命令行把定时列表清空后，接口显示为空，实际仍可能照常触发。
-- `src/session.ts` 会话、`src/inbox.ts` 收件箱查询、`src/mail.ts` 收信、`src/inbox-hub.ts` 新邮件推送、`src/address.ts` 生成地址、`src/messages.ts` 保存联系页的留言。
+- `src/session.ts` 会话、`src/inbox.ts` 收件箱查询、`src/mail.ts` 收信、`src/inbox-hub.ts` 新邮件推送、`src/address.ts` 生成地址、`src/messages.ts` 保存联系页的留言、`src/recover.ts` 兑换地址恢复链接。
 - `cloudflare.config.ts`：Worker 的配置（绑定、静态资源的处理方式、Durable Object）。名字和资源来自 `../site.config.ts`。
 - `d1.mjs`：`cf` 的 D1 命令只认数据库 ID 不认名字，这个小脚本从 `site.config.ts` 取出 ID 再转交给 `cf`（`pnpm run migrate` / `messages` 用它）。
 - `vite.config.ts`：用 Cloudflare 的 Vite 插件构建 Worker，`publicDir` 指向 `../dist/client`，把前端产物当静态文件带进部署包。
 - `migrations/*.sql`：D1 SQL 迁移文件（不使用 ORM）。
 
 ## 真实数据架构（必须遵循）
-- D1：邮件元数据（`emails` 表）和联系页的留言（`messages` 表），没有别的。
+- D1：邮件元数据（`emails` 表）、联系页的留言（`messages` 表）和地址恢复链接（`recoveries` 表），没有别的。
 - R2：存邮件原始内容（对象 key = 邮件 `id`）。
 - 会话：签名 cookie（`__session`），数据就在 cookie 里，不使用 KV，也不占 D1。格式与早期 React Router 版本兼容，不要改。
 - 地址长期有效：只有用户主动更换或删除时才会变，服务端不做过期轮换；cookie 有效期 400 天，每 7 天续一次。
@@ -53,12 +53,17 @@ Worker（`worker/`）：
 - 收信（`worker/src/mail.ts`）：先写 R2 再写 D1；单封原文超过 5 MB 时只存正文、不存附件。
 - 新邮件推送：一个 Durable Object（`InboxHub`，`worker/src/inbox-hub.ts`）给所有在线访客共用，用 WebSocket Hibernation，按地址给连接打 tag。浏览器连 `/api/inbox/live`（Worker 入口校验同源和会话后转给它）；`email` 入口存好邮件后调用它的 `notify`。它只推“有新邮件”的信号，不存数据、不推内容，浏览器收到后仍然走 `GET /api/inbox`。
 - 连接状态：收件箱标题旁有一个小圆点（绿色＝连着，灰色＝断了正在重连，悬停有文字），状态来自 `app/utils/live-inbox.ts` 的 `useLiveInbox`。这条连接只在地址变了时才重建——收件箱刷新不能让它重连，否则重连空档里到的信收不到通知。连不上时会重新取一次收件箱对账（一轮断线只对一次）：地址要是已经不在会话里了，页面跟着变成没有地址，也就不再空连。重连的间隔带随机量。
-- 接口都在 `/api/` 下：`GET /api/inbox`、`POST /api/address`（生成）、`DELETE /api/address`（这两个直接返回最新的收件箱，页面不用再取一次）、`GET /api/email/:id`、`GET /api/inbox/live`（WebSocket）、`POST /api/messages`（留言）。所有非 GET 的请求只接受同源（校验 `Origin`）。
+- 接口都在 `/api/` 下：`GET /api/inbox`、`POST /api/address`（生成）、`DELETE /api/address`（这两个直接返回最新的收件箱，页面不用再取一次）、`GET /api/email/:id`、`GET /api/inbox/live`（WebSocket）、`POST /api/messages`（留言）、`POST /api/recover`（兑换恢复链接，成功时也直接返回收件箱）。所有非 GET 的请求只接受同源（校验 `Origin`）。
 - `POST /api/address` 生成新地址、原来的作废。带 `?keep=1` 时，会话里已经有地址就什么都不改，原样返回现有的收件箱；页面在“没有地址、点生成”时带这个参数，用户确认更换时不带。这样页面不知道会话里有地址时（收件箱还没取回、取失败了、别的标签页生成的）点“生成”不会把原地址悄悄顶掉。不要把这层保护挪回前端。
 - 改接口时要想到开着旧页面的访客：他们用的还是旧脚本，刷新之前不会变。新增的行为用新参数表达，不带参数的老请求保持原来的意思。
 - 和会话有关的请求在页面上是排队发的（`app/api.ts`），不并发：每个响应都可能重写会话 cookie，后到的会盖掉先到的。
 - 一次刷新失败不等于没有地址：之前取到过的收件箱接着显示（`app/utils/inbox.ts`），只有一次都没取到时才是“取失败”的界面。操作或手动刷新没成功时，在收件箱顶上浮一句提示，几秒后消失；它是浮层，不占位置。
 - 邮件正文（`GET /api/email/:id`）必须校验邮件地址属于当前会话。纯文本邮件要转义后再显示。响应带 `Content-Security-Policy: sandbox …`：就算有人直接在地址栏打开，邮件里的脚本也不会以本站身份运行。
+- 地址恢复只是人工客服：访客丢了地址（删了、换了浏览器、清了 cookie）来留言求助，站长自己核实归属后，在 `worker/` 里跑 `pnpm run recover <地址>` 签发一条链接，再通过对方留的联系方式发过去。不做账号、后台、公开的签发接口，也不自动发信。
+  - 链接是 `/recover#<token>`：token 放在 `#` 后面，不会发给服务器，也不会出现在 Referer 里。库里只存它的 SHA-256。链接只能兑换一次，默认 7 天内有效（`--days` 可改，最多 30 天），`pnpm run revoke <链接 ID 或地址>` 可以提前作废。
+  - 打开页面不消耗链接，点了按钮才兑换（聊天软件生成预览时不会把它用掉）；这个浏览器已经有地址时先过 `ConfirmDialog`。兑换用一条 `UPDATE … RETURNING` 判断并标记，同一条链接只有一个请求拿得到地址。
+  - 兑换成功后会话和点“生成”一样，只剩这一个地址，之后照常长期有效；`/api/inbox`、`/api/email` 的校验不变，仍按地址精确匹配。签发时地址统一转成小写（生成的地址就是小写）。
+  - 这只是私下帮忙，对外不承诺：内容和文案里不提“可以找回”，下面“清了 cookie 就找不回来”的说法不变。恢复页标了 `noindex`，不进站点地图。
 - 联系方式只有留言表单这一种：站内不公开任何邮箱地址，页面、文案、结构化数据和仓库里的文档都不要出现。
 - 留言（联系页的表单，`worker/src/messages.ts`）：只存进 D1 的 `messages` 表，**不发任何通知**，由站长自己定期去看——在 `worker/` 里跑 `pnpm run messages`（列出最近 50 条，读的是线上的库）。留言必填，联系方式选填，长度上限写在 `worker/src/contract.ts`，前后端共用。防刷只靠三样，都不花钱：一个真人看不见的诱饵输入框（填了就假装成功、不入库；字段名故意起得不像常见表单项，免得被浏览器自动填充）、同一来源每小时 5 条、全站每天 500 条。来源只存网络地址加密钥算出的单向指纹，不存地址本身。不要给它加邮件或推送通知：留言一多就成了轰炸。
 - 邮件正文显示在沙箱 iframe 里：不能运行脚本、不能提交表单。邮件里的链接由 Worker 统一改成在新标签页打开（`target="_blank" rel="noopener noreferrer"`），iframe 只额外放开“开新标签页”这一项。不要再放开别的权限。邮件自带的 `<base href>` 要保留（相对链接和图片靠它指向发件方），只去掉它的 `target`。
@@ -92,6 +97,7 @@ TypeScript 配置：根目录的 `tsconfig.json` 只是入口，引用 `tsconfig
 在 `worker/` 目录：
 - `pnpm run cf-typegen`：按 `cloudflare.config.ts` 重新生成 `.cloudflare/types/index.d.ts`（`Env`、`ctx.exports` 的类型都来自它，不进 git）。
 - `pnpm run messages`：列出最近 50 条留言（线上的库；`cf d1 query` 没有本地版）。
+- `pnpm run recover <地址> [--days N]` / `pnpm run revoke <链接 ID 或地址>`：签发 / 作废地址恢复链接（线上的库）。签发前会列出这个地址收过几封信，确认后才写入；链接只打印这一次。
 - `pnpm run migrate` / `pnpm run migrate:local`：对远端 / 本地的 D1 执行迁移。beta 版的 `cf` 跑完本地命令后进程可能不退出，看到输出后按 Ctrl+C 即可。
 
 Worker 的配置在 `worker/cloudflare.config.ts`（Cloudflare 新的带类型配置，配套 `cf` 命令行，目前是 beta）。仓库里没有 `wrangler.jsonc`，`wrangler` 的命令读不到这份配置，统一用 `cf`。新配置里没有“静态目录”这个字段：静态文件就是 Worker 这个 Vite 项目的 `publicDir`。

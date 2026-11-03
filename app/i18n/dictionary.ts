@@ -82,6 +82,22 @@ export interface Dictionary {
 		faqCta: string;
 		homeCta: string;
 	};
+	// 地址恢复页：站长核实后发给访客的链接打开的页面。
+	recover: {
+		metaTitle: string;
+		title: string;
+		description: string;
+		action: string;
+		working: string;
+		// 这个浏览器已经有地址时，恢复前的确认框。
+		replaceConfirmTitle: string;
+		replaceConfirmBody: string;
+		// 链接无效、过期、用过或被作废。
+		invalid: string;
+		// 网络或接口出错，可以再试一次。
+		failed: string;
+		contactCta: string;
+	};
 	blog: {
 		title: string;
 		description: string;

@@ -118,6 +118,22 @@ export const dictionary: Dictionary = {
 		faqCta: "Apri le FAQ",
 		homeCta: "Torna alla home",
 	},
+	recover: {
+		metaTitle: "Recupera il tuo indirizzo | smail.pw",
+		title: "Recupera il tuo indirizzo",
+		description:
+			"Ti abbiamo inviato questo link dopo aver verificato che l'indirizzo è tuo. Conferma qui sotto per riportare l'indirizzo e la sua casella in questo browser. Il link funziona una sola volta.",
+		action: "Ripristina indirizzo",
+		working: "Ripristino...",
+		replaceConfirmTitle: "Sostituire l'indirizzo in questo browser?",
+		replaceConfirmBody:
+			"Questo browser ha già un indirizzo. Il ripristino lo sostituirà e questo browser non ricorderà più quello attuale.",
+		invalid:
+			"Questo link non può essere usato. Potrebbe essere incompleto, scaduto o già usato. Riapri il link completo dalla nostra risposta oppure lasciaci un messaggio.",
+		failed:
+			"Non è stato possibile ripristinare l'indirizzo. Riprova tra un momento.",
+		contactCta: "Contatta il supporto",
+	},
 	blog: {
 		title: "Email temporanea: guide, consigli e soluzioni | smail.pw",
 		description:

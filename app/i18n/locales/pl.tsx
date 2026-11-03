@@ -117,6 +117,21 @@ export const dictionary: Dictionary = {
 		faqCta: "Otwórz FAQ",
 		homeCta: "Wróć na stronę główną",
 	},
+	recover: {
+		metaTitle: "Odzyskaj swój adres | smail.pw",
+		title: "Odzyskaj swój adres",
+		description:
+			"Wysłaliśmy Ci ten link po sprawdzeniu, że adres należy do Ciebie. Potwierdź poniżej, aby przywrócić adres i jego skrzynkę w tej przeglądarce. Link działa tylko raz.",
+		action: "Przywróć adres",
+		working: "Przywracanie...",
+		replaceConfirmTitle: "Zastąpić adres w tej przeglądarce?",
+		replaceConfirmBody:
+			"Ta przeglądarka ma już adres. Przywrócenie go zastąpi, a ta przeglądarka przestanie pamiętać obecny adres.",
+		invalid:
+			"Tego linku nie można użyć. Może być niepełny, wygasły lub już wykorzystany. Otwórz ponownie pełny link z naszej odpowiedzi albo zostaw nam wiadomość.",
+		failed: "Nie udało się przywrócić adresu. Spróbuj ponownie za chwilę.",
+		contactCta: "Kontakt z pomocą",
+	},
 	blog: {
 		title: "Tymczasowy email: poradniki, wskazówki i rozwiązania | smail.pw",
 		description:

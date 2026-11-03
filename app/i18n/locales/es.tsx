@@ -117,6 +117,22 @@ export const dictionary: Dictionary = {
 		faqCta: "Ver FAQ",
 		homeCta: "Volver al inicio",
 	},
+	recover: {
+		metaTitle: "Recupera tu dirección | smail.pw",
+		title: "Recupera tu dirección",
+		description:
+			"Te enviamos este enlace después de confirmar que la dirección es tuya. Confirma abajo para recuperar la dirección y su bandeja de entrada en este navegador. El enlace solo funciona una vez.",
+		action: "Restaurar dirección",
+		working: "Restaurando...",
+		replaceConfirmTitle: "¿Reemplazar la dirección de este navegador?",
+		replaceConfirmBody:
+			"Este navegador ya tiene una dirección. Al restaurar se reemplazará y este navegador dejará de recordar la actual.",
+		invalid:
+			"Este enlace no se puede usar. Puede estar incompleto, caducado o ya usado. Vuelve a abrir el enlace completo de nuestra respuesta o déjanos un mensaje.",
+		failed:
+			"No se pudo restaurar la dirección. Inténtalo de nuevo en un momento.",
+		contactCta: "Contactar con soporte",
+	},
 	blog: {
 		title: "Blog de correo temporal: guías y soluciones | smail.pw",
 		description:

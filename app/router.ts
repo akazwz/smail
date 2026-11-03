@@ -37,6 +37,11 @@ export const Router = createRouter({
 			component: lazy(() => import("#/routes/contact.tsx")),
 		},
 		{
+			path: "/:lang?/recover",
+			matchFilters: { lang },
+			component: lazy(() => import("#/routes/recover.tsx")),
+		},
+		{
 			path: "/:lang?/blog",
 			matchFilters: { lang },
 			component: lazy(() => import("#/routes/blog.tsx")),

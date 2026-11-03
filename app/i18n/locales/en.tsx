@@ -117,6 +117,21 @@ export const dictionary: Dictionary = {
 		faqCta: "Open FAQ",
 		homeCta: "Back to homepage",
 	},
+	recover: {
+		metaTitle: "Recover your address | smail.pw",
+		title: "Recover your address",
+		description:
+			"We sent you this link after confirming the address is yours. Confirm below to bring the address and its inbox back to this browser. The link works only once.",
+		action: "Restore address",
+		working: "Restoring...",
+		replaceConfirmTitle: "Replace the address in this browser?",
+		replaceConfirmBody:
+			"This browser already has an address. Restoring will replace it, and this browser will no longer remember the current one.",
+		invalid:
+			"This link can't be used. It may be incomplete, expired, or already used. Open the full link from our reply again, or leave us a message.",
+		failed: "The address could not be restored. Please try again in a moment.",
+		contactCta: "Contact support",
+	},
 	blog: {
 		title: "Temporary Email Guides, Tips & Fixes | smail.pw",
 		description:

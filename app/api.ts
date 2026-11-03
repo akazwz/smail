@@ -1,4 +1,4 @@
-import type { Inbox, MessagePayload } from "#contract";
+import type { Inbox, MessagePayload, RecoverPayload } from "#contract";
 
 // 收件箱的接口在 Worker 上（见 worker/src/index.ts），页面本身是静态文件。
 // 这些函数只在浏览器里调用：构建时渲染页面不会、也不能取任何人的收件箱。
@@ -56,6 +56,26 @@ export async function fetchEmailBody(id: string): Promise<string | null> {
 		throw new Error(`${path} answered ${response.status}`);
 	}
 	return response.text();
+}
+
+/**
+ * 兑换站长发来的地址恢复链接，返回恢复之后的收件箱。
+ * 链接无效、过期、用过或被作废时是 null。
+ */
+export async function redeemRecovery(token: string): Promise<Inbox | null> {
+	const payload: RecoverPayload = { token };
+	const response = await call("/api/recover", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(payload),
+	});
+	if (response.status === 410) {
+		return null;
+	}
+	if (!response.ok) {
+		throw new Error(`/api/recover answered ${response.status}`);
+	}
+	return response.json();
 }
 
 /** 提交联系页的留言。"too_many" 表示这个来源或全站的留言数到了上限。 */

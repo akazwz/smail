@@ -110,6 +110,21 @@ export const dictionary: Dictionary = {
 		faqCta: "查看常见问题",
 		homeCta: "返回首页",
 	},
+	recover: {
+		metaTitle: "找回地址 | smail.pw",
+		title: "找回你的地址",
+		description:
+			"我们核实地址是你的之后，给你发了这条链接。在下面确认，地址和它的收件箱就会回到这个浏览器里。链接只能用一次。",
+		action: "恢复地址",
+		working: "恢复中...",
+		replaceConfirmTitle: "替换这个浏览器里的地址？",
+		replaceConfirmBody:
+			"这个浏览器里已经有一个地址。恢复后它会被替换，这个浏览器不再记得现在这个地址。",
+		invalid:
+			"这条链接用不了：可能不完整、已经过期或已经用过。请重新打开我们回复里的完整链接，或者给我们留言。",
+		failed: "地址没有恢复成功，请稍后再试。",
+		contactCta: "联系我们",
+	},
 	blog: {
 		title: "临时邮箱使用指南、技巧与问题排查 | smail.pw",
 		description:

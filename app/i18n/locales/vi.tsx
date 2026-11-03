@@ -118,6 +118,21 @@ export const dictionary: Dictionary = {
 		faqCta: "Mở trang Hỏi đáp",
 		homeCta: "Về trang chủ",
 	},
+	recover: {
+		metaTitle: "Khôi phục địa chỉ | smail.pw",
+		title: "Khôi phục địa chỉ của bạn",
+		description:
+			"Chúng tôi gửi liên kết này sau khi xác nhận địa chỉ là của bạn. Xác nhận bên dưới để đưa địa chỉ và hộp thư của nó trở lại trình duyệt này. Liên kết chỉ dùng được một lần.",
+		action: "Khôi phục địa chỉ",
+		working: "Đang khôi phục...",
+		replaceConfirmTitle: "Thay địa chỉ trong trình duyệt này?",
+		replaceConfirmBody:
+			"Trình duyệt này đã có một địa chỉ. Khôi phục sẽ thay thế nó và trình duyệt sẽ không còn nhớ địa chỉ hiện tại.",
+		invalid:
+			"Không thể dùng liên kết này. Có thể nó không đầy đủ, đã hết hạn hoặc đã được dùng. Hãy mở lại liên kết đầy đủ trong thư trả lời của chúng tôi, hoặc để lại lời nhắn.",
+		failed: "Không khôi phục được địa chỉ. Vui lòng thử lại sau giây lát.",
+		contactCta: "Liên hệ hỗ trợ",
+	},
 	blog: {
 		title: "Hướng dẫn, mẹo và cách sửa lỗi email tạm thời | smail.pw",
 		description:

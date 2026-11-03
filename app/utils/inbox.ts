@@ -37,7 +37,7 @@ const GUEST: InboxState = {
 const NOTICE_MS = 5000;
 
 // 浏览器里记着“这个访客有没有地址”的那个 cookie：1 有，0 没有，没有这个 cookie 就是还不知道。
-function readInboxMarker(): string | null {
+export function readInboxMarker(): string | null {
 	const match = new RegExp(`(?:^|; )${INBOX_MARKER_COOKIE}=([01])`).exec(
 		document.cookie,
 	);

@@ -3,6 +3,7 @@ import { INBOX_MARKER_COOKIE } from "./contract.ts";
 import { readEmailBody, readInbox } from "./inbox.ts";
 import { receiveEmail } from "./mail.ts";
 import { saveMessage } from "./messages.ts";
+import { redeemRecovery } from "./recover.ts";
 import {
 	loadSession,
 	readCookie,
@@ -95,6 +96,23 @@ async function route(
 			session.dirty = true;
 			return json(await readInbox(session.data.addresses));
 		}
+	}
+
+	// 兑换站长签发的恢复链接：成功后和点“生成”一样，会话里只剩这一个地址，之后照常长期有效。
+	if (method === "POST" && pathname === "/api/recover") {
+		const address = await redeemRecovery(request);
+		if (!address) {
+			// 无效、过期、用过、作废都是同一个回答，不告诉对方是哪一种。
+			return json({ error: "gone" }, 410);
+		}
+		const now = Date.now();
+		session.data = {
+			addresses: [address],
+			addressIssuedAt: now,
+			renewedAt: now,
+		};
+		session.dirty = true;
+		return json(await readInbox(session.data.addresses));
 	}
 
 	const email = /^\/api\/email\/([^/]+)$/.exec(pathname);
