@@ -74,8 +74,8 @@ async function confirm(question) {
 }
 
 /**
- * 签发恢复链接。地址统一转成小写：生成的地址本来就是小写，会话里存的也是这个样子；
- * 发件方把地址写成大写的那些信，原来的会话也看不到，恢复后保持一致。
+ * 签发恢复链接。地址统一转成小写，和 Worker 里的统一写法一致（src/address.ts 的
+ * normalizeAddress）：收信入库、会话里的地址都是小写。
  * token 只在这里出现一次（打印出来的链接里），库里只存它的 SHA-256。
  */
 async function recover(args) {

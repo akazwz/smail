@@ -1,5 +1,6 @@
 import { env } from "cloudflare:workers";
 
+import { normalizeAddress } from "./address.ts";
 import { RECOVERY_TOKEN_PATTERN } from "./contract.ts";
 
 // 地址恢复：站长核实归属后签发一条链接（worker/d1.mjs 的 recover 命令），
@@ -43,5 +44,5 @@ export async function redeemRecovery(request: Request): Promise<string | null> {
 	)
 		.bind(now, await hashToken(token))
 		.first<{ address: string }>();
-	return row?.address ?? null;
+	return row ? normalizeAddress(row.address) : null;
 }

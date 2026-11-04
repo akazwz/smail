@@ -1,6 +1,7 @@
 import { env } from "cloudflare:workers";
 import Parser from "postal-mime";
 
+import { normalizeAddress } from "./address.ts";
 import type { Email, Inbox } from "./contract.ts";
 import { toBodyHtml } from "./mail.ts";
 
@@ -116,7 +117,8 @@ export async function readEmailBody(
 	const mail = await env.D1.prepare("SELECT * FROM emails WHERE id = ?")
 		.bind(id)
 		.first<Email>();
-	if (!mail || !addresses.includes(mail.to_address)) {
+	// 会话里的地址已经是统一写法；库里的地址也比一遍统一写法，不依赖它存进来时的样子。
+	if (!mail || !addresses.includes(normalizeAddress(mail.to_address))) {
 		return null;
 	}
 
