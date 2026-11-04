@@ -60,7 +60,7 @@ Worker（`worker/`）：
 - 和会话有关的请求在页面上是排队发的（`app/api.ts`），不并发：每个响应都可能重写会话 cookie，后到的会盖掉先到的。
 - 一次刷新失败不等于没有地址：之前取到过的收件箱接着显示（`app/utils/inbox.ts`），只有一次都没取到时才是“取失败”的界面。操作或手动刷新没成功时，在收件箱顶上浮一句提示，几秒后消失；它是浮层，不占位置。
 - 邮件正文（`GET /api/email/:id`）必须校验邮件地址属于当前会话。纯文本邮件要转义后再显示。响应带 `Content-Security-Policy: sandbox …`：就算有人直接在地址栏打开，邮件里的脚本也不会以本站身份运行。
-- 地址恢复只是人工客服：访客丢了地址（删了、换了浏览器、清了 cookie）来留言求助，站长自己核实归属后，在 `worker/` 里跑 `pnpm run recover <地址>` 签发一条链接，再通过对方留的联系方式发过去。不做账号、后台、公开的签发接口，也不自动发信。
+- 地址恢复只是人工客服：访客丢了地址（删了、换了浏览器、清了 cookie）来留言求助，站长判断后在 `worker/` 里跑 `pnpm run recover <地址> --send-to <对方邮箱>`，签发一条链接并直接从 `support@<域名>` 发给对方（用 Cloudflare 的 Email Sending，经 `cf email-sending send`，用的是本机 `cf` 的登录，不需要另外的密钥；域名要先在 Email Sending 里开通）。对方留的不是邮箱时，不带 `--send-to`，链接打印出来，站长自己通过那个渠道发。发信只在站长本机跑命令时发生：Worker 不发信，不做账号、后台、公开的签发接口。`support@<域名>` 只用来发恢复链接，不公开在站内（对方回信会像普通来信一样进库，站长要看时给自己签一条这个地址的恢复链接）。
   - 链接是 `/recover#<token>`：token 放在 `#` 后面，不会发给服务器，也不会出现在 Referer 里。库里只存它的 SHA-256。链接只能兑换一次，默认 7 天内有效（`--days` 可改，最多 30 天），`pnpm run revoke <链接 ID 或地址>` 可以提前作废。
   - 打开页面不消耗链接，点了按钮才兑换（聊天软件生成预览时不会把它用掉）；这个浏览器已经有地址时先过 `ConfirmDialog`。兑换用一条 `UPDATE … RETURNING` 判断并标记，同一条链接只有一个请求拿得到地址。
   - 兑换成功后会话和点“生成”一样，只剩这一个地址，之后照常长期有效；`/api/inbox`、`/api/email` 的校验不变。签发时地址统一转成小写（和上面“地址不分大小写”是同一条规则）。
@@ -98,7 +98,7 @@ TypeScript 配置：根目录的 `tsconfig.json` 只是入口，引用 `tsconfig
 在 `worker/` 目录：
 - `pnpm run cf-typegen`：按 `cloudflare.config.ts` 重新生成 `.cloudflare/types/index.d.ts`（`Env`、`ctx.exports` 的类型都来自它，不进 git）。
 - `pnpm run messages`：列出最近 50 条留言（线上的库；`cf d1 query` 没有本地版）。
-- `pnpm run recover <地址> [--days N]` / `pnpm run revoke <链接 ID 或地址>`：签发 / 作废地址恢复链接（线上的库）。签发前会列出这个地址收过几封信，确认后才写入；链接只打印这一次。
+- `pnpm run recover <地址> [--days N] [--send-to <邮箱>] [--dry-run]` / `pnpm run revoke <链接 ID 或地址>`：签发 / 作废地址恢复链接（线上的库）。签发前会列出这个地址收过几封信，确认后才写入。不带 `--send-to` 时链接只打印这一次；带了就显示整封信、确认后签发并发出，链接不在终端出现，发送失败时这条链接立即作废。`--dry-run` 只预览信件并让 `cf` 校验发信参数，不写库、不发信。
 - `pnpm run migrate` / `pnpm run migrate:local`：对远端 / 本地的 D1 执行迁移。beta 版的 `cf` 跑完本地命令后进程可能不退出，看到输出后按 Ctrl+C 即可。
 
 Worker 的配置在 `worker/cloudflare.config.ts`（Cloudflare 新的带类型配置，配套 `cf` 命令行，目前是 beta）。仓库里没有 `wrangler.jsonc`，`wrangler` 的命令读不到这份配置，统一用 `cf`。新配置里没有“静态目录”这个字段：静态文件就是 Worker 这个 Vite 项目的 `publicDir`。
