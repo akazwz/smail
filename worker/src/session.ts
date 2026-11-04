@@ -1,5 +1,7 @@
 import { env } from "cloudflare:workers";
 
+import { normalizeAddress } from "./address.ts";
+
 type SessionData = {
 	addresses: string[];
 	addressIssuedAt?: number;
@@ -175,6 +177,13 @@ export async function loadSession(request: Request): Promise<SessionState> {
 	const state: SessionState = { data, dirty: false };
 	if (data.addresses.length === 0) {
 		return state;
+	}
+
+	// 地址统一成一种写法，后面的查询、校验、推送都按它来。cookie 格式不变，只有真的改了才重发。
+	const addresses = data.addresses.map(normalizeAddress);
+	if (addresses.some((address, index) => address !== data.addresses[index])) {
+		data.addresses = addresses;
+		state.dirty = true;
 	}
 
 	const now = Date.now();

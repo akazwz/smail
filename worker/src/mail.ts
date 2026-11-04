@@ -1,5 +1,7 @@
 import Parser, { type Email as ParsedEmail } from "postal-mime";
 
+import { normalizeAddress } from "./address.ts";
+
 // 单封邮件原文的存储上限。超过的只存正文：附件本来就不在页面上展示，丢掉不影响阅读。
 const MAX_STORED_BYTES = 5 * 1024 * 1024;
 
@@ -75,7 +77,7 @@ export async function receiveEmail(
 		)
 			.bind(
 				id,
-				msg.to,
+				normalizeAddress(msg.to),
 				parsed.from?.name ?? "",
 				parsed.from?.address ?? msg.from,
 				parsed.subject ?? "",

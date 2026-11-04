@@ -1,4 +1,4 @@
-import { generateEmailAddress } from "./address.ts";
+import { generateEmailAddress, normalizeAddress } from "./address.ts";
 import { INBOX_MARKER_COOKIE } from "./contract.ts";
 import { readEmailBody, readInbox } from "./inbox.ts";
 import { receiveEmail } from "./mail.ts";
@@ -197,13 +197,18 @@ export default {
 	async email(msg, env, ctx) {
 		await receiveEmail(msg, env);
 
+		// 连接按会话里的地址打 tag，会话里是统一写法。收件地址的原样写法和它不同时也通知一次：
+		// 在地址统一之前就连上、一直没断的连接，tag 还是当时会话里的样子。
+		const address = normalizeAddress(msg.to);
+		const tags = address === msg.to ? [address] : [address, msg.to];
+		const hub = ctx.exports.InboxHub.getByName(HUB_NAME);
 		// 邮件已经存好；通知失败不影响收信，页面上还有手动刷新。
 		ctx.waitUntil(
-			ctx.exports.InboxHub.getByName(HUB_NAME)
-				.notify(msg.to)
-				.catch((error: unknown) => {
+			Promise.all(tags.map((tag) => hub.notify(tag))).catch(
+				(error: unknown) => {
 					console.error("inbox_notify_failed", String(error));
-				}),
+				},
+			),
 		);
 	},
 } satisfies ExportedHandler<Env>;

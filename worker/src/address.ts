@@ -34,6 +34,14 @@ function shortRandomName(): string {
 	return name;
 }
 
+/**
+ * 本站地址的统一写法：全部小写。生成的地址本来就是小写，发件方却可能把同一个地址写成
+ * 大小写不同的样子。收信入库、会话、权限校验、推送都先过这里，同一个地址只有一种写法。
+ */
+export function normalizeAddress(address: string): string {
+	return address.toLowerCase();
+}
+
 export function generateEmailAddress() {
 	return `${shortRandomName()}-${randomSuffix()}@${site.domain}`;
 }
