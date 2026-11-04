@@ -11,7 +11,7 @@
 - **前端（仓库根目录）**：Solid 2 + StyleX，构建产物是纯静态网站 `dist/client`。线上没有任何前端代码在服务器上运行。
 - **Worker（`worker/` 目录）**：一个普通的 Cloudflare Worker，只做收件箱接口、新邮件推送和收信。部署时把前端的 `dist/client` 当静态文件带上。
 
-域名、Worker 名、数据库和存储桶只写在一处：仓库根目录的 `site.config.ts`。前端（`#site`）、构建配置、Worker 的配置和地址生成都从它读；自己部署这个项目的人只改这一个文件（步骤在 `README.md` 的“Deploy your own”和 `README.zh-CN.md` 的“自己部署”）。代码里不要再写死 `smail.pw` 或资源 ID：站名用 `app/seo.config.ts` 的 `SITE_NAME`，网站地址用 `BASE_URL`。正文内容（`app/md`、`app/blog`、各语言文案）里的 `smail.pw` 是内容的一部分，不在此列。
+域名、Worker 名、数据库和存储桶只写在一处：仓库根目录的 `site.config.ts`。前端（`#site`）、构建配置、Worker 的配置和地址生成都从它读（Worker 的运行代码不直接 import 它：`worker/cloudflare.config.ts` 把需要的值作为变量传进去，比如 `SITE_DOMAIN`。Cloudflare 的 Vite 插件把这份配置和它引用的文件都列进开发服务器的 `fs.deny`，Worker 代码再引用会让 `pnpm run dev` 启动失败，构建却照常通过）；自己部署这个项目的人只改这一个文件（步骤在 `README.md` 的“Deploy your own”和 `README.zh-CN.md` 的“自己部署”）。代码里不要再写死 `smail.pw` 或资源 ID：站名用 `app/seo.config.ts` 的 `SITE_NAME`，网站地址用 `BASE_URL`。正文内容（`app/md`、`app/blog`、各语言文案）里的 `smail.pw` 是内容的一部分，不在此列。
 
 两边只通过 `/api/*` 这几个接口打交道。接口返回的数据结构和共用的 cookie 名字只写一份，在 `worker/src/contract.ts`（不依赖任何模块）；前端用 `#contract` 引入它，除此之外不引用 Worker 的代码。
 

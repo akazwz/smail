@@ -25,6 +25,10 @@ export default defineConfig({
 			issues: { enabled: true },
 		},
 		env: {
+			// 本站域名，生成地址时用（src/address.ts）。Worker 的代码不直接引用 site.config.ts：
+			// Cloudflare 的 Vite 插件把这份配置和它引用的文件都列进开发服务器的 fs.deny，
+			// Worker 代码里再引用就会在 `pnpm run dev` 时加载失败（构建不受影响）。
+			SITE_DOMAIN: bindings.text(site.domain),
 			// 邮件元数据。迁移文件在 migrations/，用 `pnpm run migrate` 执行。
 			D1: bindings.d1({ id: site.database.id, name: site.database.name }),
 			// 邮件原文，对象 key 是邮件 id。
