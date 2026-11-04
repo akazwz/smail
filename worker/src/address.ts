@@ -1,6 +1,5 @@
 import { randomName } from "@scaleway/random-name";
-
-import { site } from "../../site.config.ts";
+import { env } from "cloudflare:workers";
 
 // 去掉了 l / 1 / o / 0：地址用普通字体显示，这几个字符手抄时容易看错。
 const SUFFIX_ALPHABET = "abcdefghijkmnpqrstuvwxyz23456789";
@@ -43,5 +42,5 @@ export function normalizeAddress(address: string): string {
 }
 
 export function generateEmailAddress() {
-	return `${shortRandomName()}-${randomSuffix()}@${site.domain}`;
+	return `${shortRandomName()}-${randomSuffix()}@${env.SITE_DOMAIN}`;
 }
