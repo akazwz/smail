@@ -56,6 +56,7 @@ export interface Dictionary {
 		contact: string;
 		privacy: string;
 		terms: string;
+		agents: string;
 		language: string;
 		copyright: string;
 	};

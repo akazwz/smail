@@ -50,3 +50,6 @@ E-postalar herhangi bir zamanda silinebilir; örneğin bakım sırasında, bir s
 
 ### smail.pw ücretsiz mi?
 Evet, smail.pw ücretsiz bir geçici e-posta aracı olarak tasarlanmıştır.
+
+### Bir yapay zekâ ajanı smail.pw'yi kullanabilir mi?
+smail.pw tarayıcı kullanan insanlar için tasarlanmıştır. Claude Code ve Codex gibi yapay zekâ ajanları için ajanlara yönelik e-posta hizmetimiz [smails](https://smails.dev)'i kullanın: ajan kendi adresini kendisi oluşturur ve doğrulama e-postasını kendisi bekler.

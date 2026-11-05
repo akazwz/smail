@@ -66,6 +66,7 @@ export const dictionary: Dictionary = {
 		contact: "رابطہ",
 		privacy: "رازداری کی پالیسی",
 		terms: "استعمال کی شرائط",
+		agents: "AI ایجنٹس کے لیے smails",
 		language: "زبان",
 		copyright: "صاف ان باکس، صاف شناخت۔",
 	},

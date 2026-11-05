@@ -50,3 +50,6 @@ smail.pw 是一个临时邮箱服务，也是一次性邮箱生成器。它适�
 
 ### smail.pw 是免费的吗？
 是的，smail.pw 是一个免费的临时邮箱工具。
+
+### AI agent 能用 smail.pw 吗？
+smail.pw 是为在浏览器里使用的人设计的。Claude Code、Codex 这类 AI agent 请使用 [smails](https://smails.dev)，这是我们专为 agent 提供的邮箱服务：agent 自己创建地址，自己等待验证邮件。

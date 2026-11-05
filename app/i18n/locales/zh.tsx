@@ -63,6 +63,7 @@ export const dictionary: Dictionary = {
 		contact: "联系",
 		privacy: "隐私政策",
 		terms: "使用条款",
+		agents: "smails：AI agent 邮箱",
 		language: "语言",
 		copyright: "让邮箱更干净，让身份更安全。",
 	},

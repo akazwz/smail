@@ -66,6 +66,7 @@ export const dictionary: Dictionary = {
 		contact: "Liên hệ",
 		privacy: "Chính sách quyền riêng tư",
 		terms: "Điều khoản sử dụng",
+		agents: "smails cho AI agent",
 		language: "Ngôn ngữ",
 		copyright: "Hộp thư gọn gàng, danh tính kín đáo.",
 	},

@@ -66,6 +66,7 @@ export const dictionary: Dictionary = {
 		contact: "お問い合わせ",
 		privacy: "プライバシーポリシー",
 		terms: "利用規約",
+		agents: "smails：AI エージェント向けメール",
 		language: "言語",
 		copyright: "受信箱をクリーンに、アイデンティティもクリーンに。",
 	},

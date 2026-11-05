@@ -66,6 +66,7 @@ export const dictionary: Dictionary = {
 		contact: "문의",
 		privacy: "개인정보 처리방침",
 		terms: "이용약관",
+		agents: "smails: AI 에이전트용 메일함",
 		language: "언어",
 		copyright: "받은편지함도, 신원도 깔끔하게.",
 	},

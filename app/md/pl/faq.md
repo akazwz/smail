@@ -50,3 +50,6 @@ Wiadomości mogą zostać usunięte w dowolnym momencie, na przykład podczas pr
 
 ### Czy smail.pw jest darmowy?
 Tak, smail.pw powstał jako darmowe narzędzie do poczty tymczasowej.
+
+### Czy agent AI może korzystać z smail.pw?
+smail.pw jest stworzony dla ludzi korzystających z przeglądarki. Dla agentów AI, takich jak Claude Code i Codex, użyj [smails](https://smails.dev), naszej usługi pocztowej dla agentów: agent sam tworzy swój adres i sam czeka na e-mail weryfikacyjny.

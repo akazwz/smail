@@ -66,6 +66,7 @@ export const dictionary: Dictionary = {
 		contact: "İletişim",
 		privacy: "Gizlilik Politikası",
 		terms: "Kullanım Koşulları",
+		agents: "Yapay zekâ ajanları için smails",
 		language: "Dil",
 		copyright: "Temiz gelen kutusu, temiz kimlik.",
 	},

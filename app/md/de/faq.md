@@ -50,3 +50,6 @@ E-Mails können jederzeit entfernt werden, zum Beispiel bei Wartungsarbeiten, na
 
 ### Ist smail.pw kostenlos?
 Ja, smail.pw ist als kostenloses Tool für temporäre Postfächer gedacht.
+
+### Kann ein KI-Agent smail.pw nutzen?
+smail.pw ist für Menschen gemacht, die einen Browser verwenden. Für KI-Agenten wie Claude Code und Codex gibt es [smails](https://smails.dev), unseren E-Mail-Dienst für Agenten: Der Agent legt seine Adresse selbst an und wartet selbstständig auf die Bestätigungs-E-Mail.

@@ -66,6 +66,7 @@ export const dictionary: Dictionary = {
 		contact: "Контакты",
 		privacy: "Политика конфиденциальности",
 		terms: "Условия использования",
+		agents: "smails для ИИ-агентов",
 		language: "Язык",
 		copyright: "Чистый ящик, чистый цифровой след.",
 	},

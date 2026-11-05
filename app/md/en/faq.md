@@ -50,3 +50,6 @@ Emails may be removed at any time, for example during maintenance, after a syste
 
 ### Is smail.pw free?
 Yes, smail.pw is designed as a free temporary mailbox utility.
+
+### Can an AI agent use smail.pw?
+smail.pw is made for people using a browser. For AI agents such as Claude Code and Codex, use [smails](https://smails.dev), our email service for agents: the agent creates its own address and waits for the verification email by itself.
