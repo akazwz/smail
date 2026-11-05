@@ -50,3 +50,6 @@ Os emails podem ser removidos a qualquer momento, por exemplo durante uma manute
 
 ### O smail.pw é gratuito?
 Sim, o smail.pw foi criado como uma ferramenta gratuita de email temporário.
+
+### Um agente de IA pode usar o smail.pw?
+O smail.pw foi feito para pessoas que usam um navegador. Para agentes de IA como Claude Code e Codex, use o [smails](https://smails.dev), nosso serviço de email para agentes: o agente cria o próprio endereço e espera sozinho pelo email de verificação.

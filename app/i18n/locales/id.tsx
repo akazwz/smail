@@ -66,6 +66,7 @@ export const dictionary: Dictionary = {
 		contact: "Kontak",
 		privacy: "Kebijakan Privasi",
 		terms: "Ketentuan Penggunaan",
+		agents: "smails untuk agen AI",
 		language: "Bahasa",
 		copyright: "Kotak masuk bersih, identitas terjaga.",
 	},

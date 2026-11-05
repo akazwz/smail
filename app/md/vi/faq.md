@@ -50,3 +50,6 @@ Email có thể bị xóa bất cứ lúc nào, chẳng hạn khi bảo trì, sa
 
 ### smail.pw có miễn phí không?
 Có, smail.pw được thiết kế là một tiện ích hộp thư tạm thời miễn phí.
+
+### AI agent có dùng được smail.pw không?
+smail.pw được làm cho người dùng trình duyệt. Với các AI agent như Claude Code và Codex, hãy dùng [smails](https://smails.dev), dịch vụ email dành cho agent của chúng tôi: agent tự tạo địa chỉ cho mình và tự chờ email xác minh.

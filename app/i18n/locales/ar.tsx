@@ -65,6 +65,7 @@ export const dictionary: Dictionary = {
 		contact: "اتصل بنا",
 		privacy: "سياسة الخصوصية",
 		terms: "شروط الاستخدام",
+		agents: "smails لوكلاء الذكاء الاصطناعي",
 		language: "اللغة",
 		copyright: "صندوق نظيف، وهوية مصونة.",
 	},

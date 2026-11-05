@@ -179,6 +179,9 @@ export default function Layout(props: ParentProps) {
 								</TextLink>
 							)}
 						</For>
+						<TextLink tone="subtle" href="https://smails.dev">
+							{copy.agents}
+						</TextLink>
 					</nav>
 				</div>
 			</footer>

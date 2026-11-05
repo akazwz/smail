@@ -50,3 +50,6 @@ Email dapat dihapus kapan saja, misalnya saat pemeliharaan, setelah gangguan sis
 
 ### Apakah smail.pw gratis?
 Ya, smail.pw dirancang sebagai layanan kotak masuk sementara yang gratis.
+
+### Apakah agen AI bisa memakai smail.pw?
+smail.pw dibuat untuk orang yang memakai browser. Untuk agen AI seperti Claude Code dan Codex, gunakan [smails](https://smails.dev), layanan email kami untuk agen: agen membuat alamatnya sendiri dan menunggu email verifikasi sendiri.

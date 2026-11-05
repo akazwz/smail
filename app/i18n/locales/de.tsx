@@ -66,6 +66,7 @@ export const dictionary: Dictionary = {
 		contact: "Kontakt",
 		privacy: "Datenschutz",
 		terms: "Nutzungsbedingungen",
+		agents: "smails für KI-Agenten",
 		language: "Sprache",
 		copyright: "Sauberes Postfach, geschützte Identität.",
 	},
